@@ -24,6 +24,7 @@ public class MainGui extends JFrame{
     private MenuItem statusItem ;//默认没有开启
     private MenuItem exitItem ;
     private SettingGui settingGui;
+    private TrayIcon trayIcon;
     public MainGui() {
         parentPanel=this;
         settingGui = new SettingGui();
@@ -45,12 +46,10 @@ public class MainGui extends JFrame{
         settingItem = new MenuItem("设置");
         statusItem = new MenuItem("开启");//默认没有开启
         exitItem = new MenuItem("退出");
-        pop.add(settingItem);
-        pop.add(statusItem);
-        pop.add(exitItem);
+        addAllItem();
         //图标
         ImageIcon trayImg = new ImageIcon(getDefaultTrayImgName());
-        final TrayIcon trayIcon = new TrayIcon(trayImg.getImage(), RestConfig.PROGRAM_NAME, pop);
+        trayIcon = new TrayIcon(trayImg.getImage(), RestConfig.PROGRAM_NAME, pop);
         trayIcon.setImageAutoSize(true);
         settingItem.addActionListener((ActionEvent e)->{
             if(!settingGui.isVisible()){
@@ -78,13 +77,22 @@ public class MainGui extends JFrame{
         }
     }
 
+    private void addAllItem() {
+        pop.add(settingItem);
+        pop.add(statusItem);
+        pop.add(exitItem);
+    }
+
     public void start() {
         settingGui.setStatus(true);
         settingGui.updateTime();
-        statusItem.setName("停止");
+        statusItem.setLabel("停止");
+
     }
     public void stop() {
         settingGui.setStatus(false);
-        statusItem.setName("开启");
+        statusItem.setLabel("开启");
+        pop.removeAll();
+        addAllItem();
     }
 }

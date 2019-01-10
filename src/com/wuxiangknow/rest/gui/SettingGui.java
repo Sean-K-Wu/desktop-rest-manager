@@ -29,7 +29,7 @@ public class SettingGui extends JFrame {
 
     private long lastTime = System.currentTimeMillis();//活跃开始计算时间
 
-    private boolean status ;//后台线程状态
+    private transient boolean status ;//后台线程状态
     private Color selectedBackgroundColor = new Color(0 , 66  ,140);
     private Color defaultBackgroundColor = new Color(83 , 83  ,83 );
     private JLabel maxWorkTimeLabel;

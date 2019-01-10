@@ -12,7 +12,7 @@ public class RestGui extends JFrame{
 
     private SettingGui settingGui;
 
-
+    private Dimension restGuiSize = new Dimension(100,100);
 
 
     public RestGui(SettingGui settingGui) throws HeadlessException {
@@ -20,8 +20,10 @@ public class RestGui extends JFrame{
         this.setLayout(null);
         this.setResizable(false);
         this.setUndecorated(true);
-        this.setLocation(0,0);
-        this.setSize(500, 250);
-        this.setVisible(true);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width =  (int) restGuiSize.getWidth();
+        int height = (int) restGuiSize.getHeight();
+        this.setBounds((int)(screenSize.getWidth() - width)/2,(int)(screenSize.getHeight()- height)/2,width,height);
+        this.setVisible(false);
     }
 }
