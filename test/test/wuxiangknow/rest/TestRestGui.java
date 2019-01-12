@@ -12,7 +12,7 @@ public class TestRestGui {
     @Test
     public void test(){
         RestGui restGui = new RestGui(null);
-        restGui.setVisible(true);
+
 
     }
 }

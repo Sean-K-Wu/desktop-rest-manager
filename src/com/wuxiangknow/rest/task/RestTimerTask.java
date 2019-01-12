@@ -3,6 +3,7 @@ package com.wuxiangknow.rest.task;
 
 import com.wuxiangknow.rest.gui.RestGui;
 import com.wuxiangknow.rest.gui.SettingGui;
+import com.wuxiangknow.rest.gui.SleepGui;
 import com.wuxiangknow.rest.util.DateTimeUtil;
 
 import java.util.Date;
@@ -53,11 +54,10 @@ public class RestTimerTask extends TimerTask {
             if(isWork){
                 //创建休息
                 RestGui restGui = new RestGui(settingGui);
-                while (restGui.isActive()){
-                    synchronized (restGui){
-
-
-                    }
+                //休息
+                if(restGui.isStatus()){
+                    SleepGui sleepGui = new SleepGui(settingGui);
+                    sleepGui.dispose();
                 }
             }
         }
