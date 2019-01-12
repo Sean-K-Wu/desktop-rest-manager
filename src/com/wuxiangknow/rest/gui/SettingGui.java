@@ -62,6 +62,34 @@ public class SettingGui extends JFrame {
         restTimeField    = new JTextField(String.valueOf(restTime /1000 / 60));
         sleepImagesPathLabel= new JLabel("图片路径");
         sleepImagesPatheField= new JTextField(SLEEP_IMAGE_PATH_DEFAULT);
+
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //界面宽高度
+        int width = (int) settingSize.getWidth();
+        int height = (int) settingSize.getWidth();
+        maxWorkTimeLabel.setBounds(100,0,100,30);
+        maxWorkTimeField.setBounds(200,0,100,30);
+
+        //第2行
+        restTimeLabel   .setBounds(100,30,100,30);
+        restTimeField   .setBounds(200,30,100,30);
+
+        sleepImagesPathLabel.setBounds(100,60,100,30);
+        sleepImagesPatheField.setBounds(200,60,100,30);
+        this.add(maxWorkTimeLabel);
+        this.add(maxWorkTimeField);
+        this.add(restTimeLabel);
+        this.add(restTimeField);
+        this.add(sleepImagesPathLabel);
+        this.add(sleepImagesPatheField);
+        //正中央显示
+        this.setBounds((int)(screenSize.getWidth() - settingSize.getWidth())/2,(int)(screenSize.getHeight() - settingSize.getHeight())/2,width,height);
+        this.setVisible(false);
+    }
+
+
+    public void initListeners(){
         sleepImagesPatheField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -88,13 +116,6 @@ public class SettingGui extends JFrame {
                 }
             }
         });
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        //界面宽高度
-        int width = (int) settingSize.getWidth();
-        int height = (int) settingSize.getWidth();
-        maxWorkTimeLabel.setBounds(100,0,100,30);
-        maxWorkTimeField.setBounds(200,0,100,30);
         maxWorkTimeField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -108,9 +129,6 @@ public class SettingGui extends JFrame {
                 }
             }
         });
-        //第2行
-        restTimeLabel   .setBounds(100,30,100,30);
-        restTimeField   .setBounds(200,30,100,30);
         restTimeField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -124,14 +142,6 @@ public class SettingGui extends JFrame {
                 }
             }
         });
-        sleepImagesPathLabel.setBounds(100,60,100,30);
-        sleepImagesPatheField.setBounds(200,60,100,30);
-        this.add(maxWorkTimeLabel);
-        this.add(maxWorkTimeField);
-        this.add(restTimeLabel);
-        this.add(restTimeField);
-        this.add(sleepImagesPathLabel);
-        this.add(sleepImagesPatheField);
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowDeactivated(WindowEvent e) {
@@ -139,10 +149,8 @@ public class SettingGui extends JFrame {
                 CacheManager.save(settingGui);
             }
         });
-        //正中央显示
-        this.setBounds((int)(screenSize.getWidth() - settingSize.getWidth())/2,(int)(screenSize.getHeight() - settingSize.getHeight())/2,width,height);
-        this.setVisible(false);
     }
+
     /**
      * 更新时间
      */

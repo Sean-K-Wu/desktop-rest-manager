@@ -32,6 +32,7 @@ public class MainGui extends JFrame{
         if(settingGui == null){
             settingGui = new SettingGui();
         }
+        settingGui.initListeners();
         hotKey = new HotKey(this);//热键
         initSystemTray();
         java.util.Timer timer = new Timer(false);
@@ -58,6 +59,9 @@ public class MainGui extends JFrame{
         settingItem.addActionListener((ActionEvent e)->{
             if(!settingGui.isVisible()){
                 settingGui.setVisible(true);
+                if(!settingGui.requestFocusInWindow()){
+                    settingGui.requestFocus();
+                }
             }
         });
         statusItem.addActionListener((ActionEvent e)->{
