@@ -1,6 +1,7 @@
 package com.wuxiangknow.rest.gui;
 
 import com.wuxiangknow.rest.config.RestConfig;
+import com.wuxiangknow.rest.util.RegUtil;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -90,10 +91,35 @@ public class SettingGui extends JFrame {
         int height = (int) settingSize.getWidth();
         maxWorkTimeLabel.setBounds(100,0,100,30);
         maxWorkTimeField.setBounds(200,0,100,30);
+        maxWorkTimeField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                JTextField component = (JTextField) e.getComponent();
+                if(component.getText() !=null && RegUtil.isIntegerNumber(component.getText())
+                        ){
+                    maxWorkTime = Integer.parseInt(component.getText()) * 1000 * 60;
+                }else{
+                    component.setText(String.valueOf(maxWorkTime /1000 / 60));
+                }
+            }
+        });
         //第2行
         restTimeLabel   .setBounds(100,30,100,30);
         restTimeField   .setBounds(200,30,100,30);
-
+        restTimeField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                JTextField component = (JTextField) e.getComponent();
+                if(component.getText() !=null && RegUtil.isIntegerNumber(component.getText())
+                        ){
+                    restTime = Integer.parseInt(component.getText()) * 1000 * 60;
+                }else{
+                    component.setText(String.valueOf(restTime /1000 / 60));
+                }
+            }
+        });
         sleepImagesPathLabel.setBounds(100,60,100,30);
         sleepImagesPatheField.setBounds(200,60,100,30);
         this.add(maxWorkTimeLabel);

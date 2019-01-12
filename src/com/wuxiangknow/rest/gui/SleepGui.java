@@ -78,6 +78,9 @@ public class SleepGui extends JFrame{
         this.setBounds(0, 0, (int) screenSize.getWidth(), (int) screenSize.getHeight());
         this.add(imageLabel);
         this.setVisible(true);
+        if(!this.requestFocusInWindow()){
+            this.requestFocus();
+        }
         if(settingGui!=null){
             while (true){
                 try {
