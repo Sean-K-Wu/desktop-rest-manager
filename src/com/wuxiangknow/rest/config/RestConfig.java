@@ -9,6 +9,10 @@ public class RestConfig {
 
     public static final String PROGRAM_NAME = "休息小程序";
 
+    public static final String PROGRAM_CACHE_DIR = System.getProperty("user.home")+"\\AppData\\Local\\desktop-rest-manager";
+
+    public static final String SETTING_CACHE_FILE = "setting";
+
     public static final String TRAY_ICON_PATH = "/res/icon.png";//系统托盘图标
 
     public static final String SETTING_ICON_PATH = "/res/icon.png";//设置界面图标

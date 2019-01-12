@@ -1,6 +1,7 @@
 package com.wuxiangknow.rest.gui;
 
 
+import com.wuxiangknow.rest.cache.CacheManager;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.keyboard.HotKey;
 import com.wuxiangknow.rest.task.RestTimerTask;
@@ -27,7 +28,10 @@ public class MainGui extends JFrame{
     private TrayIcon trayIcon;
     public MainGui() {
         parentPanel=this;
-        settingGui = new SettingGui();
+        settingGui = CacheManager.load();
+        if(settingGui == null){
+            settingGui = new SettingGui();
+        }
         hotKey = new HotKey(this);//热键
         initSystemTray();
         java.util.Timer timer = new Timer(false);

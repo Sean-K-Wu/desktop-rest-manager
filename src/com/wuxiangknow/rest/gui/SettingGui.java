@@ -1,5 +1,6 @@
 package com.wuxiangknow.rest.gui;
 
+import com.wuxiangknow.rest.cache.CacheManager;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.util.RegUtil;
 
@@ -8,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -22,7 +25,7 @@ import java.util.Map;
 public class SettingGui extends JFrame {
 
     private static final long serialVersionUID = 27196777663166828L;
-
+    private SettingGui settingGui;
     private long maxWorkTime = RestConfig.MAX_WORK_TIME;//最长连续工作时间  多长工作时间后休息
 
     private long restTime = RestConfig.REST_TIME;//休息时间
@@ -43,6 +46,7 @@ public class SettingGui extends JFrame {
     private JTextField sleepImagesPatheField;
     private static final String SLEEP_IMAGE_PATH_DEFAULT = "默认";
     public SettingGui() {
+        this.settingGui = this;
         this.setTitle("设置");
         this.setLayout(null);
         this.setResizable(false);
@@ -128,6 +132,13 @@ public class SettingGui extends JFrame {
         this.add(restTimeField);
         this.add(sleepImagesPathLabel);
         this.add(sleepImagesPatheField);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                super.windowDeactivated(e);
+                CacheManager.save(settingGui);
+            }
+        });
         //正中央显示
         this.setBounds((int)(screenSize.getWidth() - settingSize.getWidth())/2,(int)(screenSize.getHeight() - settingSize.getHeight())/2,width,height);
         this.setVisible(false);
