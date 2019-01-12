@@ -30,6 +30,7 @@ public class RestTimerTask extends TimerTask {
         /**
          * 获取当前时间 比较是否超过间隔时间,如果创建休息提示类
          */
+        System.out.println("执行了");
         if(System.currentTimeMillis() - settingGui.getLastTime() >= settingGui.getMaxWorkTime()
                 && settingGui.isStatus()
                 && !settingGui.isActive()
@@ -58,6 +59,7 @@ public class RestTimerTask extends TimerTask {
                 if(restGui.isStatus()){
                     SleepGui sleepGui = new SleepGui(settingGui);
                     sleepGui.dispose();
+                    settingGui.updateTime();
                 }
             }
         }
