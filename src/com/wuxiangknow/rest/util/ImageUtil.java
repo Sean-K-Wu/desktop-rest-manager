@@ -20,6 +20,15 @@ public class ImageUtil {
     }
 
     public static boolean isImage(String filename){
-       return filename.endsWith(".jpg") || filename.endsWith(".jpeg") || filename.endsWith(".png");
+        if(filename !=null){
+            int i = filename.lastIndexOf(".");
+            if(i>0){
+                String typeName = filename.substring(i);
+                return typeName.equalsIgnoreCase(".jpg") || typeName.equalsIgnoreCase(".jpeg") || typeName.equalsIgnoreCase(".png");
+            }
+        }
+        return false;
     }
+
+
 }

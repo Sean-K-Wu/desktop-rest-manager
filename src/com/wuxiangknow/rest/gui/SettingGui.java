@@ -87,7 +87,7 @@ public class SettingGui extends JFrame {
 
     public void initCompenents(){
         this.settingGui = this;
-        this.setTitle("设置");
+        this.setTitle("设置".concat(RestConfig.PROGRAM_VERSION));
         this.setLayout(null);
         this.setResizable(false);
         this.getContentPane().setBackground(defaultBackgroundColor);
@@ -105,10 +105,7 @@ public class SettingGui extends JFrame {
 
         sleepImagesPathButton = new JButton("选择文件夹");
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        //界面宽高度
-        int width = (int) settingSize.getWidth();
-        int height = (int) settingSize.getWidth();
+
         maxWorkTimeLabel.setBounds(100,0,100,30);
         maxWorkTimeField.setBounds(200,0,100,30);
 
@@ -126,8 +123,12 @@ public class SettingGui extends JFrame {
         this.add(sleepImagesPathLabel);
         this.add(sleepImagesPatheField);
         this.add(sleepImagesPathButton);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //界面宽高度
+        int width = (int) settingSize.getWidth();
+        int height = (int) settingSize.getWidth();
         //正中央显示
-        this.setBounds((int)(screenSize.getWidth() - settingSize.getWidth())/2,(int)(screenSize.getHeight() - settingSize.getHeight())/2,width,height);
+        this.setBounds((int)(screenSize.getWidth() - width)/2,(int)(screenSize.getHeight() - height)/2,width,height);
         this.setVisible(false);
 
     }
@@ -261,5 +262,6 @@ public class SettingGui extends JFrame {
         this.restTime = cacheSettingBean.getRestTime();
         this.workTimes = cacheSettingBean.getWorkTimes();
         this.sleepImagePath = cacheSettingBean.getSleepImagePath();
+        this.status = cacheSettingBean.isStatus();
     }
 }

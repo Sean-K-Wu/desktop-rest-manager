@@ -10,6 +10,8 @@ import com.wuxiangknow.rest.task.RestTimerTask;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Timer;
 
@@ -23,12 +25,12 @@ public class MainGui extends JFrame{
     private final MainGui parentPanel;
     private PopupMenu pop;
     private MenuItem settingItem ;
-    private MenuItem statusItem ;//默认没有开启
+    private MenuItem statusItem ;
+    private MenuItem helpItem ;
     private MenuItem exitItem ;
     private SettingGui settingGui;
     private TrayIcon trayIcon;
 
-    private String statusShortcutsPrompt = "(CTRL+F1)";
 
     public MainGui() {
         parentPanel=this;
@@ -55,12 +57,13 @@ public class MainGui extends JFrame{
 
         pop = new PopupMenu();  //弹出菜单
         settingItem = new MenuItem("设置");
-        statusItem = new MenuItem("开启");//默认没有开启
+        statusItem = new MenuItem(!settingGui.isStatus()?"开启":"停止");//
+        helpItem = new MenuItem("帮助");//
         exitItem = new MenuItem("退出");
         addAllItem();
         //图标
         ImageIcon trayImg = new ImageIcon(getDefaultTrayImgName());
-        trayIcon = new TrayIcon(trayImg.getImage(), RestConfig.PROGRAM_NAME, pop);
+        trayIcon = new TrayIcon(trayImg.getImage(), RestConfig.PROGRAM_NAME.concat(RestConfig.PROGRAM_VERSION), pop);
         trayIcon.setImageAutoSize(true);
         settingItem.addActionListener((ActionEvent e)->{
             if(!settingGui.isVisible()){
@@ -72,6 +75,14 @@ public class MainGui extends JFrame{
         });
         statusItem.addActionListener((ActionEvent e)->{
             changeStatus();
+        });
+
+        helpItem.addActionListener((ActionEvent e)->{
+            try {
+                Desktop.getDesktop().browse(URI.create(RestConfig.PROGRAM_HELP_URL));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         });
         exitItem.addActionListener((ActionEvent e) -> { //
                 tray.remove(trayIcon);
@@ -91,6 +102,7 @@ public class MainGui extends JFrame{
     private void addAllItem() {
         pop.add(settingItem);
         pop.add(statusItem);
+        pop.add(helpItem);
         pop.add(exitItem);
     }
 
@@ -100,8 +112,6 @@ public class MainGui extends JFrame{
         if(settingGui.isStatus()){
             settingGui.setStatus(false);
             statusItem.setLabel("开启");
-            pop.removeAll();
-            addAllItem();
         }else {
             settingGui.setStatus(true);
             settingGui.updateTime();
