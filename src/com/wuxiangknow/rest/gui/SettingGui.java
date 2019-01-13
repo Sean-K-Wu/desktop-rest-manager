@@ -76,10 +76,12 @@ public class SettingGui extends JFrame {
 
     private boolean hasImages(File selectedFile) {
         boolean hasImages = false;
-        for (File file : selectedFile.listFiles()) {
-            if(file.isFile() && ImageUtil.isImage(file.getName())){
-                hasImages = true;
-                break;
+        if(selectedFile.exists() && selectedFile.isDirectory()){
+            for (File file : selectedFile.listFiles()) {
+                if(file.isFile() && ImageUtil.isImage(file.getName())){
+                    hasImages = true;
+                    break;
+                }
             }
         }
         return hasImages;
@@ -181,10 +183,17 @@ public class SettingGui extends JFrame {
                 JTextField component = (JTextField) e.getComponent();
                 if(component.getText() !=null && RegUtil.isIntegerNumber(component.getText())
                         ){
-                    maxWorkTime = Integer.parseInt(component.getText()) * 1000 * 60;
-                }else{
-                    component.setText(String.valueOf(maxWorkTime /1000 / 60));
+                    int newMaxWorkTime = 0;
+                    try {
+                        newMaxWorkTime = Integer.parseInt(component.getText()) * 1000 * 60;
+                    } catch (NumberFormatException e1) {
+                    }
+                    if(newMaxWorkTime>0){
+                        maxWorkTime = newMaxWorkTime;
+                    }
                 }
+                component.setText(String.valueOf(maxWorkTime /1000 / 60));
+
             }
         });
         restTimeField.addFocusListener(new FocusAdapter() {
@@ -194,10 +203,17 @@ public class SettingGui extends JFrame {
                 JTextField component = (JTextField) e.getComponent();
                 if(component.getText() !=null && RegUtil.isIntegerNumber(component.getText())
                         ){
-                    restTime = Integer.parseInt(component.getText()) * 1000 * 60;
-                }else{
-                    component.setText(String.valueOf(restTime /1000 / 60));
+                    int newRestTime = 0;
+                    try {
+                        newRestTime = Integer.parseInt(component.getText()) * 1000 * 60;
+                    } catch (NumberFormatException e1) {
+                    }
+                    if(newRestTime>0){
+                        restTime = newRestTime;
+                    }
                 }
+                component.setText(String.valueOf(restTime /1000 / 60));
+
             }
         });
     }
