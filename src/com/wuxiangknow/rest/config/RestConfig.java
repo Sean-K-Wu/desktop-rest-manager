@@ -13,9 +13,7 @@ public class RestConfig {
 
     public static final String SETTING_CACHE_FILE = "setting";
 
-    public static final String TRAY_ICON_PATH = "/res/icon.png";//系统托盘图标
-
-    public static final String SETTING_ICON_PATH = "/res/icon.png";//设置界面图标
+    public static final String PROGRAM_ICON_PATH = "/res/icon.png";//系统托盘图标
 
     public static final String SLEEP_IMAGE_DIR = "/res/sleep";//休息显示图片路径
 

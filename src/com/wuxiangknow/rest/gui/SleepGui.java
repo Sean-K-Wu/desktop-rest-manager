@@ -1,5 +1,6 @@
 package com.wuxiangknow.rest.gui;
 
+import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.util.ImageUtil;
 
 import javax.imageio.ImageIO;
@@ -27,13 +28,20 @@ public class SleepGui extends JFrame{
 
     private JLabel imageLabel;//图片
 
-    private long timeSleeped = 0;
+
 
     public SleepGui(SettingGui settingGui) throws HeadlessException {
         this.setLayout(null);
         this.setResizable(false);//不可改变大小
         this.setUndecorated(true);//无标题栏
+        this.setAlwaysOnTop(true);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);//最大化
+        this.setLocationRelativeTo(null);
+        try {
+            this.setIconImage(ImageIO.read(this.getClass().getResource(RestConfig.PROGRAM_ICON_PATH)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         imageLabel = new JLabel();
         BufferedImage bufferedImage = null;
@@ -41,7 +49,7 @@ public class SleepGui extends JFrame{
             try {
                 //获取该路径
                 java.util.List<String> resource = getResource(settingGui.getSleepImagePath());
-                if(resource.size()>1){
+                if(resource.size()>0){
                     String path = getFileByRandom(resource);
                     bufferedImage = ImageIO.read(new File(path));
                 }
@@ -56,8 +64,8 @@ public class SleepGui extends JFrame{
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
                 if(KeyEvent.VK_ESCAPE == e.getKeyCode()){
-                    synchronized (SleepGui.class){
-                        timeSleeped =Long.MAX_VALUE;
+                    synchronized (settingGui){
+                        settingGui.notifyAll();
                     }
                 }
             }
@@ -68,22 +76,15 @@ public class SleepGui extends JFrame{
         if(!this.requestFocusInWindow()){
             this.requestFocus();
         }
-        if(settingGui!=null){
-            while (true){
-                try {
-                    Thread.sleep(500);
-                    synchronized (SleepGui.class){
-                        if(timeSleeped < settingGui.getRestTime()){
-                            timeSleeped += 500;
-                        }else{
-                            break;
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
+        synchronized (settingGui){
+            try {
+                settingGui.wait(settingGui.getRestTime());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+
     }
 
     private String getFileByRandom(List<String> resource) {

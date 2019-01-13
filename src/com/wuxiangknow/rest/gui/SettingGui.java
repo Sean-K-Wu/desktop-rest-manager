@@ -92,7 +92,7 @@ public class SettingGui extends JFrame {
         this.setResizable(false);
         this.getContentPane().setBackground(defaultBackgroundColor);
         try {
-            this.setIconImage(ImageIO.read(this.getClass().getResource(RestConfig.SETTING_ICON_PATH)));
+            this.setIconImage(ImageIO.read(this.getClass().getResource(RestConfig.PROGRAM_ICON_PATH)));
         } catch (IOException e) {
             e.printStackTrace();
         }

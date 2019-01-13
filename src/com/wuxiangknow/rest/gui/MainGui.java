@@ -47,7 +47,7 @@ public class MainGui extends JFrame{
 
 
     private URL getDefaultTrayImgName(){
-        return this.getClass().getResource(RestConfig.TRAY_ICON_PATH);
+        return this.getClass().getResource(RestConfig.PROGRAM_ICON_PATH);
     }
     private void initSystemTray() {
         //系统托盘
