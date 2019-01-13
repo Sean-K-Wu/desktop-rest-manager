@@ -11,6 +11,9 @@ public class RestConfig {
 
     public static final String PROGRAM_VERSION = "v1.0";
 
+    public static final String REG_KEY_PATH = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+    public static final String REG_VALUE_NAME = "desktop-rest-manager";
+
     public static final String PROGRAM_CACHE_DIR = System.getProperty("user.home")+"\\AppData\\Local\\desktop-rest-manager";
 
     public static final String PROGRAM_HELP_URL = "https://github.com/Sean-K-Wu/desktop-rest-manager";

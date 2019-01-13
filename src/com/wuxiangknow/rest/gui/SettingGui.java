@@ -4,6 +4,7 @@ import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.util.ImageUtil;
 import com.wuxiangknow.rest.util.RegUtil;
+import com.wuxiangknow.rest.util.WindowsUtil;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -48,6 +49,10 @@ public class SettingGui extends JFrame {
 
     private  JButton sleepImagesPathButton;
     private  String sleepImagePath = RestConfig.SLEEP_IMAGE_DIR;
+
+    private  JLabel autoBootLabel;
+    private  JCheckBox autoBootCheckBox;
+    private  boolean autoBoot = true;
     private static final String SLEEP_IMAGE_PATH_DEFAULT_VALUE = "默认";
     public SettingGui() {
 
@@ -107,17 +112,29 @@ public class SettingGui extends JFrame {
 
         sleepImagesPathButton = new JButton("选择文件夹");
 
+        autoBootLabel = new JLabel("开机自启");
+        autoBootCheckBox = new JCheckBox();
 
         maxWorkTimeLabel.setBounds(100,0,100,30);
         maxWorkTimeField.setBounds(200,0,100,30);
 
-        //第2行
+
         restTimeLabel   .setBounds(100,30,100,30);
         restTimeField   .setBounds(200,30,100,30);
 
         sleepImagesPathLabel.setBounds(100,60,100,30);
         sleepImagesPatheField.setBounds(200,60,100,30);
         sleepImagesPathButton.setBounds(300,60,100,30);
+
+        autoBootLabel.setBounds(100,90,100,30);
+        autoBootCheckBox.setBounds(200,90,100,30);
+        if(autoBoot){
+            autoBootCheckBox.setSelected(true);
+            WindowsUtil.enableAutoBoot();
+        }
+
+
+
         this.add(maxWorkTimeLabel);
         this.add(maxWorkTimeField);
         this.add(restTimeLabel);
@@ -125,6 +142,8 @@ public class SettingGui extends JFrame {
         this.add(sleepImagesPathLabel);
         this.add(sleepImagesPatheField);
         this.add(sleepImagesPathButton);
+        this.add(autoBootLabel);
+        this.add(autoBootCheckBox);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //界面宽高度
         int width = (int) settingSize.getWidth();
@@ -137,6 +156,21 @@ public class SettingGui extends JFrame {
 
 
     public void initListeners(){
+        autoBootCheckBox.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(autoBootCheckBox.isSelected()){
+                    autoBoot = true;
+                    WindowsUtil.enableAutoBoot();
+                }else {
+                    autoBoot = false;
+                    WindowsUtil.disableAutoBoot();
+                }
+            }
+        });
+
+
         sleepImagesPathButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -279,5 +313,14 @@ public class SettingGui extends JFrame {
         this.workTimes = cacheSettingBean.getWorkTimes();
         this.sleepImagePath = cacheSettingBean.getSleepImagePath();
         this.status = cacheSettingBean.isStatus();
+        this.autoBoot = cacheSettingBean.isAutoBoot();
+    }
+
+    public boolean isAutoBoot() {
+        return autoBoot;
+    }
+
+    public void setAutoBoot(boolean autoBoot) {
+        this.autoBoot = autoBoot;
     }
 }
