@@ -24,18 +24,18 @@ public class CacheManager {
             }
         }
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(RestConfig.PROGRAM_CACHE_DIR.concat("\\").concat(RestConfig.SETTING_CACHE_FILE)))){
-            out.writeObject(settingGui);
+            out.writeObject(new CacheSettingBean(settingGui));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public static SettingGui load(){
+    public static CacheSettingBean load(){
         File file = new File(RestConfig.PROGRAM_CACHE_DIR.concat("\\").concat(RestConfig.SETTING_CACHE_FILE));
         if(file.exists()) {
             try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(RestConfig.PROGRAM_CACHE_DIR.concat("\\").concat(RestConfig.SETTING_CACHE_FILE)))) {
-                return (SettingGui) in.readObject();
+                return (CacheSettingBean) in.readObject();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

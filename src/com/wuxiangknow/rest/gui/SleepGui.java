@@ -1,6 +1,5 @@
 package com.wuxiangknow.rest.gui;
 
-import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.util.ImageUtil;
 
 import javax.imageio.ImageIO;
@@ -38,7 +37,7 @@ public class SleepGui extends JFrame{
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         imageLabel = new JLabel();
         BufferedImage bufferedImage = null;
-        if (settingGui !=null && settingGui.getSleepImagePath() != null) {
+        if (settingGui !=null && settingGui.getSleepImagePath() != null ) {
             try {
                 //获取该路径
                 java.util.List<String> resource = getResource(settingGui.getSleepImagePath());
@@ -50,18 +49,6 @@ public class SleepGui extends JFrame{
                 e.printStackTrace();
             }
         }
-        if (bufferedImage == null) {
-            try {
-                java.util.List<String> resource = getResource(RestConfig.SLEEP_IMAGE_DIR);
-                String path = getFileByRandom(resource);
-                bufferedImage = ImageIO.read(new File(path));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-
         imageLabel.setIcon(new ImageIcon(ImageUtil.getScaledImage(bufferedImage,(int) screenSize.getWidth(), (int) screenSize.getHeight())));
         imageLabel.setBounds(0, 0, (int) screenSize.getWidth(), (int) screenSize.getHeight());
         this.addKeyListener(new KeyAdapter() {

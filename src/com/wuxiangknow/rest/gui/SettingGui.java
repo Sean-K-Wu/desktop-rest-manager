@@ -1,7 +1,8 @@
 package com.wuxiangknow.rest.gui;
 
-import com.wuxiangknow.rest.cache.CacheManager;
+import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.config.RestConfig;
+import com.wuxiangknow.rest.util.ImageUtil;
 import com.wuxiangknow.rest.util.RegUtil;
 
 import javax.imageio.ImageIO;
@@ -9,8 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -36,16 +37,55 @@ public class SettingGui extends JFrame {
 
     private long lastTime = System.currentTimeMillis();//活跃开始计算时间
 
-    private transient boolean status ;//后台线程状态
-    private Color defaultBackgroundColor = new Color(227, 237, 205);
-    private JLabel maxWorkTimeLabel;
-    private JTextField maxWorkTimeField;
-    private JLabel restTimeLabel;
-    private JTextField restTimeField;
-    private JLabel sleepImagesPathLabel;
-    private JTextField sleepImagesPatheField;
-    private static final String SLEEP_IMAGE_PATH_DEFAULT = "默认";
+    private  boolean status ;//后台线程状态
+    private  Color defaultBackgroundColor = new Color(227, 237, 205);
+    private  JLabel maxWorkTimeLabel;
+    private  JTextField maxWorkTimeField;
+    private  JLabel restTimeLabel;
+    private  JTextField restTimeField;
+    private  JLabel sleepImagesPathLabel;
+    private  JTextField sleepImagesPatheField;
+
+    private  JButton sleepImagesPathButton;
+    private  String sleepImagePath = RestConfig.SLEEP_IMAGE_DIR;
+    private static final String SLEEP_IMAGE_PATH_DEFAULT_VALUE = "默认";
     public SettingGui() {
+
+    }
+
+    public  void handleOpenFileChooser(){
+        JFileChooser sleepImagesPatheChooser = new JFileChooser();
+        sleepImagesPatheChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        sleepImagesPatheChooser.setMultiSelectionEnabled(false);
+        int result = sleepImagesPatheChooser.showOpenDialog(settingGui);
+        if(JFileChooser.APPROVE_OPTION  == result){
+            File selectedFile = sleepImagesPatheChooser.getSelectedFile();
+            if(selectedFile != null){
+                boolean hasImages = hasImages(selectedFile);
+                if(hasImages){
+                    String absolutePath = selectedFile.getAbsolutePath();
+                    sleepImagesPatheField.setText(absolutePath);
+                    sleepImagePath = absolutePath;
+                }else{
+                    sleepImagesPatheField.setText(SLEEP_IMAGE_PATH_DEFAULT_VALUE);
+                    sleepImagePath = RestConfig.SLEEP_IMAGE_DIR;
+                }
+            }
+        }
+    }
+
+    private boolean hasImages(File selectedFile) {
+        boolean hasImages = false;
+        for (File file : selectedFile.listFiles()) {
+            if(file.isFile() && ImageUtil.isImage(file.getName())){
+                hasImages = true;
+                break;
+            }
+        }
+        return hasImages;
+    }
+
+    public void initCompenents(){
         this.settingGui = this;
         this.setTitle("设置");
         this.setLayout(null);
@@ -61,8 +101,9 @@ public class SettingGui extends JFrame {
         restTimeLabel    = new JLabel("休息时间(分)");
         restTimeField    = new JTextField(String.valueOf(restTime /1000 / 60));
         sleepImagesPathLabel= new JLabel("图片路径");
-        sleepImagesPatheField= new JTextField(SLEEP_IMAGE_PATH_DEFAULT);
+        sleepImagesPatheField= new JTextField(sleepImagePath.equals(RestConfig.SLEEP_IMAGE_DIR)?SLEEP_IMAGE_PATH_DEFAULT_VALUE:sleepImagePath);
 
+        sleepImagesPathButton = new JButton("选择文件夹");
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //界面宽高度
@@ -77,19 +118,31 @@ public class SettingGui extends JFrame {
 
         sleepImagesPathLabel.setBounds(100,60,100,30);
         sleepImagesPatheField.setBounds(200,60,100,30);
+        sleepImagesPathButton.setBounds(300,60,100,30);
         this.add(maxWorkTimeLabel);
         this.add(maxWorkTimeField);
         this.add(restTimeLabel);
         this.add(restTimeField);
         this.add(sleepImagesPathLabel);
         this.add(sleepImagesPatheField);
+        this.add(sleepImagesPathButton);
         //正中央显示
         this.setBounds((int)(screenSize.getWidth() - settingSize.getWidth())/2,(int)(screenSize.getHeight() - settingSize.getHeight())/2,width,height);
         this.setVisible(false);
+
     }
 
 
     public void initListeners(){
+        sleepImagesPathButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                settingGui.handleOpenFileChooser();
+            }
+        });
+
+
         sleepImagesPatheField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -97,7 +150,7 @@ public class SettingGui extends JFrame {
                 JTextField component = (JTextField) e.getComponent();
                 String text = component.getText();
                 if(text !=null){
-                    if(SLEEP_IMAGE_PATH_DEFAULT.equals(text.trim())){
+                    if(SLEEP_IMAGE_PATH_DEFAULT_VALUE.equals(text.trim())){
                         component.setText("");
                     }
                 }
@@ -108,10 +161,14 @@ public class SettingGui extends JFrame {
                 super.focusLost(e);
                 JTextField component = (JTextField) e.getComponent();
                 String text = component.getText();
-                if(text !=null){
+                if(text !=null && !text.equals(SLEEP_IMAGE_PATH_DEFAULT_VALUE)){
                     File file = new File(text.trim());
-                    if(!file.exists()){
-                        component.setText(SLEEP_IMAGE_PATH_DEFAULT);
+                    if(!hasImages(file)){
+                        component.setText(SLEEP_IMAGE_PATH_DEFAULT_VALUE);
+                        sleepImagePath = RestConfig.SLEEP_IMAGE_DIR;
+                    }else{
+                        //如果存在
+                        sleepImagePath = text.trim();
                     }
                 }
             }
@@ -140,13 +197,6 @@ public class SettingGui extends JFrame {
                 }else{
                     component.setText(String.valueOf(restTime /1000 / 60));
                 }
-            }
-        });
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-                super.windowDeactivated(e);
-                CacheManager.save(settingGui);
             }
         });
     }
@@ -198,7 +248,18 @@ public class SettingGui extends JFrame {
         this.status = status;
     }
 
-    public String getSleepImagePath(){
-        return SLEEP_IMAGE_PATH_DEFAULT.equals(sleepImagesPatheField.getText())?RestConfig.SLEEP_IMAGE_DIR:sleepImagesPatheField.getText();
+    public String getSleepImagePath() {
+        return sleepImagePath;
+    }
+
+    public void setSleepImagePath(String sleepImagePath) {
+        this.sleepImagePath = sleepImagePath;
+    }
+
+    public void loadCache(CacheSettingBean cacheSettingBean) {
+        this.maxWorkTime = cacheSettingBean.getMaxWorkTime();
+        this.restTime = cacheSettingBean.getRestTime();
+        this.workTimes = cacheSettingBean.getWorkTimes();
+        this.sleepImagePath = cacheSettingBean.getSleepImagePath();
     }
 }

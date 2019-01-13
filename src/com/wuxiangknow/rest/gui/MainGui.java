@@ -2,6 +2,7 @@ package com.wuxiangknow.rest.gui;
 
 
 import com.wuxiangknow.rest.cache.CacheManager;
+import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.keyboard.HotKey;
 import com.wuxiangknow.rest.task.RestTimerTask;
@@ -28,10 +29,12 @@ public class MainGui extends JFrame{
     private TrayIcon trayIcon;
     public MainGui() {
         parentPanel=this;
-        settingGui = CacheManager.load();
-        if(settingGui == null){
-            settingGui = new SettingGui();
+        CacheSettingBean cacheSettingBean = CacheManager.load();
+        settingGui = new SettingGui();
+        if(cacheSettingBean!=null){
+            settingGui.loadCache(cacheSettingBean);
         }
+        settingGui.initCompenents();
         settingGui.initListeners();
         hotKey = new HotKey(this);//热键
         initSystemTray();
@@ -75,6 +78,7 @@ public class MainGui extends JFrame{
                 tray.remove(trayIcon);
                 parentPanel.dispose();
                 hotKey.destroy();
+                CacheManager.save(settingGui);
                 System.exit(0);
         });
         try {

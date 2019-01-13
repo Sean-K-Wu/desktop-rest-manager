@@ -13,6 +13,8 @@ public class TestSettingGui {
     @Test
     public void test(){
         SettingGui settingGui = new SettingGui();
+        settingGui.initCompenents();
+        settingGui.initListeners();
         settingGui.setVisible(true);
         try {
             Thread.sleep(Integer.MAX_VALUE);
