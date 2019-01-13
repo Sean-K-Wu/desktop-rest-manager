@@ -24,4 +24,12 @@ public class DateTimeUtil {
         return false;
     }
 
+    public static boolean isWeekend(Date date) {
+        DateTime dateTime = new DateTime(date);
+        int week = dateTime.getDayOfWeek();
+        if(week >= 6){
+            return true;
+        }
+        return false;
+    }
 }

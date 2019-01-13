@@ -36,20 +36,19 @@ public class RestTimerTask extends TimerTask {
                 && !settingGui.isActive()//调整设置 不考虑 重置lastTime
                 ){
             //超过最高时间 且 状态启用 且 没有正在调整设置
-            if(!WindowsUtil.isFullScreen()){//没有全屏再提示
+            if(!WindowsUtil.isFullScreen() && ( !DateTimeUtil.isWeekend(new Date())|| !settingGui.isWeekendDisable())){//没有全屏再提示 且 不是周末或者周末可提示
                 //判断时间段是否满足
                 Map<Date, Date> workTimes = settingGui.getWorkTimes();
                 boolean isWork  = true;
                 Date now = new Date();
                 for (Date date : workTimes.keySet()) {
-                    if(date != null){
-                        if(!DateTimeUtil.compare(now,date)){
-                            isWork = false;
-                            break;
-                        }else if(workTimes.get(date) != null && !DateTimeUtil.compare(workTimes.get(date),now)){
-                            isWork = false;
-                            break;
-                        }
+                    if(date !=null && !DateTimeUtil.compare(now,date)){
+                        isWork = false;
+                    }else if(workTimes.get(date) != null && !DateTimeUtil.compare(workTimes.get(date),now)){
+                        isWork = false;
+                    }else{
+                        isWork = true;
+                        break;
                     }
                 }
                 if(isWork){

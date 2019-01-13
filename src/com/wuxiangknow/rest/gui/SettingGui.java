@@ -1,6 +1,7 @@
 package com.wuxiangknow.rest.gui;
 
 import com.wuxiangknow.rest.cache.CacheSettingBean;
+import com.wuxiangknow.rest.component.ClockComboBox;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.util.ImageUtil;
 import com.wuxiangknow.rest.util.RegUtil;
@@ -9,12 +10,10 @@ import com.wuxiangknow.rest.util.WindowsUtil;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,9 +49,31 @@ public class SettingGui extends JFrame {
     private  JButton sleepImagesPathButton;
     private  String sleepImagePath = RestConfig.SLEEP_IMAGE_DIR;
 
+
+    private  JLabel morningWorkLabel;
+    private ClockComboBox morningStartHourBox;
+    private ClockComboBox morningEndHourBox;
+    private  JLabel morningSepereteLabel;
+    private ClockComboBox morningStartMinuteBox;
+    private ClockComboBox morningEndMinuteBox;
+
+    private  JLabel afternoonWorkLabel;
+    private ClockComboBox afternoonStartHourBox;
+    private ClockComboBox afternoonEndHourBox;
+    private  JLabel afternoonSepereteLabel;
+    private ClockComboBox afternoonStartMinuteBox;
+    private ClockComboBox afternoonEndMinuteBox;
+
+
+
     private  JLabel autoBootLabel;
     private  JCheckBox autoBootCheckBox;
     private  boolean autoBoot = true;
+
+    private  JLabel weekendLabel;
+    private  JCheckBox weekendCheckBox;
+    private  boolean weekendDisable = true;
+
     private static final String SLEEP_IMAGE_PATH_DEFAULT_VALUE = "默认";
     public SettingGui() {
 
@@ -112,6 +133,21 @@ public class SettingGui extends JFrame {
 
         sleepImagesPathButton = new JButton("选择文件夹");
 
+        morningWorkLabel= new JLabel("工作时间(AM)");
+        morningSepereteLabel = new JLabel("～");
+        morningStartHourBox = new ClockComboBox();
+        morningEndHourBox = new ClockComboBox();
+        morningStartMinuteBox = new ClockComboBox();
+        morningEndMinuteBox = new ClockComboBox();
+        afternoonWorkLabel= new JLabel("工作时间(PM)");
+        afternoonSepereteLabel = new JLabel("～");
+        afternoonStartHourBox = new ClockComboBox();
+        afternoonEndHourBox = new ClockComboBox();
+        afternoonStartMinuteBox = new ClockComboBox();
+        afternoonEndMinuteBox = new ClockComboBox();
+
+        weekendLabel = new JLabel("周末禁用");
+        weekendCheckBox = new JCheckBox();
         autoBootLabel = new JLabel("开机自启");
         autoBootCheckBox = new JCheckBox();
 
@@ -126,13 +162,37 @@ public class SettingGui extends JFrame {
         sleepImagesPatheField.setBounds(200,60,100,30);
         sleepImagesPathButton.setBounds(300,60,100,30);
 
-        autoBootLabel.setBounds(100,90,100,30);
-        autoBootCheckBox.setBounds(200,90,100,30);
+
+        morningWorkLabel.setBounds(100,90,100,30);
+        morningStartHourBox.setBounds(200,90,50,30);
+        morningStartHourBox.initItems(SimpleDateFormat.HOUR0_FIELD);
+        morningStartMinuteBox.setBounds(250,90,50,30);
+        morningSepereteLabel.setBounds(300,90,18,30);
+        morningSepereteLabel.setBackground(defaultBackgroundColor);
+        morningEndHourBox.setBounds(318,90,50,30);
+        morningEndMinuteBox.setBounds(368,90,50,30);
+
+        afternoonWorkLabel.setBounds(100,120,100,30);
+        afternoonStartHourBox.setBounds(200,120,50,30);
+        afternoonStartMinuteBox.setBounds(250,120,50,30);
+        afternoonSepereteLabel.setBounds(300,120,18,30);
+        afternoonSepereteLabel.setBackground(defaultBackgroundColor);
+        afternoonEndHourBox.setBounds(318,120,50,30);
+        afternoonEndMinuteBox.setBounds(368,120,50,30);
+
+        weekendLabel.setBounds(100,150,100,30);
+        weekendCheckBox.setBounds(200,150,100,30);
+        weekendCheckBox.setBackground(defaultBackgroundColor);
+        autoBootLabel.setBounds(100,180,100,30);
+        autoBootCheckBox.setBounds(200,180,100,30);
+        autoBootCheckBox.setBackground(defaultBackgroundColor);
         if(autoBoot){
             autoBootCheckBox.setSelected(true);
             WindowsUtil.enableAutoBoot();
         }
-
+        if(weekendDisable){
+            weekendCheckBox.setSelected(true);
+        }
 
 
         this.add(maxWorkTimeLabel);
@@ -142,6 +202,24 @@ public class SettingGui extends JFrame {
         this.add(sleepImagesPathLabel);
         this.add(sleepImagesPatheField);
         this.add(sleepImagesPathButton);
+
+        this.add(morningWorkLabel);
+        this.add(morningStartHourBox);
+        this.add(morningStartMinuteBox);
+        this.add(morningSepereteLabel);
+        this.add(morningEndHourBox);
+        this.add(morningEndMinuteBox);
+
+        this.add(afternoonWorkLabel);
+        this.add(afternoonStartHourBox);
+        this.add(afternoonStartMinuteBox);
+        this.add(afternoonSepereteLabel);
+        this.add(afternoonEndHourBox);
+        this.add(afternoonEndMinuteBox);
+
+
+        this.add(weekendLabel);
+        this.add(weekendCheckBox);
         this.add(autoBootLabel);
         this.add(autoBootCheckBox);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -156,6 +234,50 @@ public class SettingGui extends JFrame {
 
 
     public void initListeners(){
+        morningStartHourBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Integer item = (Integer) e.getItem();
+                    //修改之后
+                    morningStartMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD);
+                }
+            }
+        });
+        morningStartMinuteBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Integer item = (Integer) morningStartHourBox.getSelectedItem();
+                    //修改之后
+                    morningEndHourBox.initItems(SimpleDateFormat.HOUR0_FIELD,item);
+                }
+            }
+        });
+        morningEndHourBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Integer item = (Integer) morningEndHourBox.getSelectedItem();
+                    //修改之后
+                    morningEndHourBox.initItems(SimpleDateFormat.HOUR0_FIELD,item);
+                }
+            }
+        });
+
+
+
+        weekendCheckBox.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(weekendCheckBox.isSelected()){
+                    weekendDisable = true;
+                }else {
+                    weekendDisable = false;
+                }
+            }
+        });
         autoBootCheckBox.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -314,6 +436,7 @@ public class SettingGui extends JFrame {
         this.sleepImagePath = cacheSettingBean.getSleepImagePath();
         this.status = cacheSettingBean.isStatus();
         this.autoBoot = cacheSettingBean.isAutoBoot();
+        this.weekendDisable = cacheSettingBean.isWeekendDisable();
     }
 
     public boolean isAutoBoot() {
@@ -322,5 +445,13 @@ public class SettingGui extends JFrame {
 
     public void setAutoBoot(boolean autoBoot) {
         this.autoBoot = autoBoot;
+    }
+
+    public boolean isWeekendDisable() {
+        return weekendDisable;
+    }
+
+    public void setWeekendDisable(boolean weekendDisable) {
+        this.weekendDisable = weekendDisable;
     }
 }

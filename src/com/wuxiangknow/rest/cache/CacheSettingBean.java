@@ -25,6 +25,7 @@ public class CacheSettingBean implements Serializable{
 
     private boolean status;
     private boolean autoBoot;
+    private boolean weekendDisable;
 
     public CacheSettingBean(SettingGui settingGui) {
         this.maxWorkTime = settingGui.getMaxWorkTime();
@@ -33,6 +34,7 @@ public class CacheSettingBean implements Serializable{
         this.sleepImagePath = settingGui.getSleepImagePath();
         this.status = settingGui.isStatus();
         this.autoBoot = settingGui.isAutoBoot();
+        this.weekendDisable = settingGui.isWeekendDisable();
     }
 
     public static long getSerialVersionUID() {
@@ -85,5 +87,13 @@ public class CacheSettingBean implements Serializable{
 
     public void setAutoBoot(boolean autoBoot) {
         this.autoBoot = autoBoot;
+    }
+
+    public boolean isWeekendDisable() {
+        return weekendDisable;
+    }
+
+    public void setWeekendDisable(boolean weekendDisable) {
+        this.weekendDisable = weekendDisable;
     }
 }
