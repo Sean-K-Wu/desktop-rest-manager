@@ -5,6 +5,7 @@ import com.wuxiangknow.rest.config.RestConfig;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @Desciption 休息界面
@@ -25,7 +26,7 @@ public class RestGui{
 
     private boolean status = true;
 
-    public RestGui(SettingGui settingGui)  {
+    public RestGui(final SettingGui settingGui)  {
         this.settingGui = settingGui;
         // 创建一个模态对话框
         Frame owner = null;
@@ -42,16 +43,19 @@ public class RestGui{
         // 设置对话框相对显示的位置
         dialog.setLocationRelativeTo(null);
         // 创建一个标签显示消息内容
-        JLabel messageLabel = new JLabel(String.format(PROMPT,countDown),JLabel.CENTER);
+        final JLabel messageLabel = new JLabel(String.format(PROMPT,countDown),JLabel.CENTER);
         messageLabel.setPreferredSize(messageSize);
         messageLabel.setOpaque(false);
         // 创建一个按钮用于关闭对话框
         JButton okBtn = new JButton("取消");
-        okBtn.addActionListener((ActionEvent e)-> {
-            // 关闭对话框
-            dialog.dispose();
-            settingGui.updateTime();
-            status= false;
+        okBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 关闭对话框
+                dialog.dispose();
+                settingGui.updateTime();
+                status= false;
+            }
         });
         // 创建对话框的内容面板, 在面板内可以根据自己的需要添加任何组件并做任意是布局
         JPanel panel = new JPanel();
@@ -62,19 +66,23 @@ public class RestGui{
 
         // 设置对话框的内容面板
         dialog.setContentPane(panel);
-        Thread thread =new Thread( () ->{
-            while (countDown >0){
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        Thread thread =new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                while (countDown >0){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    countDown--;
+                    messageLabel.setText(String.format(PROMPT,countDown));
                 }
-                countDown--;
-                messageLabel.setText(String.format(PROMPT,countDown));
+                // 关闭对话框
+                dialog.dispose();
             }
-            // 关闭对话框
-            dialog.dispose();
-        });
+        };
         thread.start();
         dialog.setVisible(true);
         /*this.setLayout(null);

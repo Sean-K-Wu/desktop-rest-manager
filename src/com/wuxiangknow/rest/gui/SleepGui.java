@@ -30,7 +30,7 @@ public class SleepGui extends JFrame{
 
 
 
-    public SleepGui(SettingGui settingGui) throws HeadlessException {
+    public SleepGui(final SettingGui settingGui) throws HeadlessException {
         this.setLayout(null);
         this.setResizable(false);//不可改变大小
         this.setUndecorated(true);//无标题栏

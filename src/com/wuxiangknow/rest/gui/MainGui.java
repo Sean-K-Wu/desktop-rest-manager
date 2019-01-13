@@ -10,6 +10,7 @@ import com.wuxiangknow.rest.task.RestTimerTask;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
@@ -65,31 +66,43 @@ public class MainGui extends JFrame{
         ImageIcon trayImg = new ImageIcon(getDefaultTrayImgName());
         trayIcon = new TrayIcon(trayImg.getImage(), RestConfig.PROGRAM_NAME.concat(RestConfig.PROGRAM_VERSION), pop);
         trayIcon.setImageAutoSize(true);
-        settingItem.addActionListener((ActionEvent e)->{
-            if(!settingGui.isVisible()){
-                settingGui.setVisible(true);
-                if(!settingGui.requestFocusInWindow()){
-                    settingGui.requestFocus();
+        settingItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!settingGui.isVisible()){
+                    settingGui.setVisible(true);
+                    if(!settingGui.requestFocusInWindow()){
+                        settingGui.requestFocus();
+                    }
                 }
             }
         });
-        statusItem.addActionListener((ActionEvent e)->{
-            changeStatus();
-        });
-
-        helpItem.addActionListener((ActionEvent e)->{
-            try {
-                Desktop.getDesktop().browse(URI.create(RestConfig.PROGRAM_HELP_URL));
-            } catch (IOException e1) {
-                e1.printStackTrace();
+        statusItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeStatus();
             }
         });
-        exitItem.addActionListener((ActionEvent e) -> { //
+
+        helpItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Desktop.getDesktop().browse(URI.create(RestConfig.PROGRAM_HELP_URL));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+        exitItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 tray.remove(trayIcon);
                 parentPanel.dispose();
                 hotKey.destroy();
                 CacheManager.save(settingGui);
                 System.exit(0);
+            }
         });
         try {
             tray.add(trayIcon);
