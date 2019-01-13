@@ -27,6 +27,9 @@ public class MainGui extends JFrame{
     private MenuItem exitItem ;
     private SettingGui settingGui;
     private TrayIcon trayIcon;
+
+    private String statusShortcutsPrompt = "(CTRL+F1)";
+
     public MainGui() {
         parentPanel=this;
         CacheSettingBean cacheSettingBean = CacheManager.load();
@@ -68,11 +71,7 @@ public class MainGui extends JFrame{
             }
         });
         statusItem.addActionListener((ActionEvent e)->{
-            if(!settingGui.isStatus()){
-                parentPanel.start();
-            }else{
-                parentPanel.stop();
-            }
+            changeStatus();
         });
         exitItem.addActionListener((ActionEvent e) -> { //
                 tray.remove(trayIcon);
@@ -95,16 +94,19 @@ public class MainGui extends JFrame{
         pop.add(exitItem);
     }
 
-    public void start() {
-        settingGui.setStatus(true);
-        settingGui.updateTime();
-        statusItem.setLabel("停止");
 
+
+    public void changeStatus(){
+        if(settingGui.isStatus()){
+            settingGui.setStatus(false);
+            statusItem.setLabel("开启");
+            pop.removeAll();
+            addAllItem();
+        }else {
+            settingGui.setStatus(true);
+            settingGui.updateTime();
+            statusItem.setLabel("停止");
+        }
     }
-    public void stop() {
-        settingGui.setStatus(false);
-        statusItem.setLabel("开启");
-        pop.removeAll();
-        addAllItem();
-    }
+
 }
