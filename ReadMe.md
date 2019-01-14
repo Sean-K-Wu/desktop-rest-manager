@@ -24,10 +24,18 @@ V1.0
 
 5. 修改间隔时间成功后，会重置计算时间，从修改后的时间开始计算
 
-5. 请勿修改程序名称，会影响自启(执意修改请修改注册表`HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`下`desktop-rest-manager`字符串的值)
+5. 修改程序名称或者更改运行位置需要重新设置开机自启（点掉再选中即可）
 
 6. 程序改到其它地方，需要重新启动一次才能使自启生效
+
+
 ### 更新
 
-1. 软件暂不支持自动升级
+1. 软件暂不支持自动升级，请自行在packaged目录中下载
+
+#### 其他说明
+
+1. 打包工具launch4j
+2. VM OPTIONS: -Dfile.encoding=GB18030 -Dexe.path="%EXEFILE%"
+
 

@@ -56,6 +56,13 @@ public class SleepGui extends JFrame{
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else{
+            String path = getFileByRandom(RestConfig.SLEEP_IMAGE_FILES);
+            try {
+                bufferedImage = ImageIO.read(this.getClass().getResourceAsStream(path));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         imageLabel.setIcon(new ImageIcon(ImageUtil.getScaledImage(bufferedImage,(int) screenSize.getWidth(), (int) screenSize.getHeight())));
         imageLabel.setBounds(0, 0, (int) screenSize.getWidth(), (int) screenSize.getHeight());
@@ -92,9 +99,15 @@ public class SleepGui extends JFrame{
         int i = random.nextInt(resource.size());
         return resource.get(i);
     }
-
+    private String getFileByRandom(String[] resource) {
+        Random random = new Random();
+        int i = random.nextInt(resource.length);
+        return resource[i];
+    }
     public java.util.List<String> getResource(String path) {
         URL resource = this.getClass().getResource(path);
+        System.out.println(resource.toString());
+        System.out.println(resource.getFile());
         String type = resource.getProtocol();
         if (type.equals("jar")) {
             return getResourceByJar(resource);

@@ -49,7 +49,7 @@ public class SettingGui extends JFrame {
     private  JTextField sleepImagesPatheField;
 
     private  JButton sleepImagesPathButton;
-    private  String sleepImagePath = RestConfig.SLEEP_IMAGE_DIR;
+    private  String sleepImagePath ;
 
 
     private  JLabel morningWorkLabel;
@@ -96,7 +96,7 @@ public class SettingGui extends JFrame {
                     sleepImagePath = absolutePath;
                 }else{
                     sleepImagesPatheField.setText(SLEEP_IMAGE_PATH_DEFAULT_VALUE);
-                    sleepImagePath = RestConfig.SLEEP_IMAGE_DIR;
+                    sleepImagePath = null;
                 }
             }
         }
@@ -131,7 +131,7 @@ public class SettingGui extends JFrame {
         restTimeLabel    = new JLabel("休息时间(分)");
         restTimeField    = new JTextField(String.valueOf(restTime /1000 / 60));
         sleepImagesPathLabel= new JLabel("图片路径");
-        sleepImagesPatheField= new JTextField(sleepImagePath.equals(RestConfig.SLEEP_IMAGE_DIR)?SLEEP_IMAGE_PATH_DEFAULT_VALUE:sleepImagePath);
+        sleepImagesPatheField= new JTextField(sleepImagePath ==null?SLEEP_IMAGE_PATH_DEFAULT_VALUE:sleepImagePath);
 
         sleepImagesPathButton = new JButton("选择文件夹");
 
@@ -303,7 +303,7 @@ public class SettingGui extends JFrame {
                     File file = new File(text.trim());
                     if(!hasImages(file)){
                         component.setText(SLEEP_IMAGE_PATH_DEFAULT_VALUE);
-                        sleepImagePath = RestConfig.SLEEP_IMAGE_DIR;
+                        sleepImagePath = null;
                     }else{
                         //如果存在
                         sleepImagePath = text.trim();
