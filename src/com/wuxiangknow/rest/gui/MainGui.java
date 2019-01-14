@@ -4,13 +4,14 @@ package com.wuxiangknow.rest.gui;
 import com.wuxiangknow.rest.cache.CacheManager;
 import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.config.RestConfig;
-
 import com.wuxiangknow.rest.task.RestTimerTask;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
@@ -31,7 +32,7 @@ public class MainGui extends JFrame{
     private MenuItem exitItem ;
     private SettingGui settingGui;
     private TrayIcon trayIcon;
-
+    private SettingPropertyListener settingPropertyListener;
 
     public MainGui() {
         parentPanel=this;
@@ -43,7 +44,8 @@ public class MainGui extends JFrame{
         settingGui.initCompenents();
         settingGui.initListeners();
         settingGui.initClockTimes();
-
+        settingPropertyListener = new SettingPropertyListener();
+        settingGui.addPropertyChangeListener("settingStatus",settingPropertyListener);
         settingGui.setVisible(true);
         if(!settingGui.requestFocusInWindow()){
             settingGui.requestFocus();
@@ -130,11 +132,24 @@ public class MainGui extends JFrame{
     public void changeStatus(){
         if(settingGui.isStatus()){
             settingGui.setStatus(false);
-            statusItem.setLabel("开启");
         }else {
             settingGui.setStatus(true);
-            statusItem.setLabel("停止");
         }
     }
 
+
+    class SettingPropertyListener implements PropertyChangeListener {
+
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if(evt.getPropertyName().equals("settingStatus")){
+                if((boolean) evt.getNewValue()){
+                    statusItem.setLabel("停止");
+                }else{
+                    statusItem.setLabel("开启");
+                }
+            }
+        }
+    }
 }

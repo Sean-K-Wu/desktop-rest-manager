@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -24,7 +25,10 @@ import java.text.SimpleDateFormat;
  */
 public class SettingGui extends JFrame {
 
-    private static final long serialVersionUID = 27196777663166828L;
+
+
+    PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+
     private SettingGui settingGui;
     private long maxWorkTime = RestConfig.MAX_WORK_TIME;//最长连续工作时间  多长工作时间后休息
 
@@ -272,7 +276,6 @@ public class SettingGui extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 donateGui =  new DonateGui();
-
             }
         });
 
@@ -546,6 +549,7 @@ public class SettingGui extends JFrame {
     }
 
     public void setStatus(boolean status) {
+        boolean oldValue = this.status;
         this.status = status;
         if(status){
             statusButton.setText("停止");
@@ -553,6 +557,7 @@ public class SettingGui extends JFrame {
         }else{
             statusButton.setText("开始");
         }
+        firePropertyChange("settingStatus",oldValue,status);
     }
 
     public String getSleepImagePath() {
@@ -628,4 +633,5 @@ public class SettingGui extends JFrame {
     public boolean isSetting(){
         return this.isActive() || (sleepImagesPatheChooser!=null && sleepImagesPatheChooser.isVisible()) || (donateGui !=null && donateGui.isVisible());
     }
+
 }
