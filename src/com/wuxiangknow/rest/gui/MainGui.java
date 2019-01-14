@@ -43,6 +43,11 @@ public class MainGui extends JFrame{
         settingGui.initCompenents();
         settingGui.initListeners();
         settingGui.initClockTimes();
+
+        settingGui.setVisible(true);
+        if(!settingGui.requestFocusInWindow()){
+            settingGui.requestFocus();
+        }
         hotKey = new HotKey(this);//热键
         initSystemTray();
         java.util.Timer timer = new Timer(false);

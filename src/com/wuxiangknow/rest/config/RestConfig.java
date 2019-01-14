@@ -24,7 +24,7 @@ public class RestConfig {
 
     public static final String[] SLEEP_IMAGE_FILES = new String[]{"/res/sleep/sleep.jpg"};//休息显示图片路径
 
-    public static final long MAX_WORK_TIME = 1 *10 * 1000;//最长连续工作时间  多长工作时间后休息
+    public static final long MAX_WORK_TIME = 40 *60 * 1000;//最长连续工作时间  多长工作时间后休息
 
     public static final long REST_TIME = 1 * 60 * 1000;//休息时间
 
