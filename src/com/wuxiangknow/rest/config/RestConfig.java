@@ -11,7 +11,7 @@ public class RestConfig {
 
     public static final String PROGRAM_NAME = "休息小程序";
 
-    public static final String PROGRAM_VERSION = "v1.0";
+    public static final String PROGRAM_VERSION = "v1.1";
 
     public static final String REG_KEY_PATH = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
     public static final String REG_VALUE_NAME = "desktop-rest-manager";
@@ -26,7 +26,7 @@ public class RestConfig {
 
     public static final String[] SLEEP_IMAGE_FILES = new String[]{"/res/sleep/sleep.jpg"};//休息显示图片路径
 
-    public static final long MAX_WORK_TIME = 4 * 60 * 1000;//最长连续工作时间  多长工作时间后休息
+    public static final long MAX_WORK_TIME = 40 * 60 * 1000;//最长连续工作时间  多长工作时间后休息
 
     public static final long REST_TIME = 1 * 60 * 1000;//休息时间
 
