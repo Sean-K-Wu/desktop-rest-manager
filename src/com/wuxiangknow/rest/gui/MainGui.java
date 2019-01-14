@@ -4,7 +4,7 @@ package com.wuxiangknow.rest.gui;
 import com.wuxiangknow.rest.cache.CacheManager;
 import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.config.RestConfig;
-import com.wuxiangknow.rest.keyboard.HotKey;
+
 import com.wuxiangknow.rest.task.RestTimerTask;
 
 import javax.swing.*;
@@ -22,7 +22,7 @@ import java.util.Timer;
 public class MainGui extends JFrame{
 
 
-    private HotKey hotKey;//热键
+
     private final MainGui parentPanel;
     private PopupMenu pop;
     private MenuItem settingItem ;
@@ -48,7 +48,7 @@ public class MainGui extends JFrame{
         if(!settingGui.requestFocusInWindow()){
             settingGui.requestFocus();
         }
-        hotKey = new HotKey(this);//热键
+
         initSystemTray();
         java.util.Timer timer = new Timer(false);
         timer.schedule(new RestTimerTask(settingGui),0,RestConfig.TIMER_TASK_PERIOD);
@@ -105,14 +105,14 @@ public class MainGui extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 tray.remove(trayIcon);
                 parentPanel.dispose();
-                hotKey.destroy();
+
                 CacheManager.save(settingGui);
                 System.exit(0);
             }
         });
         try {
             tray.add(trayIcon);
-            hotKey.init();
+
         } catch (AWTException e1) {
             e1.printStackTrace();
         }
