@@ -3,7 +3,6 @@ package test.wuxiangknow.rest;
 import com.wuxiangknow.rest.gui.SleepGui;
 import org.junit.Test;
 
-import java.io.File;
 import java.net.MalformedURLException;
 
 /**
@@ -15,7 +14,7 @@ public class TestGetResource {
     @Test
     public void test() throws MalformedURLException {
         SleepGui sleepGui = new SleepGui(null);
-        sleepGui.getResourceByJar(new File("C:\\Users\\x7430\\Desktop\\desktop-rest-manager.jar!/res").toURL());
+        //废弃 不再尝试从jar包获取图片
         try {
             Thread.sleep(Integer.MAX_VALUE);
         } catch (InterruptedException e) {

@@ -11,13 +11,9 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 /**
  * @Desciption 休息界面
@@ -105,43 +101,13 @@ public class SleepGui extends JFrame{
         return resource[i];
     }
     public java.util.List<String> getResource(String path) {
-        URL resource = this.getClass().getResource(path);
-        System.out.println(resource.toString());
-        System.out.println(resource.getFile());
-        String type = resource.getProtocol();
-        if (type.equals("jar")) {
-            return getResourceByJar(resource);
-        }else{
-            return getResourceByFile(resource);
-        }
+        return getResourceByFile(path);
     }
 
-    public List<String> getResourceByJar(URL resource) {
-        ArrayList<String> files = new ArrayList<>();
-        String path = resource.getPath();
-        String[] jarInfo = path.split("!");
-        //之前就是jar包路径
-        String jarFilePath = jarInfo[0].substring(jarInfo[0].indexOf("/"));
-        String packagePath = jarInfo[1].substring(1);
-        try {
-            JarFile jarFile = new JarFile(jarFilePath);
-            Enumeration<JarEntry> entries = jarFile.entries();
-            while(entries.hasMoreElements()){
-                JarEntry jarEntry = entries.nextElement();
-                String name = jarEntry.getName();
-                if(name.startsWith(packagePath) && ImageUtil.isImage(name) ){
-                    files.add(jarFilePath.concat("!/").concat(name));
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return files;
-    }
 
-    public java.util.List<String> getResourceByFile(URL resource) {
+    public java.util.List<String> getResourceByFile(String path) {
         ArrayList<String> fileNames = new ArrayList<>();
-        File file = new File(resource.getPath());
+        File file = new File(path);
         if(file.exists() && file.isDirectory()){
             String name;
             for (File childFile : file.listFiles()) {
