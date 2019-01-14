@@ -35,13 +35,13 @@ public class WindowsUtil {
 
 
 
-    public static void enableAutoBoot(){
-        String exePath = RestConfig.PROGRAM_NAME.concat(".exe");
-        String property = System.getProperty("exe.dir");
-        if(property!=null){
-            exePath= property.concat(exePath);
+    public static boolean enableAutoBoot(){
+        String exePath = System.getProperty("exe.path");
+        if(exePath!=null){
+            Advapi32Util.registrySetStringValue(HKEY_CURRENT_USER,RestConfig.REG_KEY_PATH,RestConfig.REG_VALUE_NAME,exePath);
+            return true;
         }
-        Advapi32Util.registrySetStringValue(HKEY_CURRENT_USER,RestConfig.REG_KEY_PATH,RestConfig.REG_VALUE_NAME,exePath);
+        return false;
     }
 
     public static void disableAutoBoot(){

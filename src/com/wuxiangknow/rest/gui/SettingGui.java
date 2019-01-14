@@ -191,9 +191,8 @@ public class SettingGui extends JFrame {
         autoBootLabel.setBounds(100,180,100,30);
         autoBootCheckBox.setBounds(200,180,100,30);
         autoBootCheckBox.setBackground(defaultBackgroundColor);
-        if(autoBoot){
+        if(autoBoot && WindowsUtil.enableAutoBoot()){
             autoBootCheckBox.setSelected(true);
-            WindowsUtil.enableAutoBoot();
         }
         if(weekendDisable){
             weekendCheckBox.setSelected(true);
@@ -259,9 +258,12 @@ public class SettingGui extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if(autoBootCheckBox.isSelected()){
-                    autoBoot = true;
-                    WindowsUtil.enableAutoBoot();
+                if(autoBootCheckBox.isSelected() ){
+                    if(WindowsUtil.enableAutoBoot()){
+                        autoBoot = true;
+                    }else{
+                        autoBootCheckBox.setSelected(false);
+                    }
                 }else {
                     autoBoot = false;
                     WindowsUtil.disableAutoBoot();
