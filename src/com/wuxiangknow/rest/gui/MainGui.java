@@ -42,6 +42,7 @@ public class MainGui extends JFrame{
         }
         settingGui.initCompenents();
         settingGui.initListeners();
+        settingGui.initClockTimes();
         hotKey = new HotKey(this);//热键
         initSystemTray();
         java.util.Timer timer = new Timer(false);

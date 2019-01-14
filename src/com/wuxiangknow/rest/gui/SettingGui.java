@@ -1,5 +1,7 @@
 package com.wuxiangknow.rest.gui;
 
+import com.wuxiangknow.rest.bean.BetweenTime;
+import com.wuxiangknow.rest.cache.CacheManager;
 import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.component.ClockComboBox;
 import com.wuxiangknow.rest.config.RestConfig;
@@ -14,9 +16,6 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Descirption 设置界面
@@ -33,7 +32,10 @@ public class SettingGui extends JFrame {
 
     private Dimension settingSize = new Dimension(500,500);
 
-    private Map<Date,Date> workTimes = new HashMap<>();//工作的时间段
+
+
+    private BetweenTime morningBetweenTime;
+    private BetweenTime afternoonBetweenTime;
 
     private long lastTime = System.currentTimeMillis();//活跃开始计算时间
 
@@ -146,6 +148,9 @@ public class SettingGui extends JFrame {
         afternoonStartMinuteBox = new ClockComboBox();
         afternoonEndMinuteBox = new ClockComboBox();
 
+        morningStartHourBox.initItems(SimpleDateFormat.HOUR0_FIELD);
+
+
         weekendLabel = new JLabel("周末禁用");
         weekendCheckBox = new JCheckBox();
         autoBootLabel = new JLabel("开机自启");
@@ -165,7 +170,7 @@ public class SettingGui extends JFrame {
 
         morningWorkLabel.setBounds(100,90,100,30);
         morningStartHourBox.setBounds(200,90,50,30);
-        morningStartHourBox.initItems(SimpleDateFormat.HOUR0_FIELD);
+
         morningStartMinuteBox.setBounds(250,90,50,30);
         morningSepereteLabel.setBounds(300,90,18,30);
         morningSepereteLabel.setBackground(defaultBackgroundColor);
@@ -234,36 +239,8 @@ public class SettingGui extends JFrame {
 
 
     public void initListeners(){
-        morningStartHourBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    Integer item = (Integer) e.getItem();
-                    //修改之后
-                    morningStartMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD);
-                }
-            }
-        });
-        morningStartMinuteBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    Integer item = (Integer) morningStartHourBox.getSelectedItem();
-                    //修改之后
-                    morningEndHourBox.initItems(SimpleDateFormat.HOUR0_FIELD,item);
-                }
-            }
-        });
-        morningEndHourBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    Integer item = (Integer) morningEndHourBox.getSelectedItem();
-                    //修改之后
-                    morningEndHourBox.initItems(SimpleDateFormat.HOUR0_FIELD,item);
-                }
-            }
-        });
+        bindClockListeners(morningStartHourBox,morningStartMinuteBox,morningEndHourBox,morningEndMinuteBox,true);
+        bindClockListeners(afternoonStartHourBox,afternoonStartMinuteBox,afternoonEndHourBox,afternoonEndMinuteBox,false);
 
 
 
@@ -346,6 +323,7 @@ public class SettingGui extends JFrame {
                     }
                     if(newMaxWorkTime>0){
                         maxWorkTime = newMaxWorkTime;
+                        settingGui.updateTime();
                     }
                 }
                 component.setText(String.valueOf(maxWorkTime /1000 / 60));
@@ -372,6 +350,115 @@ public class SettingGui extends JFrame {
 
             }
         });
+        this.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                CacheManager.save(settingGui);
+            }
+        });
+    }
+
+    private void bindClockListeners(final ClockComboBox startHourBox, final ClockComboBox startMinuteBox, final ClockComboBox endHourBox , final ClockComboBox endMinuteBox , final boolean isMorning) {
+        startHourBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Object obj = e.getItem();
+                    if(obj !=null && RegUtil.isIntegerNumber(obj.toString())){
+                        //修改之后
+                        if(isMorning){
+                            startMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD);
+                        }else{
+                             Integer morningEndHour = (Integer) morningEndHourBox.getSelectedItem();
+                             Integer afternoonEndHour = (Integer) e.getItem();
+                             if(morningEndHour == afternoonEndHour){
+                                 Integer morningEndMinute = (Integer) morningEndMinuteBox.getSelectedItem();
+                                 startMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD,morningEndMinute+1);
+                             }else{
+                                 startMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD);
+                             }
+                        }
+                    }else{
+                        startMinuteBox.clearAllItem();
+                    }
+                }
+            }
+        });
+        startMinuteBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Integer item = null;
+                    Object obj = e.getItem();
+                    if(obj !=null && RegUtil.isIntegerNumber(obj.toString())){
+                        obj = startHourBox.getSelectedItem();
+                        item = (Integer) obj;
+                        //修改之后
+                        endHourBox.initItems(SimpleDateFormat.HOUR0_FIELD,item);
+                    }else{
+                        endHourBox.clearAllItem();
+                    }
+                }
+            }
+        });
+        endHourBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Object obj = e.getItem();
+                    if(obj !=null && RegUtil.isIntegerNumber(obj.toString())){
+                        Integer startHour = (Integer) startHourBox.getSelectedItem();
+                        Integer endHour = (Integer) endHourBox.getSelectedItem();
+                        if(startHour == endHour){
+                            Integer startMin= (Integer) startMinuteBox.getSelectedItem();
+                            endMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD,startMin+1);
+                        }else{
+                            endMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD);
+                        }
+                    }else{
+                        endMinuteBox.clearAllItem();
+                    }
+                }
+            }
+        });
+
+        endMinuteBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Object obj = e.getItem();
+                    if(obj !=null && RegUtil.isIntegerNumber(obj.toString())){
+                        //存储时间
+                        if(isMorning){
+                            Integer startHour = (Integer) morningStartHourBox.getSelectedItem();
+                            Integer startMinute = (Integer) morningStartMinuteBox.getSelectedItem();
+                            Integer endHour = (Integer) morningEndHourBox.getSelectedItem();
+                            Integer endMinute = (Integer) morningEndMinuteBox.getSelectedItem();
+                            morningBetweenTime = new BetweenTime(startHour,startMinute,endHour,endMinute);
+                            afternoonStartHourBox.initItems(SimpleDateFormat.HOUR0_FIELD,endHour);
+                        }else{
+                            Integer startHour = (Integer) afternoonStartHourBox.getSelectedItem();
+                            Integer startMinute = (Integer) afternoonStartMinuteBox.getSelectedItem();
+                            Integer endHour = (Integer) afternoonEndHourBox.getSelectedItem();
+                            Integer endMinute = (Integer) afternoonEndMinuteBox.getSelectedItem();
+                            afternoonBetweenTime = new BetweenTime(startHour,startMinute,endHour,endMinute);
+                        }
+                    }else{
+                        if(isMorning){//需要清除下午时间
+                            morningBetweenTime = null;
+                            afternoonStartHourBox.clearAllItem();
+                        }else{
+                            afternoonBetweenTime = null;
+                        }
+                    }
+                }
+
+            }
+        });
+
+
     }
 
     /**
@@ -397,13 +484,7 @@ public class SettingGui extends JFrame {
         this.restTime = restTime;
     }
 
-    public Map<Date, Date> getWorkTimes() {
-        return workTimes;
-    }
 
-    public void setWorkTimes(Map<Date, Date> workTimes) {
-        this.workTimes = workTimes;
-    }
 
     public long getLastTime() {
         return lastTime;
@@ -432,11 +513,12 @@ public class SettingGui extends JFrame {
     public void loadCache(CacheSettingBean cacheSettingBean) {
         this.maxWorkTime = cacheSettingBean.getMaxWorkTime();
         this.restTime = cacheSettingBean.getRestTime();
-        this.workTimes = cacheSettingBean.getWorkTimes();
         this.sleepImagePath = cacheSettingBean.getSleepImagePath();
         this.status = cacheSettingBean.isStatus();
         this.autoBoot = cacheSettingBean.isAutoBoot();
         this.weekendDisable = cacheSettingBean.isWeekendDisable();
+        this.morningBetweenTime = cacheSettingBean.getMorningBetweenTime();
+        this.afternoonBetweenTime = cacheSettingBean.getAfternoonBetweenTime();
     }
 
     public boolean isAutoBoot() {
@@ -453,5 +535,40 @@ public class SettingGui extends JFrame {
 
     public void setWeekendDisable(boolean weekendDisable) {
         this.weekendDisable = weekendDisable;
+    }
+
+    public BetweenTime getMorningBetweenTime() {
+        return morningBetweenTime;
+    }
+
+    public void setMorningBetweenTime(BetweenTime morningBetweenTime) {
+        this.morningBetweenTime = morningBetweenTime;
+    }
+
+    public BetweenTime getAfternoonBetweenTime() {
+        return afternoonBetweenTime;
+    }
+
+    public void setAfternoonBetweenTime(BetweenTime afternoonBetweenTime) {
+        this.afternoonBetweenTime = afternoonBetweenTime;
+    }
+
+    public void initClockTimes() {
+        BetweenTime afternoonBetweenTime = this.afternoonBetweenTime;
+        initClockTimeValue(this.morningBetweenTime,morningStartHourBox,morningStartMinuteBox,morningEndHourBox,morningEndMinuteBox);
+        initClockTimeValue(afternoonBetweenTime,afternoonStartHourBox,afternoonStartMinuteBox,afternoonEndHourBox,afternoonEndMinuteBox);
+    }
+
+    private void initClockTimeValue(BetweenTime betweenTime ,ClockComboBox startHourBox,ClockComboBox startMinuteBox,ClockComboBox endHourBox,ClockComboBox endMinuteBox) {
+        if(betweenTime !=null){
+            if(betweenTime.getStartTime() !=null){
+                startHourBox.setSelectedItem(betweenTime.getStartHour());
+                startMinuteBox.setSelectedItem(betweenTime.getStartMinute());
+            }
+            if(betweenTime.getEndTime() !=null){
+                endHourBox.setSelectedItem(betweenTime.getEndHour());
+                endMinuteBox.setSelectedItem(betweenTime.getEndMinute());
+            }
+        }
     }
 }

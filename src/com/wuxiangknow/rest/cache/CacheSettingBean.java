@@ -1,10 +1,9 @@
 package com.wuxiangknow.rest.cache;
 
+import com.wuxiangknow.rest.bean.BetweenTime;
 import com.wuxiangknow.rest.gui.SettingGui;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Map;
 
 /**
  * @Desciption 设置的缓存对象
@@ -19,8 +18,9 @@ public class CacheSettingBean implements Serializable{
 
     private long restTime;
 
-    private Map<Date,Date> workTimes;
 
+    private BetweenTime morningBetweenTime;
+    private BetweenTime afternoonBetweenTime;
     private  String sleepImagePath;
 
     private boolean status;
@@ -30,11 +30,15 @@ public class CacheSettingBean implements Serializable{
     public CacheSettingBean(SettingGui settingGui) {
         this.maxWorkTime = settingGui.getMaxWorkTime();
         this.restTime = settingGui.getRestTime();
-        this.workTimes = settingGui.getWorkTimes();
+
         this.sleepImagePath = settingGui.getSleepImagePath();
         this.status = settingGui.isStatus();
         this.autoBoot = settingGui.isAutoBoot();
         this.weekendDisable = settingGui.isWeekendDisable();
+        this.weekendDisable = settingGui.isWeekendDisable();
+        this.weekendDisable = settingGui.isWeekendDisable();
+        this.morningBetweenTime = settingGui.getMorningBetweenTime();
+        this.afternoonBetweenTime = settingGui.getAfternoonBetweenTime();
     }
 
     public static long getSerialVersionUID() {
@@ -57,13 +61,7 @@ public class CacheSettingBean implements Serializable{
         this.restTime = restTime;
     }
 
-    public Map<Date, Date> getWorkTimes() {
-        return workTimes;
-    }
 
-    public void setWorkTimes(Map<Date, Date> workTimes) {
-        this.workTimes = workTimes;
-    }
 
     public String getSleepImagePath() {
         return sleepImagePath;
@@ -95,5 +93,21 @@ public class CacheSettingBean implements Serializable{
 
     public void setWeekendDisable(boolean weekendDisable) {
         this.weekendDisable = weekendDisable;
+    }
+
+    public BetweenTime getMorningBetweenTime() {
+        return morningBetweenTime;
+    }
+
+    public void setMorningBetweenTime(BetweenTime morningBetweenTime) {
+        this.morningBetweenTime = morningBetweenTime;
+    }
+
+    public BetweenTime getAfternoonBetweenTime() {
+        return afternoonBetweenTime;
+    }
+
+    public void setAfternoonBetweenTime(BetweenTime afternoonBetweenTime) {
+        this.afternoonBetweenTime = afternoonBetweenTime;
     }
 }

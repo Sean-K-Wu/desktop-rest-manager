@@ -22,6 +22,8 @@ V1.0
 
 4. 可在设置中指定休息时显示的图片（文件夹，随机选择图片），目前仅支持PNG,JPG,JPEG
 
+5. 修改间隔时间成功后，会重置计算时间，从修改后的时间开始计算
+
 5. 请勿修改程序名称，会影响自启(执意修改请修改注册表`HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`下`desktop-rest-manager`字符串的值)
 
 6. 程序改到其它地方，需要重新启动一次才能使自启生效

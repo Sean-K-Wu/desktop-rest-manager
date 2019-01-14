@@ -1,14 +1,15 @@
 package com.wuxiangknow.rest.task;
 
 
+import com.wuxiangknow.rest.bean.BetweenTime;
 import com.wuxiangknow.rest.gui.RestGui;
 import com.wuxiangknow.rest.gui.SettingGui;
 import com.wuxiangknow.rest.gui.SleepGui;
 import com.wuxiangknow.rest.util.DateTimeUtil;
 import com.wuxiangknow.rest.util.WindowsUtil;
+import org.joda.time.DateTime;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.TimerTask;
 
 /**
@@ -38,18 +39,15 @@ public class RestTimerTask extends TimerTask {
             //超过最高时间 且 状态启用 且 没有正在调整设置
             if(!WindowsUtil.isFullScreen() && ( !DateTimeUtil.isWeekend(new Date())|| !settingGui.isWeekendDisable())){//没有全屏再提示 且 不是周末或者周末可提示
                 //判断时间段是否满足
-                Map<Date, Date> workTimes = settingGui.getWorkTimes();
                 boolean isWork  = true;
-                Date now = new Date();
-                for (Date date : workTimes.keySet()) {
-                    if(date !=null && !DateTimeUtil.compare(now,date)){
-                        isWork = false;
-                    }else if(workTimes.get(date) != null && !DateTimeUtil.compare(workTimes.get(date),now)){
-                        isWork = false;
-                    }else{
-                        isWork = true;
-                        break;
-                    }
+                DateTime now = DateTime.now();
+                BetweenTime morningBetweenTime = settingGui.getMorningBetweenTime();
+                BetweenTime afternoonBetweenTime = settingGui.getAfternoonBetweenTime();
+                if(morningBetweenTime != null ){
+                    isWork = morningBetweenTime.isBetween(now);
+                }
+                if(!isWork && afternoonBetweenTime!=null){
+                    isWork = morningBetweenTime.isBetween(now);
                 }
                 if(isWork){
                     //创建休息

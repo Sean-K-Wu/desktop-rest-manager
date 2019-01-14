@@ -12,13 +12,11 @@ import java.util.Date;
 public class DateTimeUtil {
 
 
-    public static boolean compare(Date dateA,Date dateB){
+    public static boolean compare(DateTime dateA,DateTime dateB){
         if(dateA ==null || dateB ==null){
             return false;
         }
-        DateTime a = new DateTime(dateA);
-        DateTime b = new DateTime(dateB);
-        if(a.getMillisOfDay() >= b.getMillisOfDay()){
+        if(dateA.getMillisOfDay() >= dateB.getMillisOfDay()){
             return true;
         }
         return false;
@@ -32,4 +30,7 @@ public class DateTimeUtil {
         }
         return false;
     }
+
+
+
 }

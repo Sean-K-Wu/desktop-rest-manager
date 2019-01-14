@@ -13,9 +13,10 @@ public class ClockComboBox extends JComboBox {
 
 
     public void initItems(int simpleDateFormatField){
+        clearAllItem();
         switch (simpleDateFormatField){
             case (SimpleDateFormat.MINUTE_FIELD)://分
-                for (int i = 1; i <= 59; i++) {
+                for (int i = 0; i <= 59; i++) {
                     this.addItem(i);
                 }
                 break;
@@ -28,6 +29,7 @@ public class ClockComboBox extends JComboBox {
     }
 
     public void initItems(int simpleDateFormatField,int minValue){
+        clearAllItem();
         switch (simpleDateFormatField){
             case (SimpleDateFormat.MINUTE_FIELD)://分
                 for (int i = minValue; i <= 59; i++) {
@@ -41,4 +43,10 @@ public class ClockComboBox extends JComboBox {
                 break;
         }
     }
+
+    public void clearAllItem(){
+        this.removeAllItems();
+        this.addItem(" ");
+    }
+
 }
