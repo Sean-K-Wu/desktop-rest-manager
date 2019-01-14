@@ -34,7 +34,7 @@ public class RestTimerTask extends TimerTask {
          */
         if(System.currentTimeMillis() - settingGui.getLastTime() >= settingGui.getMaxWorkTime()
                 && settingGui.isStatus()
-                && !settingGui.isActive()//调整设置 不考虑 重置lastTime
+                && !settingGui.isSetting()//调整设置 不考虑 重置lastTime
                 ){
             //超过最高时间 且 状态启用 且 没有正在调整设置
             if(!WindowsUtil.isFullScreen() && ( !DateTimeUtil.isWeekend(new Date())|| !settingGui.isWeekendDisable())){//没有全屏再提示 且 不是周末或者周末可提示

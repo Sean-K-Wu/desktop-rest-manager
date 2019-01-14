@@ -40,7 +40,7 @@ public class SettingGui extends JFrame {
     private long lastTime = System.currentTimeMillis();//活跃开始计算时间
 
     private  boolean status ;//后台线程状态
-    private  Color defaultBackgroundColor = new Color(227, 237, 205);
+
     private  JLabel maxWorkTimeLabel;
     private  JTextField maxWorkTimeField;
     private  JLabel restTimeLabel;
@@ -50,7 +50,7 @@ public class SettingGui extends JFrame {
 
     private  JButton sleepImagesPathButton;
     private  String sleepImagePath ;
-
+    private JFileChooser sleepImagesPatheChooser;
 
     private  JLabel morningWorkLabel;
     private ClockComboBox morningStartHourBox;
@@ -76,13 +76,19 @@ public class SettingGui extends JFrame {
     private  JCheckBox weekendCheckBox;
     private  boolean weekendDisable = true;
 
+    private  JLabel statusLabel;
+    private  JButton statusButton;
+
+    private JButton donateButton;
+    private DonateGui donateGui;
+
     private static final String SLEEP_IMAGE_PATH_DEFAULT_VALUE = "默认";
     public SettingGui() {
 
     }
 
     public  void handleOpenFileChooser(){
-        JFileChooser sleepImagesPatheChooser = new JFileChooser();
+        sleepImagesPatheChooser = new JFileChooser();
         sleepImagesPatheChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         sleepImagesPatheChooser.setMultiSelectionEnabled(false);
         int result = sleepImagesPatheChooser.showOpenDialog(settingGui);
@@ -120,7 +126,7 @@ public class SettingGui extends JFrame {
         this.setTitle("设置".concat(RestConfig.PROGRAM_VERSION));
         this.setLayout(null);
         this.setResizable(false);
-        this.getContentPane().setBackground(defaultBackgroundColor);
+        this.getContentPane().setBackground(RestConfig.DEFAULT_BACKGROUND_COLOR);
         try {
             this.setIconImage(ImageIO.read(this.getClass().getResource(RestConfig.PROGRAM_ICON_PATH)));
         } catch (IOException e) {
@@ -156,6 +162,17 @@ public class SettingGui extends JFrame {
         autoBootLabel = new JLabel("开机自启");
         autoBootCheckBox = new JCheckBox();
 
+        statusLabel = new JLabel("状态");
+        statusButton = new JButton();
+        if(status){
+            statusButton.setText("停止");
+        }else{
+            statusButton.setText("开启");
+        }
+
+        donateButton = new JButton("打赏");
+        donateButton.setForeground(Color.WHITE);
+        donateButton.setBackground(RestConfig.DONATE_BACKGROUND_COLOR);
         maxWorkTimeLabel.setBounds(100,0,100,30);
         maxWorkTimeField.setBounds(200,0,100,30);
 
@@ -173,7 +190,7 @@ public class SettingGui extends JFrame {
 
         morningStartMinuteBox.setBounds(250,90,50,30);
         morningSepereteLabel.setBounds(300,90,18,30);
-        morningSepereteLabel.setBackground(defaultBackgroundColor);
+        morningSepereteLabel.setBackground(RestConfig.DEFAULT_BACKGROUND_COLOR);
         morningEndHourBox.setBounds(318,90,50,30);
         morningEndMinuteBox.setBounds(368,90,50,30);
 
@@ -181,16 +198,22 @@ public class SettingGui extends JFrame {
         afternoonStartHourBox.setBounds(200,120,50,30);
         afternoonStartMinuteBox.setBounds(250,120,50,30);
         afternoonSepereteLabel.setBounds(300,120,18,30);
-        afternoonSepereteLabel.setBackground(defaultBackgroundColor);
+        afternoonSepereteLabel.setBackground(RestConfig.DEFAULT_BACKGROUND_COLOR);
         afternoonEndHourBox.setBounds(318,120,50,30);
         afternoonEndMinuteBox.setBounds(368,120,50,30);
 
         weekendLabel.setBounds(100,150,100,30);
         weekendCheckBox.setBounds(200,150,100,30);
-        weekendCheckBox.setBackground(defaultBackgroundColor);
+        weekendCheckBox.setBackground(RestConfig.DEFAULT_BACKGROUND_COLOR);
         autoBootLabel.setBounds(100,180,100,30);
         autoBootCheckBox.setBounds(200,180,100,30);
-        autoBootCheckBox.setBackground(defaultBackgroundColor);
+        autoBootCheckBox.setBackground(RestConfig.DEFAULT_BACKGROUND_COLOR);
+
+        statusLabel.setBounds(100,210,100,30);
+        statusButton.setBounds(200,210,100,30);
+
+        donateButton.setBounds((int)(settingSize.getWidth()-100)/2,310,100,30);
+
         if(autoBoot && WindowsUtil.enableAutoBoot()){
             autoBootCheckBox.setSelected(true);
         }
@@ -226,10 +249,13 @@ public class SettingGui extends JFrame {
         this.add(weekendCheckBox);
         this.add(autoBootLabel);
         this.add(autoBootCheckBox);
+        this.add(statusLabel);
+        this.add(statusButton);
+        this.add(donateButton);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //界面宽高度
         int width = (int) settingSize.getWidth();
-        int height = (int) settingSize.getWidth();
+        int height = (int) settingSize.getHeight();
         //正中央显示
         this.setBounds((int)(screenSize.getWidth() - width)/2,(int)(screenSize.getHeight() - height)/2,width,height);
         this.setVisible(false);
@@ -241,7 +267,26 @@ public class SettingGui extends JFrame {
         bindClockListeners(morningStartHourBox,morningStartMinuteBox,morningEndHourBox,morningEndMinuteBox,true);
         bindClockListeners(afternoonStartHourBox,afternoonStartMinuteBox,afternoonEndHourBox,afternoonEndMinuteBox,false);
 
+        donateButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                donateGui =  new DonateGui();
 
+            }
+        });
+
+        statusButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(settingGui.isStatus()){
+                    settingGui.setStatus(false);
+                }else{
+                    settingGui.setStatus(true);
+                }
+            }
+        });
 
         weekendCheckBox.addMouseListener(new MouseAdapter() {
             @Override
@@ -502,6 +547,12 @@ public class SettingGui extends JFrame {
 
     public void setStatus(boolean status) {
         this.status = status;
+        if(status){
+            statusButton.setText("停止");
+            updateTime();
+        }else{
+            statusButton.setText("开始");
+        }
     }
 
     public String getSleepImagePath() {
@@ -572,5 +623,9 @@ public class SettingGui extends JFrame {
                 endMinuteBox.setSelectedItem(betweenTime.getEndMinute());
             }
         }
+    }
+
+    public boolean isSetting(){
+        return this.isActive() || (sleepImagesPatheChooser!=null && sleepImagesPatheChooser.isVisible()) || (donateGui !=null && donateGui.isVisible());
     }
 }

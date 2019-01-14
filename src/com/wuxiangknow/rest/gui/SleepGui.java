@@ -52,7 +52,8 @@ public class SleepGui extends JFrame{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
+        }
+        if(bufferedImage == null){
             String path = getFileByRandom(RestConfig.SLEEP_IMAGE_FILES);
             try {
                 bufferedImage = ImageIO.read(this.getClass().getResourceAsStream(path));

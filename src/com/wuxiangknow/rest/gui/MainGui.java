@@ -133,7 +133,6 @@ public class MainGui extends JFrame{
             statusItem.setLabel("开启");
         }else {
             settingGui.setStatus(true);
-            settingGui.updateTime();
             statusItem.setLabel("停止");
         }
     }
