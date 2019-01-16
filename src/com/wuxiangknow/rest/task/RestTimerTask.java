@@ -47,7 +47,7 @@ public class RestTimerTask extends TimerTask {
                     isWork = morningBetweenTime.isBetween(now);
                 }
                 if(!isWork && afternoonBetweenTime!=null){
-                    isWork = morningBetweenTime.isBetween(now);
+                    isWork = afternoonBetweenTime.isBetween(now);
                 }
                 if(isWork){
                     //创建休息

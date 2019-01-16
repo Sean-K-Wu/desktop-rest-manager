@@ -140,7 +140,7 @@ public class SettingGui extends JFrame {
         maxWorkTimeField = new JTextField(String.valueOf(maxWorkTime /1000 / 60));
         restTimeLabel    = new JLabel("休息时间(分)");
         restTimeField    = new JTextField(String.valueOf(restTime /1000 / 60));
-        sleepImagesPathLabel= new JLabel("图片路径");
+        sleepImagesPathLabel= new JLabel("图片文件夹");
         sleepImagesPatheField= new JTextField(sleepImagePath ==null?SLEEP_IMAGE_PATH_DEFAULT_VALUE:sleepImagePath);
 
         sleepImagesPathButton = new JButton("选择文件夹");
@@ -283,11 +283,13 @@ public class SettingGui extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                statusButton.setEnabled(false);
                 if(settingGui.isStatus()){
                     settingGui.setStatus(false);
                 }else{
                     settingGui.setStatus(true);
                 }
+                statusButton.setEnabled(true);
             }
         });
 
@@ -324,7 +326,9 @@ public class SettingGui extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                sleepImagesPathButton.setEnabled(false);
                 settingGui.handleOpenFileChooser();
+                sleepImagesPathButton.setEnabled(true);
             }
         });
 
@@ -421,10 +425,10 @@ public class SettingGui extends JFrame {
                         if(isMorning){
                             startMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD);
                         }else{
-                             Integer morningEndHour = (Integer) morningEndHourBox.getSelectedItem();
-                             Integer afternoonEndHour = (Integer) e.getItem();
+                             Integer morningEndHour = Integer.parseInt((String) morningEndHourBox.getSelectedItem());
+                             Integer afternoonEndHour = Integer.parseInt((String) e.getItem());
                              if(morningEndHour == afternoonEndHour){
-                                 Integer morningEndMinute = (Integer) morningEndMinuteBox.getSelectedItem();
+                                 Integer morningEndMinute = Integer.parseInt((String) morningEndMinuteBox.getSelectedItem());
                                  startMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD,morningEndMinute+1);
                              }else{
                                  startMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD);
@@ -444,7 +448,7 @@ public class SettingGui extends JFrame {
                     Object obj = e.getItem();
                     if(obj !=null && RegUtil.isIntegerNumber(obj.toString())){
                         obj = startHourBox.getSelectedItem();
-                        item = (Integer) obj;
+                        item = Integer.parseInt((String) obj);
                         //修改之后
                         endHourBox.initItems(SimpleDateFormat.HOUR0_FIELD,item);
                     }else{
@@ -459,10 +463,10 @@ public class SettingGui extends JFrame {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     Object obj = e.getItem();
                     if(obj !=null && RegUtil.isIntegerNumber(obj.toString())){
-                        Integer startHour = (Integer) startHourBox.getSelectedItem();
-                        Integer endHour = (Integer) endHourBox.getSelectedItem();
+                        Integer startHour = Integer.parseInt((String) startHourBox.getSelectedItem());
+                        Integer endHour = Integer.parseInt((String) endHourBox.getSelectedItem());
                         if(startHour == endHour){
-                            Integer startMin= (Integer) startMinuteBox.getSelectedItem();
+                            Integer startMin= Integer.parseInt((String) startMinuteBox.getSelectedItem());
                             endMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD,startMin+1);
                         }else{
                             endMinuteBox.initItems(SimpleDateFormat.MINUTE_FIELD);
@@ -482,17 +486,17 @@ public class SettingGui extends JFrame {
                     if(obj !=null && RegUtil.isIntegerNumber(obj.toString())){
                         //存储时间
                         if(isMorning){
-                            Integer startHour = (Integer) morningStartHourBox.getSelectedItem();
-                            Integer startMinute = (Integer) morningStartMinuteBox.getSelectedItem();
-                            Integer endHour = (Integer) morningEndHourBox.getSelectedItem();
-                            Integer endMinute = (Integer) morningEndMinuteBox.getSelectedItem();
+                            Integer startHour = Integer.parseInt((String) morningStartHourBox.getSelectedItem());
+                            Integer startMinute = Integer.parseInt((String) morningStartMinuteBox.getSelectedItem());
+                            Integer endHour = Integer.parseInt((String) morningEndHourBox.getSelectedItem());
+                            Integer endMinute = Integer.parseInt((String) morningEndMinuteBox.getSelectedItem());
                             morningBetweenTime = new BetweenTime(startHour,startMinute,endHour,endMinute);
                             afternoonStartHourBox.initItems(SimpleDateFormat.HOUR0_FIELD,endHour);
                         }else{
-                            Integer startHour = (Integer) afternoonStartHourBox.getSelectedItem();
-                            Integer startMinute = (Integer) afternoonStartMinuteBox.getSelectedItem();
-                            Integer endHour = (Integer) afternoonEndHourBox.getSelectedItem();
-                            Integer endMinute = (Integer) afternoonEndMinuteBox.getSelectedItem();
+                            Integer startHour = Integer.parseInt((String) afternoonStartHourBox.getSelectedItem());
+                            Integer startMinute = Integer.parseInt((String) afternoonStartMinuteBox.getSelectedItem());
+                            Integer endHour = Integer.parseInt((String) afternoonEndHourBox.getSelectedItem());
+                            Integer endMinute = Integer.parseInt((String) afternoonEndMinuteBox.getSelectedItem());
                             afternoonBetweenTime = new BetweenTime(startHour,startMinute,endHour,endMinute);
                         }
                     }else{
@@ -620,15 +624,16 @@ public class SettingGui extends JFrame {
     private void initClockTimeValue(BetweenTime betweenTime ,ClockComboBox startHourBox,ClockComboBox startMinuteBox,ClockComboBox endHourBox,ClockComboBox endMinuteBox) {
         if(betweenTime !=null){
             if(betweenTime.getStartTime() !=null){
-                startHourBox.setSelectedItem(betweenTime.getStartHour());
-                startMinuteBox.setSelectedItem(betweenTime.getStartMinute());
+                startHourBox.setSelectedItem(startHourBox.getClockItem(betweenTime.getStartHour()));
+                startMinuteBox.setSelectedItem(startMinuteBox.getClockItem(betweenTime.getStartMinute()));
             }
             if(betweenTime.getEndTime() !=null){
-                endHourBox.setSelectedItem(betweenTime.getEndHour());
-                endMinuteBox.setSelectedItem(betweenTime.getEndMinute());
+                endHourBox.setSelectedItem(endHourBox.getClockItem(betweenTime.getEndHour()));
+                endMinuteBox.setSelectedItem(endMinuteBox.getClockItem(betweenTime.getEndMinute()));
             }
         }
     }
+
 
     public boolean isSetting(){
         return this.isActive() || (sleepImagesPatheChooser!=null && sleepImagesPatheChooser.isVisible()) || (donateGui !=null && donateGui.isVisible());

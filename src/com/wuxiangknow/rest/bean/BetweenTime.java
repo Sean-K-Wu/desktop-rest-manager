@@ -79,7 +79,7 @@ public class BetweenTime implements Serializable{
                 }
             }
         }else{
-            if(!DateTimeUtil.compare(startTime,now)){
+            if(!DateTimeUtil.compare(now,startTime)){
                 return false;
             }else{
                 if(endTime != null){

@@ -79,9 +79,10 @@ public class MainGui extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 if(!settingGui.isVisible()){
                     settingGui.setVisible(true);
-                    if(!settingGui.requestFocusInWindow()){
-                        settingGui.requestFocus();
-                    }
+                }
+                settingGui.setExtendedState(Frame.NORMAL);
+                if(!settingGui.requestFocusInWindow()){
+                    settingGui.requestFocus();
                 }
             }
         });

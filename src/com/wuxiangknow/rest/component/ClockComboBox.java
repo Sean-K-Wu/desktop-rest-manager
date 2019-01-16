@@ -17,12 +17,20 @@ public class ClockComboBox extends JComboBox {
         switch (simpleDateFormatField){
             case (SimpleDateFormat.MINUTE_FIELD)://分
                 for (int i = 0; i <= 59; i++) {
-                    this.addItem(i);
+                    if(i<10){
+                        this.addItem(String.valueOf(0).concat(String.valueOf(i)));
+                    }else{
+                        this.addItem(String.valueOf(i));
+                    }
                 }
                 break;
             case (SimpleDateFormat.HOUR0_FIELD)://时
                 for (int i = 0; i <= 23; i++) {
-                    this.addItem(i);
+                    if(i<10){
+                        this.addItem(String.valueOf(0).concat(String.valueOf(i)));
+                    }else{
+                        this.addItem(String.valueOf(i));
+                    }
                 }
                 break;
         }
@@ -33,12 +41,20 @@ public class ClockComboBox extends JComboBox {
         switch (simpleDateFormatField){
             case (SimpleDateFormat.MINUTE_FIELD)://分
                 for (int i = minValue; i <= 59; i++) {
-                    this.addItem(i);
+                    if(i<10){
+                        this.addItem(String.valueOf(0).concat(String.valueOf(i)));
+                    }else{
+                        this.addItem(String.valueOf(i));
+                    }
                 }
                 break;
             case (SimpleDateFormat.HOUR0_FIELD)://时
                 for (int i = minValue; i <= 23; i++) {
-                    this.addItem(i);
+                    if(i<10){
+                        this.addItem(String.valueOf(0).concat(String.valueOf(i)));
+                    }else{
+                        this.addItem(String.valueOf(i));
+                    }
                 }
                 break;
         }
@@ -47,6 +63,19 @@ public class ClockComboBox extends JComboBox {
     public void clearAllItem(){
         this.removeAllItems();
         this.addItem(" ");
+    }
+
+
+    public String getClockItem(Integer i){
+        if(i != null){
+            String item = String.valueOf(i);
+            if(i < 10){
+                item = "0".concat(item);
+            }
+            return item;
+        }
+        return " ";
+
     }
 
 }
