@@ -31,7 +31,7 @@ public class SleepGui extends JFrame{
         this.setResizable(false);//不可改变大小
         this.setUndecorated(true);//无标题栏
         this.setAlwaysOnTop(true);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);//最大化
+
         this.setLocationRelativeTo(null);
         try {
             this.setIconImage(ImageIO.read(this.getClass().getResource(RestConfig.PROGRAM_ICON_PATH)));
@@ -77,10 +77,10 @@ public class SleepGui extends JFrame{
         this.setBounds(0, 0, (int) screenSize.getWidth(), (int) screenSize.getHeight());
         this.add(imageLabel);
         this.setVisible(true);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);//最大化
         if(!this.requestFocusInWindow()){
             this.requestFocus();
         }
-
         synchronized (settingGui){
             try {
                 settingGui.wait(settingGui.getRestTime());
