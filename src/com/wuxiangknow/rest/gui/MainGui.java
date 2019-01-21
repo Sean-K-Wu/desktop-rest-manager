@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -74,6 +76,19 @@ public class MainGui extends JFrame{
         ImageIcon trayImg = new ImageIcon(getDefaultTrayImgName());
         trayIcon = new TrayIcon(trayImg.getImage(), RestConfig.PROGRAM_NAME.concat(RestConfig.PROGRAM_VERSION), pop);
         trayIcon.setImageAutoSize(true);
+        trayIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(!settingGui.isVisible()){
+                    settingGui.setVisible(true);
+                }
+                settingGui.setExtendedState(Frame.NORMAL);
+                if(!settingGui.requestFocusInWindow()){
+                    settingGui.requestFocus();
+                }
+            }
+        });
         settingItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

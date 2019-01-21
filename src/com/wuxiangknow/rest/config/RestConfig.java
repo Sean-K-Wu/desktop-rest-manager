@@ -11,7 +11,7 @@ public class RestConfig {
 
     public static final String PROGRAM_NAME = "休息小程序";
 
-    public static final String PROGRAM_VERSION = "v1.1";
+    public static final String PROGRAM_VERSION = "v1.2";
 
     public static final String REG_KEY_PATH = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
     public static final String REG_VALUE_NAME = "desktop-rest-manager";
@@ -39,4 +39,6 @@ public class RestConfig {
 
     public static final String DONATE_WECHAT_PATH = "/res/donate/wechatpay.jpg";
     public static final String DONATE_ALI_PATH = "/res/donate/alipay.jpg";
+
+    public static final String GIFT_MONEY_PATH = "/res/gift/gift.jpg";
 }

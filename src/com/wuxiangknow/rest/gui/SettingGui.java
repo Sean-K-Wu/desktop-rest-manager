@@ -86,6 +86,8 @@ public class SettingGui extends JFrame {
     private JButton donateButton;
     private DonateGui donateGui;
 
+    private JButton giftButton;
+    private GiftGui giftGui;
     private static final String SLEEP_IMAGE_PATH_DEFAULT_VALUE = "默认";
     public SettingGui() {
 
@@ -177,6 +179,11 @@ public class SettingGui extends JFrame {
         donateButton = new JButton("打赏");
         donateButton.setForeground(Color.WHITE);
         donateButton.setBackground(RestConfig.DONATE_BACKGROUND_COLOR);
+
+        giftButton   = new JButton("领红包");
+        giftButton.setForeground(Color.WHITE);
+        giftButton.setBackground(RestConfig.DONATE_BACKGROUND_COLOR);
+
         maxWorkTimeLabel.setBounds(100,0,100,30);
         maxWorkTimeField.setBounds(200,0,100,30);
 
@@ -216,7 +223,8 @@ public class SettingGui extends JFrame {
         statusLabel.setBounds(100,210,100,30);
         statusButton.setBounds(200,210,100,30);
 
-        donateButton.setBounds((int)(settingSize.getWidth()-100)/2,310,100,30);
+        giftButton.setBounds((int)(settingSize.getWidth()-100)/2-100,310,100,30);
+        donateButton.setBounds((int)(settingSize.getWidth()-100)/2+100,310,100,30);
 
         if(autoBoot && WindowsUtil.enableAutoBoot()){
             autoBootCheckBox.setSelected(true);
@@ -256,6 +264,7 @@ public class SettingGui extends JFrame {
         this.add(statusLabel);
         this.add(statusButton);
         this.add(donateButton);
+        this.add(giftButton);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //界面宽高度
         int width = (int) settingSize.getWidth();
@@ -278,7 +287,13 @@ public class SettingGui extends JFrame {
                 donateGui =  new DonateGui();
             }
         });
-
+        giftButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                giftGui =  new GiftGui();
+            }
+        });
         statusButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
