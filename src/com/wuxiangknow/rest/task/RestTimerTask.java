@@ -78,7 +78,7 @@ public class RestTimerTask extends TimerTask {
         }
         long startMillis = startTime.getMillisOfDay();
         long nowMillis = now.getMillisOfDay();
-        if(Math.abs(startMillis - nowMillis)<= RestConfig.TIMER_TASK_PERIOD){
+        if(Math.abs(startMillis - nowMillis)< RestConfig.TIMER_TASK_PERIOD){
             settingGui.updateTime();
         }
     }
