@@ -28,6 +28,8 @@ public class RestTimerTask extends TimerTask {
 
     //private Thread restThread;
 
+    private Long lastTimeMillis;
+
     @Override
     public void run() {
         /**
@@ -45,13 +47,19 @@ public class RestTimerTask extends TimerTask {
             isWork = afternoonBetweenTime.isBetween(now);
         }
         if(isWork){
+            //如果刚好到了工作的开始时间 需要重置时间
             updateLastTime(morningBetweenTime.getStartTime(),afternoonBetweenTime.getStartTime(),now);
+            if(lastTimeMillis == null){
+                lastTimeMillis = System.currentTimeMillis();
+            }
             if(System.currentTimeMillis() - settingGui.getLastTime() >= settingGui.getMaxWorkTime()
                     && settingGui.isStatus()
                     && !settingGui.isSetting()//调整设置 不考虑 重置lastTime
                     ){
                 //超过最高时间 且 状态启用 且 没有正在调整设置
-                if(!WindowsUtil.isFullScreen() && ( !DateTimeUtil.isWeekend(new Date())|| !settingGui.isWeekendDisable())){//没有全屏再提示 且 不是周末或者周末可提示
+                if(!WindowsUtil.isFullScreen() && ( !DateTimeUtil.isWeekend(new Date())|| !settingGui.isWeekendDisable())
+                        && System.currentTimeMillis() - lastTimeMillis < RestConfig.TIMER_TASK_PERIOD*2
+                        ){//没有全屏再提示 且 不是周末或者周末可提示 且 两次运行没有超过定时任务周期的2倍时间(防止休眠)
                     //判断时间段是否满足
 
                     //创建休息
@@ -64,6 +72,9 @@ public class RestTimerTask extends TimerTask {
                 }
                 settingGui.updateTime();
             }
+            lastTimeMillis = System.currentTimeMillis();
+        }else{
+            lastTimeMillis = null;
         }
     }
 
