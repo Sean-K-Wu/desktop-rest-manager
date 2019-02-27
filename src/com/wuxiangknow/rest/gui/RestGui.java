@@ -3,11 +3,15 @@ package com.wuxiangknow.rest.gui;
 import com.sun.awt.AWTUtilities;
 import com.wuxiangknow.rest.component.CountDownLabel;
 import com.wuxiangknow.rest.config.RestConfig;
+import com.wuxiangknow.rest.util.ImageUtil;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * @Desciption 休息界面
@@ -54,10 +58,18 @@ public class RestGui{
         messageLabel.setPreferredSize(messageSize);
         messageLabel.setForeground(fontColor);
         // 创建一个按钮用于关闭对话框
-        JButton okBtn = new JButton("取消");
-        okBtn.addActionListener(new ActionListener() {
+        JLabel okLabel = new JLabel();
+        try {
+            BufferedImage bufferedImage = ImageIO.read(this.getClass().getResource(RestConfig.COUNT_DOWN_CANCEL_PATH));
+            okLabel.setIcon(new ImageIcon(ImageUtil.getScaledImage(bufferedImage,30,30)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        okLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        okLabel.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
                 // 关闭对话框
                 dialog.dispose();
                 status= false;
@@ -68,7 +80,7 @@ public class RestGui{
         });
         // 添加组件到面板
         dialog.getContentPane().add(messageLabel);
-        dialog.getContentPane().add(okBtn);
+        dialog.getContentPane().add(okLabel);
         // 设置对话框的内容面板
 
         Thread thread =new Thread(){

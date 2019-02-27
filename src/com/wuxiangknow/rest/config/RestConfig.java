@@ -41,4 +41,6 @@ public class RestConfig {
     public static final String DONATE_ALI_PATH = "/res/donate/alipay.jpg";
 
     public static final String GIFT_MONEY_PATH = "/res/gift/gift.jpg";
+
+    public static final String COUNT_DOWN_CANCEL_PATH = "/res/cancel.png";
 }
