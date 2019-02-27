@@ -8,8 +8,11 @@ import com.wuxiangknow.rest.gui.SettingGui;
 import com.wuxiangknow.rest.gui.SleepGui;
 import com.wuxiangknow.rest.util.DateTimeUtil;
 import com.wuxiangknow.rest.util.WindowsUtil;
+import me.coley.simplejna.hook.key.KeyEventReceiver;
+import me.coley.simplejna.hook.key.KeyHookManager;
 import org.joda.time.DateTime;
 
+import java.awt.event.KeyEvent;
 import java.util.Date;
 import java.util.TimerTask;
 
@@ -22,8 +25,32 @@ public class RestTimerTask extends TimerTask {
 
     private SettingGui settingGui;
 
-    public RestTimerTask(SettingGui settingGui) {
+    private RestGui restGui;
+
+    private SleepGui sleepGui;
+
+    public RestTimerTask(final SettingGui settingGui) {
         this.settingGui = settingGui;
+        KeyHookManager keyHookManager = new KeyHookManager();
+        KeyEventReceiver keyEventReceiver = new KeyEventReceiver(keyHookManager){
+            @Override
+            public boolean onKeyUpdate(SystemState sysState, PressState pressState, int time, int vkCode) {
+                if(pressState.equals(PressState.UP)) {//抬起
+                    if(KeyEvent.VK_ESCAPE == vkCode){
+                        if(restGui !=null && restGui.isVisible()){
+                            restGui.cancel();
+                            // 关闭对话框
+                            restGui.dispose();
+                        }
+                        if(sleepGui !=null && sleepGui.isVisible()){
+                            sleepGui.wakeUp();
+                        }
+                    }
+                }
+                return false;
+            }
+        };
+        keyHookManager.hook(keyEventReceiver);
     }
 
     //private Thread restThread;
@@ -60,13 +87,12 @@ public class RestTimerTask extends TimerTask {
                 if(!WindowsUtil.isFullScreen() && ( !DateTimeUtil.isWeekend(new Date())|| !settingGui.isWeekendDisable())
                         && System.currentTimeMillis() - lastTimeMillis < RestConfig.TIMER_TASK_PERIOD*2
                         ){//没有全屏再提示 且 不是周末或者周末可提示 且 两次运行没有超过定时任务周期的2倍时间(防止休眠)
-                    //判断时间段是否满足
-
                     //创建休息
-                    RestGui restGui = new RestGui(settingGui);
+                    restGui = new RestGui(settingGui);
+                    restGui.setVisible(true);
                     //休息
                     if(restGui.isStatus()){
-                        SleepGui sleepGui = new SleepGui(settingGui);
+                        sleepGui = new SleepGui(settingGui);
                         sleepGui.dispose();
                     }
                 }

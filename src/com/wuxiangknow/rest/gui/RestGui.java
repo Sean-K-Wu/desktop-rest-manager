@@ -34,13 +34,16 @@ public class RestGui{
 
     private boolean status = true;
 
+    private JDialog dialog;
 
+    private RestGui restGui;
 
     public RestGui(final SettingGui settingGui)  {
         this.settingGui = settingGui;
+        this.restGui = this;
         // 创建一个模态对话框
         Frame owner = null;
-        final JDialog dialog = new JDialog(owner, "休息提示", true);
+        dialog = new JDialog(owner, "休息提示", true);
         dialog.setLayout(new FlowLayout());
         dialog.setUndecorated(true);
         dialog.setAlwaysOnTop(true);
@@ -66,16 +69,14 @@ public class RestGui{
             e.printStackTrace();
         }
         okLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
         okLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                restGui.cancel();
                 // 关闭对话框
-                dialog.dispose();
-                status= false;
-                if(settingGui!=null){
-                    settingGui.updateTime();
-                }
+                restGui.dispose();
             }
         });
         // 添加组件到面板
@@ -102,12 +103,10 @@ public class RestGui{
                     }
                 }
                 // 关闭对话框
-                dialog.dispose();
+                restGui.dispose();
             }
         };
         thread.start();
-
-        dialog.setVisible(true);
     }
 
     public boolean isStatus() {
@@ -116,5 +115,25 @@ public class RestGui{
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public boolean isVisible(){
+        return dialog.isVisible();
+    }
+
+    public void cancel() {
+        status= false;
+        if(settingGui!=null){
+            settingGui.updateTime();
+        }
+    }
+
+    public void dispose() {
+        // 关闭对话框
+        dialog.dispose();
+    }
+
+    public void setVisible(boolean b){
+        dialog.setVisible(b);
     }
 }

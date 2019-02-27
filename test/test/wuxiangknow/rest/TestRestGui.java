@@ -10,14 +10,15 @@ import org.junit.Test;
  */
 public class TestRestGui {
 
+
     public static void main(String[] args) {
         RestGui restGui = new RestGui(null);
+        restGui.setVisible(true);
     }
 
     @Test
     public void test(){
         RestGui restGui = new RestGui(null);
-
-
+        restGui.setVisible(true);
     }
 }

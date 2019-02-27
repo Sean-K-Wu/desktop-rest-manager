@@ -24,9 +24,11 @@ public class SleepGui extends JFrame{
 
     private JLabel imageLabel;//图片
 
+    private SettingGui settingGui;
 
 
     public SleepGui(final SettingGui settingGui) throws HeadlessException {
+        this.settingGui = settingGui;
         this.setLayout(null);
         this.setResizable(false);//不可改变大小
         this.setUndecorated(true);//无标题栏
@@ -119,5 +121,11 @@ public class SleepGui extends JFrame{
             }
         }
         return fileNames;
+    }
+
+    public void wakeUp() {
+        synchronized (settingGui){
+            settingGui.notifyAll();
+        }
     }
 }
