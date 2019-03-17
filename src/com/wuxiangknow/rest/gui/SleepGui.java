@@ -6,8 +6,6 @@ import com.wuxiangknow.rest.util.ImageUtil;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -65,7 +63,7 @@ public class SleepGui extends JFrame{
         }
         imageLabel.setIcon(new ImageIcon(ImageUtil.getScaledImage(bufferedImage,(int) screenSize.getWidth(), (int) screenSize.getHeight())));
         imageLabel.setBounds(0, 0, (int) screenSize.getWidth(), (int) screenSize.getHeight());
-        this.addKeyListener(new KeyAdapter() {
+        /*this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
@@ -75,22 +73,23 @@ public class SleepGui extends JFrame{
                     }
                 }
             }
-        });
-        this.setBounds(0, 0, (int) screenSize.getWidth(), (int) screenSize.getHeight());
+        });*/
+        //this.setBounds(0, 0, (int) screenSize.getWidth(), (int) screenSize.getHeight());
         this.add(imageLabel);
-        this.setVisible(true);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);//最大化
+        this.setVisible(true);
         if(!this.requestFocusInWindow()){
             this.requestFocus();
         }
-        synchronized (settingGui){
-            try {
-                settingGui.wait(settingGui.getRestTime());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        if(settingGui != null){
+            synchronized (settingGui){
+                try {
+                    settingGui.wait(settingGui.getRestTime());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
-
     }
 
     private String getFileByRandom(List<String> resource) {
