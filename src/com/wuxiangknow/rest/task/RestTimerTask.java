@@ -41,9 +41,11 @@ public class RestTimerTask extends TimerTask {
                             restGui.cancel();
                             // 关闭对话框
                             restGui.dispose();
+                            return true;
                         }
                         if(sleepGui !=null && sleepGui.isVisible()){
                             sleepGui.wakeUp();
+                            return true;
                         }
                     }
                 }
