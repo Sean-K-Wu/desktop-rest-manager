@@ -32,9 +32,9 @@ import java.text.SimpleDateFormat;
  */
 public class SettingGui extends JFrame {
     PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-    private  boolean status ;//后台线程状态
+    private  boolean status =true;//后台线程状态
     private  boolean autoBoot = true;
-    private  boolean weekendDisable = true;
+    private  boolean weekendDisable = false;
     private BetweenTime morningBetweenTime;
     private BetweenTime afternoonBetweenTime;
     public static final String SLEEP_IMAGE_PATH_DEFAULT_VALUE = "默认";

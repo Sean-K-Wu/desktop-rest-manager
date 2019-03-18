@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.wuxiangknow.rest.bean.Version;
 
 import java.awt.*;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 
 /**
  * @Desciption 配置信息
@@ -21,15 +19,18 @@ public class RestConfig {
 
     public static  String PROGRAM_VERSION;
     static {
-        try {
-            Path path = Paths.get(RestConfig.class.getClassLoader().getResource("version.json").toURI());
-            byte[] bytes = Files.readAllBytes(path);
-            String s = new String(bytes, "UTF-8");
+        try (InputStream inputStream = RestConfig.class.getClassLoader().getResourceAsStream(("version.json"));
+             ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ){
+            byte[] bytes = new byte[100];
+            int len;
+            while ( (len = inputStream.read(bytes))>0){
+                out.write(bytes,0,len);
+            }
+            String s = new String(out.toByteArray(), "UTF-8");
             Version version = JSON.parseObject(s, Version.class);
             PROGRAM_VERSION = version.getVersion();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }
