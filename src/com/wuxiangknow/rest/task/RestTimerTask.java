@@ -4,8 +4,8 @@ package com.wuxiangknow.rest.task;
 import com.wuxiangknow.rest.bean.BetweenTime;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.gui.RestGui;
-import com.wuxiangknow.rest.gui.SettingGui;
 import com.wuxiangknow.rest.gui.SleepGui;
+import com.wuxiangknow.rest.gui.generate.SettingGui;
 import com.wuxiangknow.rest.util.DateTimeUtil;
 import com.wuxiangknow.rest.util.WindowsUtil;
 import me.coley.simplejna.hook.key.KeyEventReceiver;
@@ -77,7 +77,15 @@ public class RestTimerTask extends TimerTask {
         }
         if(isWork){
             //如果刚好到了工作的开始时间 需要重置时间
-            updateLastTime(morningBetweenTime.getStartTime(),afternoonBetweenTime.getStartTime(),now);
+            DateTime morningStartTime = null;
+            DateTime afternoonStartTime = null;
+            if(morningBetweenTime !=null){
+                morningStartTime = morningBetweenTime.getStartTime();
+            }
+            if(afternoonStartTime !=null){
+                afternoonStartTime = afternoonBetweenTime.getStartTime();
+            }
+            updateLastTime(morningStartTime,afternoonStartTime,now);
             if(lastTimeMillis == null){
                 lastTimeMillis = System.currentTimeMillis();
             }

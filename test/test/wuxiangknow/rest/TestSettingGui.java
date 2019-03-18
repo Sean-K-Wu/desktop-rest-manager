@@ -1,6 +1,7 @@
 package test.wuxiangknow.rest;
 
-import com.wuxiangknow.rest.gui.SettingGui;
+
+import com.wuxiangknow.rest.gui.generate.SettingGui;
 import org.junit.Test;
 
 /**
@@ -13,8 +14,7 @@ public class TestSettingGui {
     @Test
     public void test(){
         SettingGui settingGui = new SettingGui();
-        settingGui.initCompenents();
-        settingGui.initListeners();
+        settingGui.updateComponents();
         settingGui.initClockTimes();
         settingGui.setVisible(true);
         try {

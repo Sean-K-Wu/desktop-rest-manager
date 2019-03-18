@@ -1,7 +1,7 @@
 package com.wuxiangknow.rest.cache;
 
 import com.wuxiangknow.rest.bean.BetweenTime;
-import com.wuxiangknow.rest.gui.SettingGui;
+import com.wuxiangknow.rest.gui.generate.SettingGui;
 
 import java.io.Serializable;
 

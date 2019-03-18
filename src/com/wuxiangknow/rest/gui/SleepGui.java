@@ -1,6 +1,7 @@
 package com.wuxiangknow.rest.gui;
 
 import com.wuxiangknow.rest.config.RestConfig;
+import com.wuxiangknow.rest.gui.generate.SettingGui;
 import com.wuxiangknow.rest.util.ImageUtil;
 
 import javax.imageio.ImageIO;

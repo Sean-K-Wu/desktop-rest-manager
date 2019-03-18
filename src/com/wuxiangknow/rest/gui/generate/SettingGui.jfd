@@ -1,0 +1,260 @@
+JFDML JFormDesigner: "6.0.6.0.190" Java: "1.8.0_112-release" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.GridLayout ) ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+				name: "rootPanel"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+					"$columnConstraints": "[fill]"
+					"$rowConstraints": "[]"
+					"$layoutConstraints": "hidemode 3"
+				} ) {
+					name: "panel1"
+					add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+						name: "tabbedPane1"
+						"requestFocusEnabled": false
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+							"$layoutConstraints": "insets 0,hidemode 3,gap 0 0"
+							"$columnConstraints": "[grow,fill][grow,fill][grow,fill][grow,fill][grow,fill][grow,fill][grow,fill]"
+							"$rowConstraints": "[grow,fill]"
+						} ) {
+							name: "aboutPanle"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "iconLable"
+								"icon": sfield com.jformdesigner.model.FormObject NULL_VALUE
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 0"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "programNameLable"
+								"text": "休息小程序"
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 0"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "autherLable"
+								"text": "Power By 吴翔"
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 0"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "redPacketLable"
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 3 0"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "versionLable"
+								"text": "v1.5"
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 4 0"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "updateLable"
+								"text": "检查更新"
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 5 0"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "projectLable"
+								"text": "Fork Me"
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 6 0"
+							} )
+						}, new FormLayoutConstraints( null ) {
+							"title": "关于"
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+							"$layoutConstraints": "hidemode 3"
+							"$columnConstraints": "[fill][fill]"
+							"$rowConstraints": "[58][26][][][][]"
+						} ) {
+							name: "settingPanel"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "maxWorkTimeLabel"
+								"text": "间隔时长(分)："
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 0,alignx leading,growx 0"
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "maxWorkTimeField"
+								addEvent( new FormEvent( "java.awt.event.FocusListener", "focusLost", "maxWorkTimeFieldFocusLost", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 0"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "restTimeLabel"
+								"text": "休息时长(分)："
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 0,alignx left,growx 0"
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "restTimeField"
+								addEvent( new FormEvent( "java.awt.event.FocusListener", "focusLost", "restTimeFieldFocusLost", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 0"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "sleepImagesPathLabel"
+								"text": "屏保图片："
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 1,alignx left,growx 0"
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "sleepImagesPatheField"
+								addEvent( new FormEvent( "java.awt.event.FocusListener", "focusGained", "sleepImagesPatheFieldFocusGained", true ) )
+								addEvent( new FormEvent( "java.awt.event.FocusListener", "focusLost", "sleepImagesPatheFieldFocusLost", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 1"
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "sleepImagesPathButton"
+								"text": "选择文件/文件夹"
+								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "sleepImagesPathButtonMouseClicked", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 1,alignx right,growx 0"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "morningWorkLabel"
+								"text": "工作时间(上午)："
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 2"
+							} )
+							add( new FormComponent( "com.wuxiangknow.rest.component.ClockComboBox" ) {
+								name: "morningStartHourBox"
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "morningStartHourBoxItemStateChanged", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 2"
+							} )
+							add( new FormComponent( "com.wuxiangknow.rest.component.ClockComboBox" ) {
+								name: "morningStartMinuteBox"
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "morningStartMinuteBoxItemStateChanged", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 2"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "morningSepereteLabel"
+								"text": "~"
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 2"
+							} )
+							add( new FormComponent( "com.wuxiangknow.rest.component.ClockComboBox" ) {
+								name: "morningEndHourBox"
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "morningEndHourBoxItemStateChanged", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 2"
+							} )
+							add( new FormComponent( "com.wuxiangknow.rest.component.ClockComboBox" ) {
+								name: "morningEndMinuteBox"
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "morningEndMinuteBoxItemStateChanged", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 2"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "afternoonWorkLabel"
+								"text": "工作时间(下午)："
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 3"
+							} )
+							add( new FormComponent( "com.wuxiangknow.rest.component.ClockComboBox" ) {
+								name: "afternoonStartHourBox"
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "afternoonStartHourBoxItemStateChanged", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 3"
+							} )
+							add( new FormComponent( "com.wuxiangknow.rest.component.ClockComboBox" ) {
+								name: "afternoonStartMinuteBox"
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "afternoonStartMinuteBoxItemStateChanged", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 3"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "afternoonSepereteLabel"
+								"text": "~"
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 3"
+							} )
+							add( new FormComponent( "com.wuxiangknow.rest.component.ClockComboBox" ) {
+								name: "afternoonEndHourBox"
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "afternoonEndHourBoxItemStateChanged", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 3"
+							} )
+							add( new FormComponent( "com.wuxiangknow.rest.component.ClockComboBox" ) {
+								name: "afternoonEndMinuteBox"
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "afternoonEndMinuteBoxItemStateChanged", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 3"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "weekendLabel"
+								"text": "周末禁用："
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 4"
+							} )
+							add( new FormComponent( "javax.swing.JCheckBox" ) {
+								name: "weekendCheckBox"
+								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "weekendCheckBoxMouseClicked", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 4"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "autoBootLabel"
+								"text": "开机自启："
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 4"
+							} )
+							add( new FormComponent( "javax.swing.JCheckBox" ) {
+								name: "autoBootCheckBox"
+								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "autoBootCheckBoxMouseClicked", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 4"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "statusLabel"
+								"text": "状态："
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 5"
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "statusButton"
+								"text": "开启"
+								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "statusButtonMouseClicked", true ) )
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 5"
+							} )
+						}, new FormLayoutConstraints( null ) {
+							"title": "设置"
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+							"$layoutConstraints": "hidemode 3"
+							"$columnConstraints": "[fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill]"
+							"$rowConstraints": "[][][][][][][]"
+						} ) {
+							name: "donatePanel"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "wxLable"
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 1 6 6"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "aliLable"
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 9 1 6 6"
+							} )
+						}, new FormLayoutConstraints( null ) {
+							"title": "捐赠"
+						} )
+					}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+						"value": "cell 0 0"
+					} )
+				} )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 35, 15 )
+			"size": new java.awt.Dimension( 385, 261 )
+		} )
+	}
+}

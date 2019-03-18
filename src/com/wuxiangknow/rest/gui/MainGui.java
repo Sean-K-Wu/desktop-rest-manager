@@ -4,6 +4,7 @@ package com.wuxiangknow.rest.gui;
 import com.wuxiangknow.rest.cache.CacheManager;
 import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.config.RestConfig;
+import com.wuxiangknow.rest.gui.generate.SettingGui;
 import com.wuxiangknow.rest.task.RestTimerTask;
 
 import javax.swing.*;
@@ -43,8 +44,7 @@ public class MainGui extends JFrame{
         if(cacheSettingBean!=null){
             settingGui.loadCache(cacheSettingBean);
         }
-        settingGui.initCompenents();
-        settingGui.initListeners();
+        settingGui.updateComponents();
         settingGui.initClockTimes();
         settingPropertyListener = new SettingPropertyListener();
         settingGui.addPropertyChangeListener("settingStatus",settingPropertyListener);
