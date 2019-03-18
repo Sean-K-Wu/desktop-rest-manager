@@ -163,7 +163,6 @@ public class SettingGui extends JFrame {
         maxWorkTimeField.setText(String.valueOf(maxWorkTime /1000 / 60));
         restTimeField.setText(String.valueOf(restTime /1000 / 60));
         sleepImagesPatheField.setText(sleepImagePath ==null?SLEEP_IMAGE_PATH_DEFAULT_VALUE:sleepImagePath);
-        morningStartHourBox.initItems(SimpleDateFormat.HOUR0_FIELD);
         if(status){
             statusButton.setText("停止");
         }else{
@@ -175,14 +174,15 @@ public class SettingGui extends JFrame {
         if(weekendDisable){
             weekendCheckBox.setSelected(true);
         }
+        morningStartHourBox.initItems(SimpleDateFormat.HOUR0_FIELD);//初始化选项 并且将事件置为null
+
     }
 
 
 
-    public void initClockTimes() {
-        BetweenTime afternoonBetweenTime = this.afternoonBetweenTime;
-        initClockTimeValue(this.morningBetweenTime,morningStartHourBox,morningStartMinuteBox,morningEndHourBox,morningEndMinuteBox);
-        initClockTimeValue(this.afternoonBetweenTime,afternoonStartHourBox,afternoonStartMinuteBox,afternoonEndHourBox,afternoonEndMinuteBox);
+    public void initClockTimes(BetweenTime morningBetweenTime, BetweenTime afternoonBetweenTime) {
+        initClockTimeValue(morningBetweenTime,morningStartHourBox,morningStartMinuteBox,morningEndHourBox,morningEndMinuteBox);
+        initClockTimeValue(afternoonBetweenTime,afternoonStartHourBox,afternoonStartMinuteBox,afternoonEndHourBox,afternoonEndMinuteBox);
     }
     private void initClockTimeValue(BetweenTime betweenTime ,ClockComboBox startHourBox,ClockComboBox startMinuteBox,ClockComboBox endHourBox,ClockComboBox endMinuteBox) {
         if(betweenTime !=null){

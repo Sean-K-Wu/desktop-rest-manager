@@ -15,7 +15,7 @@ public class TestSettingGui {
     public void test(){
         SettingGui settingGui = new SettingGui();
         settingGui.updateComponents();
-        settingGui.initClockTimes();
+        settingGui.initClockTimes(null,null);
         settingGui.setVisible(true);
         try {
             Thread.sleep(Integer.MAX_VALUE);

@@ -7,8 +7,9 @@ import com.wuxiangknow.rest.cache.CacheManager;
 import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.gui.generate.SettingGui;
-import com.wuxiangknow.rest.keyboard.*;
+import com.wuxiangknow.rest.keyboard.KeyboardManager;
 import com.wuxiangknow.rest.task.RestTimerTask;
+import com.wuxiangknow.rest.task.ShutdownTask;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
 import javax.swing.*;
@@ -53,7 +54,7 @@ public class MainGui {
             settingGui.loadCache(cacheSettingBean);
         }
         settingGui.updateComponents();
-        settingGui.initClockTimes();
+        settingGui.initClockTimes(cacheSettingBean.getMorningBetweenTime(),cacheSettingBean.getAfternoonBetweenTime());
         settingPropertyListener = new SettingPropertyListener();
         settingGui.addPropertyChangeListener("settingStatus",settingPropertyListener);
         settingGui.setVisible(true);
@@ -64,7 +65,7 @@ public class MainGui {
         java.util.Timer timer = new Timer(false);
         RestTimerTask restTimerTask = new RestTimerTask(settingGui);
         timer.schedule(restTimerTask,0,RestConfig.TIMER_TASK_PERIOD);
-
+        Runtime.getRuntime().addShutdownHook(new ShutdownTask(settingGui));
     }
     /**
      * 初始化look and feel
@@ -75,6 +76,9 @@ public class MainGui {
             switch (RestConfig.SWING_THEME) {
                 case "BeautyEye":
                     BeautyEyeLNFHelper.launchBeautyEyeLNF();
+                    //以下语句在BeautyEyeLNFHelper.launchBeautyEyeLNF()之后执行方能起效
+                    UIManager.put("TabbedPane.tabAreaInsets"
+                            , new javax.swing.plaf.InsetsUIResource(3,0,2,20));
                     UIManager.put("RootPane.setupButtonVisible", false);
                     break;
                 case "系统默认":
@@ -166,7 +170,6 @@ public class MainGui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tray.remove(trayIcon);
-                CacheManager.save(settingGui);
                 System.exit(0);
             }
         });

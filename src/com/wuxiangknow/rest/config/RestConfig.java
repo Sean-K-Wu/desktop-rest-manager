@@ -47,8 +47,8 @@ public class RestConfig {
 
     public static final String[] SLEEP_IMAGE_FILES = new String[]{"/images/sleep/sleep.jpg"};//休息显示图片路径
 
-    //public static final long MAX_WORK_TIME = 40 * 60 * 1000;//最长连续工作时间  多长工作时间后休息
-    public static final long MAX_WORK_TIME = 10 * 1000;//最长连续工作时间  多长工作时间后休息
+    public static final long MAX_WORK_TIME = 40 * 60 * 1000;//最长连续工作时间  多长工作时间后休息
+    //public static final long MAX_WORK_TIME = 10 * 1000;//最长连续工作时间  多长工作时间后休息
 
     public static final long REST_TIME = 1 * 60 * 1000;//休息时间
 
@@ -66,7 +66,7 @@ public class RestConfig {
 
     public static final String COUNT_DOWN_CANCEL_PATH = "/images/cancel.png";
 
-    public static final String SWING_THEME = "";
+    public static final String SWING_THEME = "BeautyEye";
 
     /**
      * 软件版本检查url

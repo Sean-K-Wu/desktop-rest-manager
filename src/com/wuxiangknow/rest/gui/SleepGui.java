@@ -78,6 +78,7 @@ public class SleepGui extends JFrame{
         //this.setBounds(0, 0, (int) screenSize.getWidth(), (int) screenSize.getHeight());
         this.add(imageLabel);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);//最大化
+        this.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         this.setVisible(true);
         if(!this.requestFocusInWindow()){
             this.requestFocus();

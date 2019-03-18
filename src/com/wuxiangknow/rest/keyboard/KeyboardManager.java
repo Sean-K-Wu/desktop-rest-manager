@@ -22,16 +22,13 @@ public class KeyboardManager {
             public boolean onKeyUpdate(SystemState sysState, PressState pressState, int time, int vkCode) {
                 if(pressState.equals(PressState.UP)) {//抬起
                     if(KeyEvent.VK_ESCAPE == vkCode){
-                        System.out.println("准备关闭...");
                         if(RestTimerTask.restGui !=null && RestTimerTask.restGui.isVisible()){
-                            System.out.println("关闭倒计时");
                             RestTimerTask.restGui.cancel();
                             // 关闭对话框
                             RestTimerTask.restGui.dispose();
                             return true;
                         }
                         if(RestTimerTask.sleepGui !=null && RestTimerTask.sleepGui.isVisible()){
-                            System.out.println("关闭休息界面");
                             RestTimerTask.sleepGui.wakeUp();
                             return true;
                         }

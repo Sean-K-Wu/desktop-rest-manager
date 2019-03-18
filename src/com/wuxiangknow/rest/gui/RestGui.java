@@ -55,6 +55,7 @@ public class RestGui{
         // 设置对话框相对显示的位置
         dialog.setLocationRelativeTo(null);
         AWTUtilities.setWindowOpaque(dialog, false);
+        dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         // 创建一个标签显示消息内容
         final CountDownLabel messageLabel = new CountDownLabel();
         messageLabel.setText(String.valueOf(countDown));
