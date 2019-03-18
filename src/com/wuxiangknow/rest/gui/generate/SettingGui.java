@@ -4,6 +4,9 @@
 
 package com.wuxiangknow.rest.gui.generate;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import com.wuxiangknow.rest.bean.BetweenTime;
 import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.component.ClockComboBox;
@@ -20,6 +23,8 @@ import java.awt.event.*;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -277,7 +282,7 @@ public class SettingGui extends JFrame {
         return hasImages;
     }
     private void morningStartHourBoxItemStateChanged(ItemEvent e) {
-        handleEndHourEvent(e,true);
+        handleStartHourEvent(e,true);
     }
 
     private void morningStartMinuteBoxItemStateChanged(ItemEvent e) {
@@ -453,6 +458,31 @@ public class SettingGui extends JFrame {
         statusButton.setEnabled(true);
     }
 
+    private void updateLabelMouseClicked(MouseEvent e) {
+        // TODO add your code here
+    }
+
+    private void updateLabelMouseEntered(MouseEvent e) {
+        Component component = e.getComponent();
+        component.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+
+    private void projectLabelMouseClicked(MouseEvent e) {
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            desktop.browse(new URI(RestConfig.PROGRAM_HELP_URL));
+        } catch (IOException | URISyntaxException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private void projectLabelMouseEntered(MouseEvent e) {
+        Component component = e.getComponent();
+        component.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+
+
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -460,13 +490,22 @@ public class SettingGui extends JFrame {
         panel1 = new JPanel();
         tabbedPane1 = new JTabbedPane();
         aboutPanle = new JPanel();
-        iconLable = new JLabel();
-        programNameLable = new JLabel();
-        autherLable = new JLabel();
-        redPacketLable = new JLabel();
-        versionLable = new JLabel();
-        updateLable = new JLabel();
-        projectLable = new JLabel();
+        Spacer vSpacer8 = new Spacer();
+        iconLabel = new JLabel();
+        Spacer vSpacer3 = new Spacer();
+        programNameLabel = new JLabel();
+        Spacer vSpacer2 = new Spacer();
+        autherLabel = new JLabel();
+        Spacer vSpacer1 = new Spacer();
+        redPacketLabel = new JLabel();
+        Spacer vSpacer4 = new Spacer();
+        versionLabel = new JLabel();
+        Spacer vSpacer5 = new Spacer();
+        updateLabel = new JLabel();
+        Spacer vSpacer9 = new Spacer();
+        Spacer vSpacer6 = new Spacer();
+        projectLabel = new JLabel();
+        Spacer vSpacer7 = new Spacer();
         settingPanel = new JPanel();
         maxWorkTimeLabel = new JLabel();
         maxWorkTimeField = new JTextField();
@@ -520,43 +559,128 @@ public class SettingGui extends JFrame {
 
                     //======== aboutPanle ========
                     {
-                        aboutPanle.setLayout(new MigLayout(
-                            "insets 0,hidemode 3,gap 0 0",
-                            // columns
-                            "[grow,fill]" +
-                            "[grow,fill]" +
-                            "[grow,fill]" +
-                            "[grow,fill]" +
-                            "[grow,fill]" +
-                            "[grow,fill]" +
-                            "[grow,fill]",
-                            // rows
-                            "[grow,fill]"));
+                        aboutPanle.setLayout(new GridLayoutManager(18, 1, new Insets(0, 0, 0, 0), 0, 0));
+                        aboutPanle.add(vSpacer8, new GridConstraints(0, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            null, null, null));
 
-                        //---- iconLable ----
-                        iconLable.setIcon(null);
-                        aboutPanle.add(iconLable, "cell 0 0");
+                        //---- iconLabel ----
+                        iconLabel.setIcon(new ImageIcon(getClass().getResource("/res/icon-small.png")));
+                        aboutPanle.add(iconLabel, new GridConstraints(1, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+                        aboutPanle.add(vSpacer3, new GridConstraints(2, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            null, null, null));
 
-                        //---- programNameLable ----
-                        programNameLable.setText("\u4f11\u606f\u5c0f\u7a0b\u5e8f");
-                        aboutPanle.add(programNameLable, "cell 1 0");
+                        //---- programNameLabel ----
+                        programNameLabel.setText("\u4f11\u606f\u5c0f\u7a0b\u5e8f");
+                        aboutPanle.add(programNameLabel, new GridConstraints(3, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+                        aboutPanle.add(vSpacer2, new GridConstraints(4, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            null, null, null));
 
-                        //---- autherLable ----
-                        autherLable.setText("Power By \u5434\u7fd4");
-                        aboutPanle.add(autherLable, "cell 1 0");
-                        aboutPanle.add(redPacketLable, "cell 3 0");
+                        //---- autherLabel ----
+                        autherLabel.setText("Developed By \u5434\u7fd4");
+                        aboutPanle.add(autherLabel, new GridConstraints(5, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+                        aboutPanle.add(vSpacer1, new GridConstraints(6, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            null, null, null));
 
-                        //---- versionLable ----
-                        versionLable.setText("v1.5");
-                        aboutPanle.add(versionLable, "cell 4 0");
+                        //---- redPacketLabel ----
+                        redPacketLabel.setIcon(new ImageIcon(getClass().getResource("/res/gift/gift.jpg")));
+                        aboutPanle.add(redPacketLabel, new GridConstraints(8, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+                        aboutPanle.add(vSpacer4, new GridConstraints(9, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            null, null, null));
 
-                        //---- updateLable ----
-                        updateLable.setText("\u68c0\u67e5\u66f4\u65b0");
-                        aboutPanle.add(updateLable, "cell 5 0");
+                        //---- versionLabel ----
+                        versionLabel.setText("v1.5");
+                        aboutPanle.add(versionLabel, new GridConstraints(10, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+                        aboutPanle.add(vSpacer5, new GridConstraints(11, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            null, null, null));
 
-                        //---- projectLable ----
-                        projectLable.setText("Fork Me");
-                        aboutPanle.add(projectLable, "cell 6 0");
+                        //---- updateLabel ----
+                        updateLabel.setText("\u68c0\u67e5\u66f4\u65b0");
+                        updateLabel.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                updateLabelMouseClicked(e);
+                            }
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                                updateLabelMouseEntered(e);
+                            }
+                        });
+                        aboutPanle.add(updateLabel, new GridConstraints(13, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+                        aboutPanle.add(vSpacer9, new GridConstraints(14, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            null, null, null));
+                        aboutPanle.add(vSpacer6, new GridConstraints(15, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            null, null, null));
+
+                        //---- projectLabel ----
+                        projectLabel.setText("<html>Fork me on <a href=''>Github</a></html>");
+                        projectLabel.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                projectLabelMouseClicked(e);
+                            }
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                                projectLabelMouseEntered(e);
+                            }
+                        });
+                        aboutPanle.add(projectLabel, new GridConstraints(16, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+                        aboutPanle.add(vSpacer7, new GridConstraints(17, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            null, null, null));
                     }
                     tabbedPane1.addTab("\u5173\u4e8e", aboutPanle);
 
@@ -787,7 +911,13 @@ public class SettingGui extends JFrame {
                             "[]" +
                             "[]" +
                             "[]"));
+
+                        //---- wxLable ----
+                        wxLable.setIcon(new ImageIcon(getClass().getResource("/res/donate/wechatpay.jpg")));
                         donatePanel.add(wxLable, "cell 1 1 6 6");
+
+                        //---- aliLable ----
+                        aliLable.setIcon(new ImageIcon(getClass().getResource("/res/donate/alipay.jpg")));
                         donatePanel.add(aliLable, "cell 9 1 6 6");
                     }
                     tabbedPane1.addTab("\u6350\u8d60", donatePanel);
@@ -807,13 +937,13 @@ public class SettingGui extends JFrame {
     private JPanel panel1;
     private JTabbedPane tabbedPane1;
     private JPanel aboutPanle;
-    private JLabel iconLable;
-    private JLabel programNameLable;
-    private JLabel autherLable;
-    private JLabel redPacketLable;
-    private JLabel versionLable;
-    private JLabel updateLable;
-    private JLabel projectLable;
+    private JLabel iconLabel;
+    private JLabel programNameLabel;
+    private JLabel autherLabel;
+    private JLabel redPacketLabel;
+    private JLabel versionLabel;
+    private JLabel updateLabel;
+    private JLabel projectLabel;
     private JPanel settingPanel;
     private JLabel maxWorkTimeLabel;
     private JTextField maxWorkTimeField;
