@@ -28,7 +28,7 @@ import java.util.Timer;
 /**
  * 系统托盘UI
  */
-public class MainGui extends JFrame{
+public class MainGui {
 
 
 
@@ -163,8 +163,6 @@ public class MainGui extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 tray.remove(trayIcon);
-                parentPanel.dispose();
-
                 CacheManager.save(settingGui);
                 System.exit(0);
             }

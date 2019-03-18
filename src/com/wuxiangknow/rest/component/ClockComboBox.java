@@ -62,7 +62,7 @@ public class ClockComboBox extends JComboBox {
 
     public void clearAllItem(){
         this.removeAllItems();
-        this.addItem(" ");
+        this.addItem("  ");
     }
 
 
@@ -74,7 +74,7 @@ public class ClockComboBox extends JComboBox {
             }
             return item;
         }
-        return " ";
+        return "  ";
 
     }
 

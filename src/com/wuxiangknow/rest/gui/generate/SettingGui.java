@@ -4,13 +4,11 @@
 
 package com.wuxiangknow.rest.gui.generate;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 import com.wuxiangknow.rest.bean.BetweenTime;
 import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.component.ClockComboBox;
 import com.wuxiangknow.rest.config.RestConfig;
+import com.wuxiangknow.rest.task.FileChooserTask;
 import com.wuxiangknow.rest.task.UpgradeTask;
 import com.wuxiangknow.rest.thread.ThreadPoolManager;
 import com.wuxiangknow.rest.util.ImageUtil;
@@ -39,7 +37,7 @@ public class SettingGui extends JFrame {
     private  boolean weekendDisable = true;
     private BetweenTime morningBetweenTime;
     private BetweenTime afternoonBetweenTime;
-    private static final String SLEEP_IMAGE_PATH_DEFAULT_VALUE = "默认";
+    public static final String SLEEP_IMAGE_PATH_DEFAULT_VALUE = "默认";
     private  String sleepImagePath ;
     private JFileChooser sleepImagesPatheChooser;
     private long restTime = RestConfig.REST_TIME;//休息时间
@@ -65,6 +63,30 @@ public class SettingGui extends JFrame {
 
     public void setSleepImagePath(String sleepImagePath) {
         this.sleepImagePath = sleepImagePath;
+    }
+
+    public JFileChooser getSleepImagesPatheChooser() {
+        return sleepImagesPatheChooser;
+    }
+
+    public void setSleepImagesPatheChooser(JFileChooser sleepImagesPatheChooser) {
+        this.sleepImagesPatheChooser = sleepImagesPatheChooser;
+    }
+
+    public JLabel getSleepImagesPathLabel() {
+        return sleepImagesPathLabel;
+    }
+
+    public void setSleepImagesPathLabel(JLabel sleepImagesPathLabel) {
+        this.sleepImagesPathLabel = sleepImagesPathLabel;
+    }
+
+    public JTextField getSleepImagesPatheField() {
+        return sleepImagesPatheField;
+    }
+
+    public void setSleepImagesPatheField(JTextField sleepImagesPatheField) {
+        this.sleepImagesPatheField = sleepImagesPatheField;
     }
 
     public long getRestTime() {
@@ -153,7 +175,6 @@ public class SettingGui extends JFrame {
         if(weekendDisable){
             weekendCheckBox.setSelected(true);
         }
-        this.setBounds(200,200,700,700);
     }
 
 
@@ -228,24 +249,7 @@ public class SettingGui extends JFrame {
         sleepImagesPathButton.setEnabled(true);
     }
     public  void handleOpenFileChooser(){
-        sleepImagesPatheChooser = new JFileChooser();
-        sleepImagesPatheChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        sleepImagesPatheChooser.setMultiSelectionEnabled(false);
-        int result = sleepImagesPatheChooser.showOpenDialog(this);
-        if(JFileChooser.APPROVE_OPTION  == result){
-            File selectedFile = sleepImagesPatheChooser.getSelectedFile();
-            if(selectedFile != null){
-                boolean hasImages = hasImages(selectedFile);
-                if(hasImages){
-                    String absolutePath = selectedFile.getAbsolutePath();
-                    sleepImagesPatheField.setText(absolutePath);
-                    sleepImagePath = absolutePath;
-                }else{
-                    sleepImagesPatheField.setText(SLEEP_IMAGE_PATH_DEFAULT_VALUE);
-                    sleepImagePath = null;
-                }
-            }
-        }
+        new FileChooserTask(this).execute();
     }
     private void sleepImagesPatheFieldFocusGained(FocusEvent e) {
         JTextField component = (JTextField) e.getComponent();
@@ -262,7 +266,7 @@ public class SettingGui extends JFrame {
         String text = component.getText();
         if(text !=null && !text.equals(SLEEP_IMAGE_PATH_DEFAULT_VALUE)){
             File file = new File(text.trim());
-            if(!hasImages(file)){
+            if(!ImageUtil.hasImages(file)){
                 component.setText(SLEEP_IMAGE_PATH_DEFAULT_VALUE);
                 sleepImagePath = null;
             }else{
@@ -271,18 +275,7 @@ public class SettingGui extends JFrame {
             }
         }
     }
-    private boolean hasImages(File selectedFile) {
-        boolean hasImages = false;
-        if(selectedFile.exists() && selectedFile.isDirectory()){
-            for (File file : selectedFile.listFiles()) {
-                if(file.isFile() && ImageUtil.isImage(file.getName())){
-                    hasImages = true;
-                    break;
-                }
-            }
-        }
-        return hasImages;
-    }
+
     private void morningStartHourBoxItemStateChanged(ItemEvent e) {
         handleStartHourEvent(e,true);
     }
@@ -492,22 +485,13 @@ public class SettingGui extends JFrame {
         panel1 = new JPanel();
         tabbedPane1 = new JTabbedPane();
         aboutPanle = new JPanel();
-        Spacer vSpacer8 = new Spacer();
         iconLabel = new JLabel();
-        Spacer vSpacer3 = new Spacer();
         programNameLabel = new JLabel();
-        Spacer vSpacer2 = new Spacer();
         autherLabel = new JLabel();
-        Spacer vSpacer1 = new Spacer();
         redPacketLabel = new JLabel();
-        Spacer vSpacer4 = new Spacer();
         versionLabel = new JLabel();
-        Spacer vSpacer5 = new Spacer();
         updateLabel = new JLabel();
-        Spacer vSpacer9 = new Spacer();
-        Spacer vSpacer6 = new Spacer();
         projectLabel = new JLabel();
-        Spacer vSpacer7 = new Spacer();
         settingPanel = new JPanel();
         maxWorkTimeLabel = new JLabel();
         maxWorkTimeField = new JTextField();
@@ -561,77 +545,41 @@ public class SettingGui extends JFrame {
 
                     //======== aboutPanle ========
                     {
-                        aboutPanle.setLayout(new GridLayoutManager(18, 1, new Insets(0, 0, 0, 0), 0, 0));
-                        aboutPanle.add(vSpacer8, new GridConstraints(0, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                            null, null, null));
+                        aboutPanle.setLayout(new MigLayout(
+                            "insets 0,hidemode 3,gap 0 0",
+                            // columns
+                            "[grow 1,fill]",
+                            // rows
+                            "[grow,fill]" +
+                            "[fill]" +
+                            "[grow,fill]" +
+                            "[38,fill]" +
+                            "[32,fill]" +
+                            "[fill]" +
+                            "[32,fill]" +
+                            "[fill]" +
+                            "[34,fill]" +
+                            "[grow,fill]"));
 
                         //---- iconLabel ----
                         iconLabel.setIcon(new ImageIcon(getClass().getResource("/images/icon-small.png")));
-                        aboutPanle.add(iconLabel, new GridConstraints(1, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            null, null, null));
-                        aboutPanle.add(vSpacer3, new GridConstraints(2, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                            null, null, null));
+                        aboutPanle.add(iconLabel, "cell 0 1,align center center,grow 0 0");
 
                         //---- programNameLabel ----
                         programNameLabel.setText("\u4f11\u606f\u5c0f\u7a0b\u5e8f");
-                        aboutPanle.add(programNameLabel, new GridConstraints(3, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            null, null, null));
-                        aboutPanle.add(vSpacer2, new GridConstraints(4, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                            null, null, null));
+                        aboutPanle.add(programNameLabel, "cell 0 3,align center center,grow 0 0");
 
                         //---- autherLabel ----
                         autherLabel.setText("Developed By \u5434\u7fd4");
-                        aboutPanle.add(autherLabel, new GridConstraints(5, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            null, null, null));
-                        aboutPanle.add(vSpacer1, new GridConstraints(6, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                            null, null, null));
+                        aboutPanle.add(autherLabel, "cell 0 4,align center center,grow 0 0");
 
                         //---- redPacketLabel ----
                         redPacketLabel.setIcon(new ImageIcon(getClass().getResource("/images/gift/gift.jpg")));
-                        aboutPanle.add(redPacketLabel, new GridConstraints(8, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            null, null, null));
-                        aboutPanle.add(vSpacer4, new GridConstraints(9, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                            null, null, null));
+                        aboutPanle.add(redPacketLabel, "cell 0 5,align center center,grow 0 0");
 
                         //---- versionLabel ----
                         versionLabel.setText("v1.5");
-                        aboutPanle.add(versionLabel, new GridConstraints(10, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            null, null, null));
-                        aboutPanle.add(vSpacer5, new GridConstraints(11, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                            null, null, null));
+                        aboutPanle.add(versionLabel, "cell 0 6,align center center,grow 0 0");
 
                         //---- updateLabel ----
                         updateLabel.setText("\u68c0\u67e5\u66f4\u65b0");
@@ -645,21 +593,7 @@ public class SettingGui extends JFrame {
                                 updateLabelMouseEntered(e);
                             }
                         });
-                        aboutPanle.add(updateLabel, new GridConstraints(13, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            null, null, null));
-                        aboutPanle.add(vSpacer9, new GridConstraints(14, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                            null, null, null));
-                        aboutPanle.add(vSpacer6, new GridConstraints(15, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                            null, null, null));
+                        aboutPanle.add(updateLabel, "cell 0 7,align center center,grow 0 0");
 
                         //---- projectLabel ----
                         projectLabel.setText("<html>Fork me on <a href=''>Github</a></html>");
@@ -673,16 +607,7 @@ public class SettingGui extends JFrame {
                                 projectLabelMouseEntered(e);
                             }
                         });
-                        aboutPanle.add(projectLabel, new GridConstraints(16, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                            null, null, null));
-                        aboutPanle.add(vSpacer7, new GridConstraints(17, 0, 1, 1,
-                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                            null, null, null));
+                        aboutPanle.add(projectLabel, "cell 0 8,align center center,grow 0 0");
                     }
                     tabbedPane1.addTab("\u5173\u4e8e", aboutPanle);
 
@@ -906,7 +831,7 @@ public class SettingGui extends JFrame {
                             "[fill]" +
                             "[fill]",
                             // rows
-                            "[]" +
+                            "[38]" +
                             "[]" +
                             "[]" +
                             "[]" +
@@ -930,7 +855,7 @@ public class SettingGui extends JFrame {
         }
         contentPane.add(rootPanel);
         pack();
-        setLocationRelativeTo(getOwner());
+        setLocationRelativeTo(null);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

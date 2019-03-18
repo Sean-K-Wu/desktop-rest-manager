@@ -16,6 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class HttpClientUtil {
 
 
 
-    public static byte[] download(String url) {
+    public static byte[] download(String url,Component parentComponent) {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()){
             HttpPost httpPost = new HttpPost(url);
             CloseableHttpResponse response = httpclient.execute(httpPost);
@@ -45,7 +46,7 @@ public class HttpClientUtil {
             return EntityUtils.toByteArray(entity2);
         } catch (IOException e) {
             //e.printStackTrace();
-            handleFailedRequest();
+            handleFailedRequest(parentComponent);
         }
         return null;
     }
@@ -57,7 +58,7 @@ public class HttpClientUtil {
      * @return
      * @throws Exception
      */
-    public static JSONObject doPost(String url , Map<String,String> map) {
+    public static JSONObject doPost(String url , Map<String,String> map,Component parentComponent) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);
         //httpPost.addHeader("Content-Type", "text/html;charset=UTF-8");
@@ -85,7 +86,7 @@ public class HttpClientUtil {
             if((e instanceof ClientProtocolException &&  (status < 200 || status >= 300))
                     || e instanceof HttpHostConnectException
                     ){
-                handleFailedRequest();
+                handleFailedRequest(parentComponent);
             }
            e.printStackTrace();
         }
@@ -106,11 +107,11 @@ public class HttpClientUtil {
         return null;
     }
 
-    private static void handleFailedRequest() {
+    private static void handleFailedRequest(final Component parentComponent) {
         ThreadPoolManager.execute(new Runnable() {
             @Override
             public void run() {
-                JOptionPane.showConfirmDialog(null, "网络异常", "提示", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showConfirmDialog(parentComponent, "网络异常", "提示", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             }
         });
     }

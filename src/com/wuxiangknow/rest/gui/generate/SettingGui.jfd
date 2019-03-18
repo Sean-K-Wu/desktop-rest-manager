@@ -5,6 +5,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.GridLayout ) ) {
 			name: "this"
+			"$locationPolicy": 1
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
 				name: "rootPanel"
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
@@ -16,128 +17,57 @@ new FormModel {
 					add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
 						name: "tabbedPane1"
 						"requestFocusEnabled": false
-						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
-							"$columnCount": 1
-							"$rowCount": 18
-							"hGap": 0
-							"vGap": 0
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+							"$layoutConstraints": "insets 0,hidemode 3,gap 0 0"
+							"$columnConstraints": "[grow 1,fill]"
+							"$rowConstraints": "[grow,fill][fill][grow,fill][38,fill][32,fill][fill][32,fill][fill][34,fill][grow,fill]"
 						} ) {
 							name: "aboutPanle"
-							add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-								name: "vSpacer8"
-								auxiliary() {
-									"JavaCodeGenerator.variableLocal": true
-								}
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) )
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "iconLabel"
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/icon-small.png" )
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 1
-							} )
-							add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-								name: "vSpacer3"
-								auxiliary() {
-									"JavaCodeGenerator.variableLocal": true
-								}
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 2
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 1,align center center,grow 0 0"
 							} )
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "programNameLabel"
 								"text": "休息小程序"
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 3
-							} )
-							add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-								name: "vSpacer2"
-								auxiliary() {
-									"JavaCodeGenerator.variableLocal": true
-								}
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 4
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 3,align center center,grow 0 0"
 							} )
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "autherLabel"
 								"text": "Developed By 吴翔"
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 5
-							} )
-							add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-								name: "vSpacer1"
-								auxiliary() {
-									"JavaCodeGenerator.variableLocal": true
-								}
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 6
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 4,align center center,grow 0 0"
 							} )
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "redPacketLabel"
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/gift/gift.jpg" )
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 8
-							} )
-							add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-								name: "vSpacer4"
-								auxiliary() {
-									"JavaCodeGenerator.variableLocal": true
-								}
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 9
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 5,align center center,grow 0 0"
 							} )
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "versionLabel"
 								"text": "v1.5"
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 10
-							} )
-							add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-								name: "vSpacer5"
-								auxiliary() {
-									"JavaCodeGenerator.variableLocal": true
-								}
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 11
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 6,align center center,grow 0 0"
 							} )
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "updateLabel"
 								"text": "检查更新"
 								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "updateLabelMouseClicked", true ) )
 								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "updateLabelMouseEntered", true ) )
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 13
-							} )
-							add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-								name: "vSpacer9"
-								auxiliary() {
-									"JavaCodeGenerator.variableLocal": true
-								}
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 14
-							} )
-							add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-								name: "vSpacer6"
-								auxiliary() {
-									"JavaCodeGenerator.variableLocal": true
-								}
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 15
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 7,align center center,grow 0 0"
 							} )
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "projectLabel"
 								"text": "<html>Fork me on <a href=''>Github</a></html>"
 								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "projectLabelMouseClicked", true ) )
 								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "projectLabelMouseEntered", true ) )
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 16
-							} )
-							add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-								name: "vSpacer7"
-								auxiliary() {
-									"JavaCodeGenerator.variableLocal": true
-								}
-							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-								"row": 17
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 8,align center center,grow 0 0"
 							} )
 						}, new FormLayoutConstraints( null ) {
 							"title": "关于"
@@ -307,7 +237,7 @@ new FormModel {
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 							"$layoutConstraints": "hidemode 3"
 							"$columnConstraints": "[fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill]"
-							"$rowConstraints": "[][][][][][][]"
+							"$rowConstraints": "[38][][][][][][]"
 						} ) {
 							name: "donatePanel"
 							add( new FormComponent( "javax.swing.JLabel" ) {
