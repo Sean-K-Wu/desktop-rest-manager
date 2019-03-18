@@ -1,6 +1,14 @@
 package com.wuxiangknow.rest.config;
 
+import com.alibaba.fastjson.JSON;
+import com.wuxiangknow.rest.bean.Version;
+
 import java.awt.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @Desciption 配置信息
@@ -11,7 +19,20 @@ public class RestConfig {
 
     public static final String PROGRAM_NAME = "休息小程序";
 
-    public static final String PROGRAM_VERSION = "v1.2";
+    public static  String PROGRAM_VERSION;
+    static {
+        try {
+            Path path = Paths.get(RestConfig.class.getClassLoader().getResource("version.json").toURI());
+            byte[] bytes = Files.readAllBytes(path);
+            String s = new String(bytes, "UTF-8");
+            Version version = JSON.parseObject(s, Version.class);
+            PROGRAM_VERSION = version.getVersion();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static final String REG_KEY_PATH = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
     public static final String REG_VALUE_NAME = "desktop-rest-manager";

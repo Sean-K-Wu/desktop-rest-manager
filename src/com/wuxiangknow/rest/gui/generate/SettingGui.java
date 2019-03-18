@@ -11,6 +11,7 @@ import com.wuxiangknow.rest.bean.BetweenTime;
 import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.component.ClockComboBox;
 import com.wuxiangknow.rest.config.RestConfig;
+import com.wuxiangknow.rest.thread.ThreadPoolManager;
 import com.wuxiangknow.rest.util.ImageUtil;
 import com.wuxiangknow.rest.util.RegUtil;
 import com.wuxiangknow.rest.util.WindowsUtil;
@@ -459,7 +460,12 @@ public class SettingGui extends JFrame {
     }
 
     private void updateLabelMouseClicked(MouseEvent e) {
-        // TODO add your code here
+        ThreadPoolManager.execute(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
     }
 
     private void updateLabelMouseEntered(MouseEvent e) {
