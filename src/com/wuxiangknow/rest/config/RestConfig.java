@@ -43,4 +43,7 @@ public class RestConfig {
     public static final String GIFT_MONEY_PATH = "/res/gift/gift.jpg";
 
     public static final String COUNT_DOWN_CANCEL_PATH = "/res/cancel.png";
+
+    public static final String SWING_THEME = "BeautyEye";
+
 }

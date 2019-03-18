@@ -1,13 +1,18 @@
 package com.wuxiangknow.rest.gui;
 
 
+import com.sun.java.swing.plaf.motif.MotifLookAndFeel;
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import com.wuxiangknow.rest.cache.CacheManager;
 import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.gui.generate.SettingGui;
 import com.wuxiangknow.rest.task.RestTimerTask;
+import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +43,7 @@ public class MainGui extends JFrame{
     private SettingPropertyListener settingPropertyListener;
 
     public MainGui() {
+        initTheme();
         parentPanel=this;
         CacheSettingBean cacheSettingBean = CacheManager.load();
         settingGui = new SettingGui();
@@ -57,7 +63,42 @@ public class MainGui extends JFrame{
         java.util.Timer timer = new Timer(false);
         timer.schedule(new RestTimerTask(settingGui),0,RestConfig.TIMER_TASK_PERIOD);
     }
+    /**
+     * 初始化look and feel
+     */
+    public static void initTheme() {
 
+        try {
+            switch (RestConfig.SWING_THEME) {
+                case "BeautyEye":
+                    BeautyEyeLNFHelper.launchBeautyEyeLNF();
+                    UIManager.put("RootPane.setupButtonVisible", false);
+                    break;
+                case "系统默认":
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    break;
+                case "Windows":
+                    UIManager.setLookAndFeel(WindowsLookAndFeel.class.getName());
+                    break;
+                case "Nimbus"://丑
+                    UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
+                    break;
+                case "Metal"://丑
+                    UIManager.setLookAndFeel(MetalLookAndFeel.class.getName());
+                    break;
+                case "Motif"://丑
+                    UIManager.setLookAndFeel(MotifLookAndFeel.class.getName());
+                    break;
+                case "Darcula(推荐)":
+                    UIManager.setLookAndFeel("com.bulenkov.darcula.DarculaLaf");
+                    break;
+                default:
+                    UIManager.setLookAndFeel("com.bulenkov.darcula.DarculaLaf");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private URL getDefaultTrayImgName(){
         return this.getClass().getResource(RestConfig.PROGRAM_ICON_PATH);

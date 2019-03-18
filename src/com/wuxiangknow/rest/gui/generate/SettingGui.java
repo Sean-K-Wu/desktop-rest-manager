@@ -150,10 +150,7 @@ public class SettingGui extends JFrame {
     }
 
 
-    public static void main(String[] args) {
-        SettingGui settingGui = new SettingGui();
 
-    }
     public void initClockTimes() {
         BetweenTime afternoonBetweenTime = this.afternoonBetweenTime;
         initClockTimeValue(this.morningBetweenTime,morningStartHourBox,morningStartMinuteBox,morningEndHourBox,morningEndMinuteBox);
