@@ -67,4 +67,9 @@ public class RestConfig {
 
     public static final String SWING_THEME = "BeautyEye";
 
+    /**
+     * 软件版本检查url
+     */
+    public final static String CHECK_VERSION_URL = "https://raw.githubusercontent.com/Sean-K-Wu/desktop-rest-manager/master/resources/version.json";
+
 }
