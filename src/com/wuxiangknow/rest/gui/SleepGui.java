@@ -82,15 +82,6 @@ public class SleepGui extends JFrame{
         if(!this.requestFocusInWindow()){
             this.requestFocus();
         }
-        if(settingGui != null){
-            synchronized (settingGui){
-                try {
-                    settingGui.wait(settingGui.getRestTime());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
     private String getFileByRandom(List<String> resource) {

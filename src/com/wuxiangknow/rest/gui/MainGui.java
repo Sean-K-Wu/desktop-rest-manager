@@ -7,6 +7,7 @@ import com.wuxiangknow.rest.cache.CacheManager;
 import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.gui.generate.SettingGui;
+import com.wuxiangknow.rest.keyboard.*;
 import com.wuxiangknow.rest.task.RestTimerTask;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
@@ -44,6 +45,7 @@ public class MainGui {
 
     public MainGui() {
         initTheme();
+        KeyboardManager.init();
         parentPanel=this;
         CacheSettingBean cacheSettingBean = CacheManager.load();
         settingGui = new SettingGui();
@@ -58,10 +60,11 @@ public class MainGui {
         if(!settingGui.requestFocusInWindow()){
             settingGui.requestFocus();
         }
-
         initSystemTray();
         java.util.Timer timer = new Timer(false);
-        timer.schedule(new RestTimerTask(settingGui),0,RestConfig.TIMER_TASK_PERIOD);
+        RestTimerTask restTimerTask = new RestTimerTask(settingGui);
+        timer.schedule(restTimerTask,0,RestConfig.TIMER_TASK_PERIOD);
+
     }
     /**
      * 初始化look and feel

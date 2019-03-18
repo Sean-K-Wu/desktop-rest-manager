@@ -89,19 +89,20 @@ public class RestGui{
             @Override
             public void run() {
                 super.run();
-
                 while (countDown >= 0){
-                    long l = System.currentTimeMillis();
                     messageLabel.goIn();
                     if(countDown > 0){
                         messageLabel.goOut();
                     }
-                    long l1 = System.currentTimeMillis();
-                    System.out.println(l1 - l);
                     countDown--;
                     if(countDown >= 0){
                         messageLabel.setText(String.valueOf(countDown));
                     }
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
                 // 关闭对话框
                 restGui.dispose();

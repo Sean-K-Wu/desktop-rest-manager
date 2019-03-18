@@ -8,11 +8,8 @@ import com.wuxiangknow.rest.gui.SleepGui;
 import com.wuxiangknow.rest.gui.generate.SettingGui;
 import com.wuxiangknow.rest.util.DateTimeUtil;
 import com.wuxiangknow.rest.util.WindowsUtil;
-import me.coley.simplejna.hook.key.KeyEventReceiver;
-import me.coley.simplejna.hook.key.KeyHookManager;
 import org.joda.time.DateTime;
 
-import java.awt.event.KeyEvent;
 import java.util.Date;
 import java.util.TimerTask;
 
@@ -25,34 +22,28 @@ public class RestTimerTask extends TimerTask {
 
     private SettingGui settingGui;
 
-    private RestGui restGui;
+    public static RestGui restGui;
 
-    private SleepGui sleepGui;
+    public static SleepGui sleepGui;
+
+    public RestGui getRestGui() {
+        return restGui;
+    }
+
+    public void setRestGui(RestGui restGui) {
+        this.restGui = restGui;
+    }
+
+    public SleepGui getSleepGui() {
+        return sleepGui;
+    }
+
+    public void setSleepGui(SleepGui sleepGui) {
+        this.sleepGui = sleepGui;
+    }
 
     public RestTimerTask(final SettingGui settingGui) {
         this.settingGui = settingGui;
-        KeyHookManager keyHookManager = new KeyHookManager();
-        KeyEventReceiver keyEventReceiver = new KeyEventReceiver(keyHookManager){
-            @Override
-            public boolean onKeyUpdate(SystemState sysState, PressState pressState, int time, int vkCode) {
-                if(pressState.equals(PressState.UP)) {//抬起
-                    if(KeyEvent.VK_ESCAPE == vkCode){
-                        if(restGui !=null && restGui.isVisible()){
-                            restGui.cancel();
-                            // 关闭对话框
-                            restGui.dispose();
-                            return true;
-                        }
-                        if(sleepGui !=null && sleepGui.isVisible()){
-                            sleepGui.wakeUp();
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-        };
-        keyHookManager.hook(keyEventReceiver);
     }
 
     //private Thread restThread;
@@ -103,6 +94,15 @@ public class RestTimerTask extends TimerTask {
                     //休息
                     if(restGui.isStatus()){
                         sleepGui = new SleepGui(settingGui);
+                        if(settingGui != null){
+                            synchronized (settingGui){
+                                try {
+                                    settingGui.wait(settingGui.getRestTime());
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
                         sleepGui.dispose();
                     }
                 }
