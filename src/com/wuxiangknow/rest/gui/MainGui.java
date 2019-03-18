@@ -10,6 +10,8 @@ import com.wuxiangknow.rest.gui.generate.SettingGui;
 import com.wuxiangknow.rest.keyboard.KeyboardManager;
 import com.wuxiangknow.rest.task.RestTimerTask;
 import com.wuxiangknow.rest.task.ShutdownTask;
+import com.wuxiangknow.rest.task.UpgradeTask;
+import com.wuxiangknow.rest.thread.ThreadPoolManager;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
 import javax.swing.*;
@@ -68,6 +70,7 @@ public class MainGui {
         RestTimerTask restTimerTask = new RestTimerTask(settingGui);
         timer.schedule(restTimerTask,0,RestConfig.TIMER_TASK_PERIOD);
         Runtime.getRuntime().addShutdownHook(new ShutdownTask(settingGui));
+        ThreadPoolManager.execute(new UpgradeTask(settingGui,false));
     }
     /**
      * 初始化look and feel

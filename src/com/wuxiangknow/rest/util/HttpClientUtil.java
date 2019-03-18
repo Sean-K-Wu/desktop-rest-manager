@@ -8,6 +8,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -34,10 +35,10 @@ public class HttpClientUtil {
 
 
 
-    public static byte[] download(String url,Component parentComponent) {
+    public static byte[] doget(String url,Component parentComponent) {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()){
-            HttpPost httpPost = new HttpPost(url);
-            CloseableHttpResponse response = httpclient.execute(httpPost);
+            HttpGet httpGet = new HttpGet(url);
+            CloseableHttpResponse response = httpclient.execute(httpGet);
             int status = response.getStatusLine().getStatusCode();
             if (status < 200 || status >= 300) {
                 throw new ClientProtocolException("Unexpected response status: " + status);
@@ -45,7 +46,7 @@ public class HttpClientUtil {
             HttpEntity entity2 = response.getEntity();
             return EntityUtils.toByteArray(entity2);
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             handleFailedRequest(parentComponent);
         }
         return null;
@@ -61,8 +62,6 @@ public class HttpClientUtil {
     public static JSONObject doPost(String url , Map<String,String> map,Component parentComponent) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);
-        //httpPost.addHeader("Content-Type", "text/html;charset=UTF-8");
-        httpPost.addHeader("client","train");
         List<NameValuePair> nvps = new ArrayList<NameValuePair>(map.size());
         Set<String> strings = map.keySet();
         CloseableHttpResponse response2 = null;

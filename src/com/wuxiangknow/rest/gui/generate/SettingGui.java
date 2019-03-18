@@ -454,7 +454,7 @@ public class SettingGui extends JFrame {
     }
 
     private void updateLabelMouseClicked(MouseEvent e) {
-        ThreadPoolManager.execute(new UpgradeTask(this));
+        ThreadPoolManager.execute(new UpgradeTask(this,true));
     }
 
     private void updateLabelMouseEntered(MouseEvent e) {

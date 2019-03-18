@@ -21,14 +21,16 @@ import java.net.URISyntaxException;
 public class UpgradeTask implements Runnable{
 
     private SettingGui settingGui;
+    private boolean isPrompt;
 
-    public UpgradeTask(SettingGui settingGui) {
+    public UpgradeTask(SettingGui settingGui,boolean isPrompt) {
         this.settingGui = settingGui;
+        this.isPrompt =isPrompt;
     }
 
     @Override
     public void run() {
-        byte[] download = HttpClientUtil.download(RestConfig.CHECK_VERSION_URL,settingGui);
+        byte[] download = HttpClientUtil.doget(RestConfig.CHECK_VERSION_URL,settingGui);
         if(download != null){
             try {
                 String content = new String(download, "UTF-8");
@@ -49,6 +51,8 @@ public class UpgradeTask implements Runnable{
                             e.printStackTrace();
                         }
                     }
+                }else if(isPrompt){
+                    JOptionPane.showConfirmDialog(settingGui,"暂无最新版本","提示",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
