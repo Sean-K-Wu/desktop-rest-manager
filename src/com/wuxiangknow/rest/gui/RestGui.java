@@ -4,6 +4,7 @@ import com.sun.awt.AWTUtilities;
 import com.wuxiangknow.rest.component.CountDownLabel;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.gui.generate.SettingGui;
+import com.wuxiangknow.rest.task.CountDownTask;
 import com.wuxiangknow.rest.util.ImageUtil;
 
 import javax.imageio.ImageIO;
@@ -27,7 +28,7 @@ public class RestGui{
 
     private  Dimension messageSize = new Dimension(200,100);
 
-    private int countDown = RestConfig.COUNTDOWN;
+
 
     private static final String PROMPT = "%d秒后进入休息";
 
@@ -38,6 +39,8 @@ public class RestGui{
     private JDialog dialog;
 
     private RestGui restGui;
+
+    private CountDownLabel messageLabel;
 
     public RestGui(final SettingGui settingGui)  {
         this.settingGui = settingGui;
@@ -57,8 +60,7 @@ public class RestGui{
         AWTUtilities.setWindowOpaque(dialog, false);
         dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         // 创建一个标签显示消息内容
-        final CountDownLabel messageLabel = new CountDownLabel();
-        messageLabel.setText(String.valueOf(countDown));
+        messageLabel = new CountDownLabel();
         messageLabel.setFont(new Font("Microsoft YaHei",Font.BOLD,90));
         messageLabel.setPreferredSize(messageSize);
         messageLabel.setForeground(fontColor);
@@ -85,31 +87,7 @@ public class RestGui{
         dialog.getContentPane().add(messageLabel);
         dialog.getContentPane().add(okLabel);
         // 设置对话框的内容面板
-
-        Thread thread =new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                while (countDown >= 0){
-                    messageLabel.goIn();
-                    if(countDown > 0){
-                        messageLabel.goOut();
-                    }
-                    countDown--;
-                    if(countDown >= 0){
-                        messageLabel.setText(String.valueOf(countDown));
-                    }
-                }
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // 关闭对话框
-                restGui.dispose();
-            }
-        };
-        thread.start();
+        new CountDownTask(restGui).execute();
     }
 
     public boolean isStatus() {
@@ -138,5 +116,14 @@ public class RestGui{
 
     public void setVisible(boolean b){
         dialog.setVisible(b);
+    }
+
+
+    public CountDownLabel getMessageLabel() {
+        return messageLabel;
+    }
+
+    public void setMessageLabel(CountDownLabel messageLabel) {
+        this.messageLabel = messageLabel;
     }
 }

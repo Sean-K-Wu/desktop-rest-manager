@@ -10,8 +10,8 @@ import java.awt.*;
  */
 public class CountDownLabel extends JLabel{
 
-    private double[] inAngles  = new double[]{90d,60d,-30d,10,0};//0.5s
-    private double[] outAngles  = new double[]{0,0,-60d,-90,-120};//0.5s
+    private Double[] inAngles  = new Double[]{90d,60d,-30d,10d,0d};//0.5s
+    private Double[] outAngles  = new Double[]{0d,0d,-60d,-90d,-120d};//0.5s
     //private double[] outAngles  = new double[]{0,0,0,-60d,-90};//0.5s
 
     private double angle;
@@ -51,5 +51,27 @@ public class CountDownLabel extends JLabel{
         }
     }
 
+    public Double[] getInAngles() {
+        return inAngles;
+    }
 
+    public void setInAngles(Double[] inAngles) {
+        this.inAngles = inAngles;
+    }
+
+    public Double[] getOutAngles() {
+        return outAngles;
+    }
+
+    public void setOutAngles(Double[] outAngles) {
+        this.outAngles = outAngles;
+    }
+
+    public double getAngle() {
+        return angle;
+    }
+
+    public void setAngle(double angle) {
+        this.angle = angle;
+    }
 }

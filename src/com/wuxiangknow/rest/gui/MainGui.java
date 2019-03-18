@@ -54,7 +54,9 @@ public class MainGui {
             settingGui.loadCache(cacheSettingBean);
         }
         settingGui.updateComponents();
-        settingGui.initClockTimes(cacheSettingBean.getMorningBetweenTime(),cacheSettingBean.getAfternoonBetweenTime());
+        if(cacheSettingBean!=null){
+            settingGui.initClockTimes(cacheSettingBean.getMorningBetweenTime(),cacheSettingBean.getAfternoonBetweenTime());
+        }
         settingPropertyListener = new SettingPropertyListener();
         settingGui.addPropertyChangeListener("settingStatus",settingPropertyListener);
         settingGui.setVisible(true);
