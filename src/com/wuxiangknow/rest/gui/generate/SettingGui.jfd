@@ -31,7 +31,7 @@ new FormModel {
 							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) )
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "iconLabel"
-								"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/icon-small.png" )
+								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/icon-small.png" )
 							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 								"row": 1
 							} )
@@ -73,7 +73,7 @@ new FormModel {
 							} )
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "redPacketLabel"
-								"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/gift/gift.jpg" )
+								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/gift/gift.jpg" )
 							}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 								"row": 8
 							} )
@@ -312,13 +312,13 @@ new FormModel {
 							name: "donatePanel"
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "wxLable"
-								"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/donate/wechatpay.jpg" )
+								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/donate/wechatpay.jpg" )
 							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 								"value": "cell 1 1 6 6"
 							} )
 							add( new FormComponent( "javax.swing.JLabel" ) {
 								name: "aliLable"
-								"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/donate/alipay.jpg" )
+								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/donate/alipay.jpg" )
 							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 								"value": "cell 9 1 6 6"
 							} )

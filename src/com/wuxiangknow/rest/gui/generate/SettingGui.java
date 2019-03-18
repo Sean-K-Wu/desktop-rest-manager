@@ -567,7 +567,7 @@ public class SettingGui extends JFrame {
                             null, null, null));
 
                         //---- iconLabel ----
-                        iconLabel.setIcon(new ImageIcon(getClass().getResource("/res/icon-small.png")));
+                        iconLabel.setIcon(new ImageIcon(getClass().getResource("/images/icon-small.png")));
                         aboutPanle.add(iconLabel, new GridConstraints(1, 0, 1, 1,
                             GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
                             GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -606,7 +606,7 @@ public class SettingGui extends JFrame {
                             null, null, null));
 
                         //---- redPacketLabel ----
-                        redPacketLabel.setIcon(new ImageIcon(getClass().getResource("/res/gift/gift.jpg")));
+                        redPacketLabel.setIcon(new ImageIcon(getClass().getResource("/images/gift/gift.jpg")));
                         aboutPanle.add(redPacketLabel, new GridConstraints(8, 0, 1, 1,
                             GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
                             GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -913,11 +913,11 @@ public class SettingGui extends JFrame {
                             "[]"));
 
                         //---- wxLable ----
-                        wxLable.setIcon(new ImageIcon(getClass().getResource("/res/donate/wechatpay.jpg")));
+                        wxLable.setIcon(new ImageIcon(getClass().getResource("/images/donate/wechatpay.jpg")));
                         donatePanel.add(wxLable, "cell 1 1 6 6");
 
                         //---- aliLable ----
-                        aliLable.setIcon(new ImageIcon(getClass().getResource("/res/donate/alipay.jpg")));
+                        aliLable.setIcon(new ImageIcon(getClass().getResource("/images/donate/alipay.jpg")));
                         donatePanel.add(aliLable, "cell 9 1 6 6");
                     }
                     tabbedPane1.addTab("\u6350\u8d60", donatePanel);

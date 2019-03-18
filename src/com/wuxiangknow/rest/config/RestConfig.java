@@ -22,9 +22,9 @@ public class RestConfig {
 
     public static final String SETTING_CACHE_FILE = "setting";
 
-    public static final String PROGRAM_ICON_PATH = "/res/icon.png";//系统托盘图标
+    public static final String PROGRAM_ICON_PATH = "/images/icon.png";//系统托盘图标
 
-    public static final String[] SLEEP_IMAGE_FILES = new String[]{"/res/sleep/sleep.jpg"};//休息显示图片路径
+    public static final String[] SLEEP_IMAGE_FILES = new String[]{"/images/sleep/sleep.jpg"};//休息显示图片路径
 
     public static final long MAX_WORK_TIME = 40 * 60 * 1000;//最长连续工作时间  多长工作时间后休息
 
@@ -37,12 +37,12 @@ public class RestConfig {
     public static final  Color DEFAULT_BACKGROUND_COLOR = new Color(227, 237, 205);
     public static final  Color DONATE_BACKGROUND_COLOR = new Color(244,67,54);
 
-    public static final String DONATE_WECHAT_PATH = "/res/donate/wechatpay.jpg";
-    public static final String DONATE_ALI_PATH = "/res/donate/alipay.jpg";
+    public static final String DONATE_WECHAT_PATH = "/images/donate/wechatpay.jpg";
+    public static final String DONATE_ALI_PATH = "/images/donate/alipay.jpg";
 
-    public static final String GIFT_MONEY_PATH = "/res/gift/gift.jpg";
+    public static final String GIFT_MONEY_PATH = "/images/gift/gift.jpg";
 
-    public static final String COUNT_DOWN_CANCEL_PATH = "/res/cancel.png";
+    public static final String COUNT_DOWN_CANCEL_PATH = "/images/cancel.png";
 
     public static final String SWING_THEME = "BeautyEye";
 
