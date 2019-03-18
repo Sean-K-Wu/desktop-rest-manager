@@ -11,6 +11,7 @@ v1.5
 1. JDK1.7 32bit及以上
 2. UTF-8编码
 3. Windows(仅测试Windows10)
+4. 暂不支持JDK10(第三方工具beautyeye-inf),JDK9未测试
 
 ### 使用
 
