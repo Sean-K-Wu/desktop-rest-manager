@@ -146,12 +146,11 @@ public class MainGui {
         settingItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                settingGui.setSettingTabSelected();
                 if(!settingGui.isVisible()){
                     settingGui.setVisible(true);
-                }
-                settingGui.setExtendedState(Frame.NORMAL);
-                if(!settingGui.requestFocusInWindow()){
-                    settingGui.requestFocus();
+                }else{
+                    settingGui.setState(Frame.NORMAL);
                 }
             }
         });
