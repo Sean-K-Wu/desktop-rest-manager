@@ -133,13 +133,13 @@ public class MainGui {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                settingGui.setSettingTabSelected();
-                if(!settingGui.isVisible()){
-                    settingGui.setVisible(true);
-                }
-                settingGui.setExtendedState(Frame.NORMAL);
-                if(!settingGui.requestFocusInWindow()){
-                    settingGui.requestFocus();
+                if(e.getButton() == MouseEvent.BUTTON1){
+                    settingGui.setSettingTabSelected();
+                    if(!settingGui.isVisible()){
+                        settingGui.setVisible(true);
+                    }else{
+                        settingGui.setState(Frame.NORMAL);
+                    }
                 }
             }
         });

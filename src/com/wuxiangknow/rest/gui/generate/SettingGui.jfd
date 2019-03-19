@@ -253,7 +253,7 @@ new FormModel {
 								"value": "cell 9 1 6 6"
 							} )
 						}, new FormLayoutConstraints( null ) {
-							"title": "捐赠"
+							"title": "打赏"
 						} )
 					}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 						"value": "cell 0 0"

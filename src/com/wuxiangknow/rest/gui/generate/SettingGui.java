@@ -448,13 +448,15 @@ public class SettingGui extends JFrame {
     }
 
     private void statusButtonMouseClicked(MouseEvent e) {
-        statusButton.setEnabled(false);
-        if(this.isStatus()){
-            this.setStatus(false);
-        }else{
-            this.setStatus(true);
+        if(e.getButton() == MouseEvent.BUTTON1){
+            statusButton.setEnabled(false);
+            if(this.isStatus()){
+                this.setStatus(false);
+            }else{
+                this.setStatus(true);
+            }
+            statusButton.setEnabled(true);
         }
-        statusButton.setEnabled(true);
     }
 
     private void updateLabelMouseClicked(MouseEvent e) {
@@ -851,7 +853,7 @@ public class SettingGui extends JFrame {
                         aliLable.setIcon(new ImageIcon(getClass().getResource("/images/donate/alipay.jpg")));
                         donatePanel.add(aliLable, "cell 9 1 6 6");
                     }
-                    tabbedPane1.addTab("\u6350\u8d60", donatePanel);
+                    tabbedPane1.addTab("\u6253\u8d4f", donatePanel);
                 }
                 panel1.add(tabbedPane1, "cell 0 0");
             }
