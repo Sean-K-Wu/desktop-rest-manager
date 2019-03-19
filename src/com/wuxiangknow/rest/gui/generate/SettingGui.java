@@ -137,6 +137,10 @@ public class SettingGui extends JFrame {
         this.afternoonBetweenTime = afternoonBetweenTime;
     }
 
+    public void setSettingTabSelected(){
+        tabbedPane1.setSelectedComponent(settingPanel);
+    }
+
     public void setStatus(boolean status) {
         boolean oldValue = this.status;
         this.status = status;

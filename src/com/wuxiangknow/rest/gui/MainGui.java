@@ -133,6 +133,7 @@ public class MainGui {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                settingGui.setSettingTabSelected();
                 if(!settingGui.isVisible()){
                     settingGui.setVisible(true);
                 }
