@@ -44,7 +44,13 @@ public class UpgradeTask implements Runnable{
                     if (isPush == JOptionPane.YES_OPTION) {
                         Desktop desktop = Desktop.getDesktop();
                         try {
-                            desktop.browse(new URI(RestConfig.PROGRAM_HELP_URL));
+                            URI uri ;
+                            if(version.getUrl() == null || version.getUrl().trim().length()==0){
+                                uri = new URI(RestConfig.PROGRAM_HELP_URL);
+                            }else {
+                                uri = new URI(version.getUrl());
+                            }
+                            desktop.browse(uri);
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (URISyntaxException e) {
