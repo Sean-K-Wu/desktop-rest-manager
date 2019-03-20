@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -55,6 +56,10 @@ public class SleepGui extends JFrame{
             }
         }
         if(bufferedImage == null){
+            if(settingGui !=null && settingGui.getSleepImagePath() != null ){
+                settingGui.setSleepImagePath(null);
+                settingGui.getSleepImagesPatheField().setText(SettingGui.SLEEP_IMAGE_PATH_DEFAULT_VALUE);
+            }
             String path = getFileByRandom(RestConfig.SLEEP_IMAGE_FILES);
             try {
                 bufferedImage = ImageIO.read(this.getClass().getResourceAsStream(path));
@@ -79,9 +84,24 @@ public class SleepGui extends JFrame{
         this.add(imageLabel);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);//最大化
         this.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-        this.setVisible(true);
-        if(!this.requestFocusInWindow()){
-            this.requestFocus();
+        try {
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                    if(settingGui!=null && settingGui.getState() == JFrame.ICONIFIED){
+                        settingGui.setVisible(false);
+                        settingGui.setState(JFrame.NORMAL);
+                    }
+                    SleepGui.this.setVisible(true);
+                    if(!SleepGui.this.isActive()){
+                        SleepGui.this.setState(JFrame.NORMAL);
+                    }
+                }
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 
@@ -103,13 +123,17 @@ public class SleepGui extends JFrame{
     public java.util.List<String> getResourceByFile(String path) {
         ArrayList<String> fileNames = new ArrayList<>();
         File file = new File(path);
-        if(file.exists() && file.isDirectory()){
-            String name;
-            for (File childFile : file.listFiles()) {
-                name = childFile.getName();
-                if(childFile.isFile() && ImageUtil.isImage(name)){
-                    fileNames.add(childFile.getPath());
+        if(file.exists()){
+            if( file.isDirectory()){
+                String name;
+                for (File childFile : file.listFiles()) {
+                    name = childFile.getName();
+                    if(childFile.isFile() && ImageUtil.isImage(name)){
+                        fileNames.add(childFile.getPath());
+                    }
                 }
+            }else if(ImageUtil.isImage(file.getName())){
+                fileNames.add(file.getPath());
             }
         }
         return fileNames;

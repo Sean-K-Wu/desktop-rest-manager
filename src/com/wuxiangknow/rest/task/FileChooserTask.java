@@ -1,9 +1,11 @@
 package com.wuxiangknow.rest.task;
 
+import com.wuxiangknow.rest.cache.CacheManager;
 import com.wuxiangknow.rest.gui.generate.SettingGui;
 import com.wuxiangknow.rest.util.ImageUtil;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
@@ -22,17 +24,27 @@ public class FileChooserTask extends SwingWorker<String,String>{
 
     @Override
     protected String doInBackground() throws Exception {
-        settingGui.setSleepImagesPatheChooser( new JFileChooser());
 
+        if(settingGui.getSleepImagesPatheChooser()==null){
+            settingGui.setSleepImagesPatheChooser( new JFileChooser());
+            File desktopDir = FileSystemView.getFileSystemView().getHomeDirectory();
+            settingGui.getSleepImagesPatheChooser().setCurrentDirectory(desktopDir);
+        }else{
+            settingGui.getSleepImagesPatheChooser().setVisible(true);
+        }
+        if(settingGui.getSleepImagePath() != null){
+            settingGui.getSleepImagesPatheChooser().setCurrentDirectory(new File(settingGui.getSleepImagePath()));
+        }
         JFileChooser sleepImagesPatheChooser = settingGui.getSleepImagesPatheChooser();
-        sleepImagesPatheChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        sleepImagesPatheChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         sleepImagesPatheChooser.setMultiSelectionEnabled(false);
         int result = sleepImagesPatheChooser.showOpenDialog(settingGui);
+        sleepImagesPatheChooser.setVisible(false);
         if(JFileChooser.APPROVE_OPTION  == result){
             File selectedFile = sleepImagesPatheChooser.getSelectedFile();
             if(selectedFile != null){
-                boolean hasImages = ImageUtil.hasImages(selectedFile);
-                if(hasImages){
+                if(ImageUtil.hasImages(selectedFile) || ImageUtil.isImage(selectedFile.getName())){
                     String absolutePath = selectedFile.getAbsolutePath();
                     return absolutePath;
                 }else{
@@ -48,7 +60,7 @@ public class FileChooserTask extends SwingWorker<String,String>{
         super.done();
         try {
             String content = get();
-            if(content !=null){
+            if(content !=null && !content.equals(settingGui.getSleepImagesPatheField().getText())){
                 if(content.equals(SettingGui.SLEEP_IMAGE_PATH_DEFAULT_VALUE)){
                     settingGui.setSleepImagePath(null);
                     settingGui.getSleepImagesPatheField().setText(SettingGui.SLEEP_IMAGE_PATH_DEFAULT_VALUE);
@@ -56,6 +68,7 @@ public class FileChooserTask extends SwingWorker<String,String>{
                     settingGui.setSleepImagePath(content);
                     settingGui.getSleepImagesPatheField().setText(content);
                 }
+                CacheManager.save(settingGui);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

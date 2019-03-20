@@ -10,6 +10,8 @@ import com.wuxiangknow.rest.util.DateTimeUtil;
 import com.wuxiangknow.rest.util.WindowsUtil;
 import org.joda.time.DateTime;
 
+import javax.swing.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.TimerTask;
 
@@ -72,7 +74,7 @@ public class RestTimerTask extends TimerTask {
             if(morningBetweenTime !=null){
                 morningStartTime = morningBetweenTime.getStartTime();
             }
-            if(afternoonStartTime !=null){
+            if(afternoonBetweenTime !=null){
                 afternoonStartTime = afternoonBetweenTime.getStartTime();
             }
             updateLastTime(morningStartTime,afternoonStartTime,now);
@@ -89,7 +91,22 @@ public class RestTimerTask extends TimerTask {
                         ){//没有全屏再提示 且 不是周末或者周末可提示 且 两次运行没有超过定时任务周期的2倍时间(防止休眠)
                     //创建休息
                     restGui = new RestGui(settingGui);
-                    restGui.setVisible(true);
+                    try {
+                        SwingUtilities.invokeAndWait(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(settingGui!=null){
+                                    settingGui.setVisible(false);
+                                    settingGui.setState(JFrame.NORMAL);
+                                }
+                                restGui.setVisible(true);
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
                     //休息
                     if(restGui.isStatus()){
                         sleepGui = new SleepGui(settingGui);

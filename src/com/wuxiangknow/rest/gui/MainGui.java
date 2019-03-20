@@ -44,7 +44,8 @@ public class MainGui {
     private MenuItem exitItem ;
     private SettingGui settingGui;
     private TrayIcon trayIcon;
-    private SettingPropertyListener settingPropertyListener;
+
+    private SettingStatusListener settingStatusListener;
 
     public MainGui() {
         initTheme();
@@ -59,8 +60,9 @@ public class MainGui {
         if(cacheSettingBean!=null){
             settingGui.initClockTimes(cacheSettingBean.getMorningBetweenTime(),cacheSettingBean.getAfternoonBetweenTime());
         }
-        settingPropertyListener = new SettingPropertyListener();
-        settingGui.addPropertyChangeListener("settingStatus",settingPropertyListener);
+
+        settingStatusListener = new SettingStatusListener();
+        settingGui.addPropertyChangeListener("settingStatus",settingStatusListener);
         settingGui.setVisible(true);
         if(!settingGui.requestFocusInWindow()){
             settingGui.requestFocus();
@@ -204,7 +206,8 @@ public class MainGui {
     }
 
 
-    class SettingPropertyListener implements PropertyChangeListener {
+
+    class SettingStatusListener implements PropertyChangeListener {
 
 
         @Override
@@ -216,6 +219,7 @@ public class MainGui {
                     statusItem.setLabel("开启");
                 }
             }
+
         }
     }
 }

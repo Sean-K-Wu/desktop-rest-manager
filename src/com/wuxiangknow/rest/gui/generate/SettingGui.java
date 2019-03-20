@@ -5,6 +5,7 @@
 package com.wuxiangknow.rest.gui.generate;
 
 import com.wuxiangknow.rest.bean.BetweenTime;
+import com.wuxiangknow.rest.cache.CacheManager;
 import com.wuxiangknow.rest.cache.CacheSettingBean;
 import com.wuxiangknow.rest.component.ClockComboBox;
 import com.wuxiangknow.rest.config.RestConfig;
@@ -151,6 +152,7 @@ public class SettingGui extends JFrame {
             statusButton.setText("开始");
         }
         firePropertyChange("settingStatus",oldValue,status);
+        CacheManager.save(this);
     }
 
     public SettingGui() {
@@ -179,7 +181,7 @@ public class SettingGui extends JFrame {
             weekendCheckBox.setSelected(true);
         }
         morningStartHourBox.initItems(SimpleDateFormat.HOUR0_FIELD);//初始化选项 并且将事件置为null
-
+        this.setAlwaysOnTop(true);
     }
 
 
@@ -204,7 +206,13 @@ public class SettingGui extends JFrame {
     public void loadCache(CacheSettingBean cacheSettingBean) {
         this.maxWorkTime = cacheSettingBean.getMaxWorkTime();
         this.restTime = cacheSettingBean.getRestTime();
-        this.sleepImagePath = cacheSettingBean.getSleepImagePath();
+        try {
+            if(cacheSettingBean.getSleepImagePath() !=null && new File(cacheSettingBean.getSleepImagePath()).exists()){
+                this.sleepImagePath = cacheSettingBean.getSleepImagePath();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.status = cacheSettingBean.isStatus();
         this.autoBoot = cacheSettingBean.isAutoBoot();
         this.weekendDisable = cacheSettingBean.isWeekendDisable();
@@ -223,9 +231,10 @@ public class SettingGui extends JFrame {
                 newMaxWorkTime = Integer.parseInt(component.getText()) * 1000 * 60;
             } catch (NumberFormatException e1) {
             }
-            if(newMaxWorkTime>0){
+            if(newMaxWorkTime>0 && maxWorkTime!=newMaxWorkTime){
                 maxWorkTime = newMaxWorkTime;
                 this.updateTime();
+                CacheManager.save(this);
             }
         }
         component.setText(String.valueOf(maxWorkTime /1000 / 60));
@@ -240,8 +249,9 @@ public class SettingGui extends JFrame {
                 newRestTime = Integer.parseInt(component.getText()) * 1000 * 60;
             } catch (NumberFormatException e1) {
             }
-            if(newRestTime>0){
+            if(newRestTime>0 && newRestTime!=restTime){
                 restTime = newRestTime;
+                CacheManager.save(this);
             }
         }
         component.setText(String.valueOf(restTime /1000 / 60));
@@ -270,11 +280,17 @@ public class SettingGui extends JFrame {
         String text = component.getText();
         if(text !=null && !text.equals(SLEEP_IMAGE_PATH_DEFAULT_VALUE)){
             File file = new File(text.trim());
-            if(!ImageUtil.hasImages(file)){
+            if(!ImageUtil.hasImages(file) ||!ImageUtil.isImage(file.getName())){
                 component.setText(SLEEP_IMAGE_PATH_DEFAULT_VALUE);
+                if(sleepImagePath !=null){
+                    CacheManager.save(this);
+                }
                 sleepImagePath = null;
             }else{
                 //如果存在
+                if(sleepImagePath == null){
+                    CacheManager.save(this);
+                }
                 sleepImagePath = text.trim();
             }
         }
@@ -423,6 +439,7 @@ public class SettingGui extends JFrame {
                     afternoonBetweenTime = null;
                 }
             }
+            CacheManager.save(this);
         }
     }
 
@@ -432,6 +449,7 @@ public class SettingGui extends JFrame {
         }else {
             weekendDisable = false;
         }
+        CacheManager.save(this);
     }
 
     private void autoBootCheckBoxMouseClicked(MouseEvent e) {
@@ -445,6 +463,7 @@ public class SettingGui extends JFrame {
             autoBoot = false;
             WindowsUtil.disableAutoBoot();
         }
+        CacheManager.save(this);
     }
 
     private void statusButtonMouseClicked(MouseEvent e) {
@@ -457,6 +476,7 @@ public class SettingGui extends JFrame {
             }
             statusButton.setEnabled(true);
         }
+        CacheManager.save(this);
     }
 
     private void updateLabelMouseClicked(MouseEvent e) {
