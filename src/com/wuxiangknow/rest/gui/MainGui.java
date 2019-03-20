@@ -129,7 +129,7 @@ public class MainGui {
         addAllItem();
         //图标
         ImageIcon trayImg = new ImageIcon(getDefaultTrayImgName());
-        trayIcon = new TrayIcon(trayImg.getImage(), RestConfig.PROGRAM_NAME.concat(RestConfig.PROGRAM_VERSION), pop);
+        trayIcon = new TrayIcon(trayImg.getImage(), RestConfig.PROGRAM_NAME.concat("v").concat(RestConfig.PROGRAM_VERSION), pop);
         trayIcon.setImageAutoSize(true);
         trayIcon.addMouseListener(new MouseAdapter() {
             @Override

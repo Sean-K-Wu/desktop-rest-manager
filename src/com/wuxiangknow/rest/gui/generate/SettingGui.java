@@ -181,6 +181,8 @@ public class SettingGui extends JFrame {
             weekendCheckBox.setSelected(true);
         }
         morningStartHourBox.initItems(SimpleDateFormat.HOUR0_FIELD);//初始化选项 并且将事件置为null
+        //版本label
+        versionLabel.setText("v".concat(RestConfig.PROGRAM_VERSION));
         this.setAlwaysOnTop(true);
     }
 
