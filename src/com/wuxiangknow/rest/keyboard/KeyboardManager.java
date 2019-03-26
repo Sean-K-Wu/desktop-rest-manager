@@ -20,19 +20,25 @@ public class KeyboardManager {
         KeyEventReceiver keyEventReceiver = new KeyEventReceiver(keyHookManager){
             @Override
             public boolean onKeyUpdate(SystemState sysState, PressState pressState, int time, int vkCode) {
-                if(pressState.equals(PressState.UP)) {//抬起
-                    if(KeyEvent.VK_ESCAPE == vkCode){
-                        if(RestTimerTask.restGui !=null && RestTimerTask.restGui.isVisible()){
-                            RestTimerTask.restGui.cancel();
-                            // 关闭对话框
-                            RestTimerTask.restGui.dispose();
-                            return true;
-                        }
-                        if(RestTimerTask.sleepGui !=null && RestTimerTask.sleepGui.isVisible()){
-                            RestTimerTask.sleepGui.wakeUp();
-                            return true;
-                        }
+                if(RestTimerTask.restGui !=null && RestTimerTask.restGui.isVisible() && KeyEvent.VK_ESCAPE == vkCode){
+                    if(pressState.equals(PressState.UP)) {//抬起
+                        RestTimerTask.restGui.cancel();
+                        // 关闭对话框
+                        RestTimerTask.restGui.dispose();
                     }
+                    return true;
+                }
+                //KeyEvent.VK_ALT == 18  左alt ==164  右alt==165
+                //KeyEvent.VK_WINDOWS==524 左win ==91 右win == 92
+                if(RestTimerTask.sleepGui !=null && RestTimerTask.sleepGui.isVisible()
+                        && (KeyEvent.VK_ALT == vkCode ||164 == vkCode || 165 ==vkCode
+                            || KeyEvent.VK_WINDOWS == vkCode||91 == vkCode || 92 ==vkCode
+                        )
+                        ){//屏蔽alt
+                    if( KeyEvent.VK_ESCAPE == vkCode && pressState.equals(PressState.UP)) {//抬起
+                        RestTimerTask.sleepGui.wakeUp();
+                    }
+                    return true;
                 }
                 return false;
             }
