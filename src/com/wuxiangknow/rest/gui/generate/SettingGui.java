@@ -184,6 +184,7 @@ public class SettingGui extends JFrame {
         //版本label
         versionLabel.setText("v".concat(RestConfig.PROGRAM_VERSION));
         this.setAlwaysOnTop(true);
+        this.pack();
     }
 
 
