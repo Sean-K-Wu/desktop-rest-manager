@@ -10,7 +10,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -84,24 +83,13 @@ public class SleepGui extends JFrame{
         this.add(imageLabel);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);//最大化
         this.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                    if(settingGui!=null && settingGui.getState() == JFrame.ICONIFIED){
-                        settingGui.setVisible(false);
-                        settingGui.setState(JFrame.NORMAL);
-                    }
-                    SleepGui.this.setVisible(true);
-                    if(!SleepGui.this.isActive()){
-                        SleepGui.this.setState(JFrame.NORMAL);
-                    }
-                }
-            });
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        if(settingGui!=null && settingGui.getState() == JFrame.ICONIFIED){
+            settingGui.setVisible(false);
+            settingGui.setState(JFrame.NORMAL);
+        }
+        this.setVisible(true);
+        if(!SleepGui.this.isActive()){
+            SleepGui.this.setState(JFrame.NORMAL);
         }
     }
 
