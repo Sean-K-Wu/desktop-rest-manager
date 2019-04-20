@@ -4,7 +4,6 @@ import com.sun.awt.AWTUtilities;
 import com.wuxiangknow.rest.component.CountDownLabel;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.gui.generate.SettingGui;
-import com.wuxiangknow.rest.task.CountDownTask;
 import com.wuxiangknow.rest.util.ImageUtil;
 
 import javax.imageio.ImageIO;
@@ -86,8 +85,12 @@ public class RestGui{
         // 添加组件到面板
         dialog.getContentPane().add(messageLabel);
         dialog.getContentPane().add(okLabel);
-        // 设置对话框的内容面板
-        new CountDownTask(restGui).execute();
+        dialog.setModal(false);
+        if(settingGui!=null){
+            settingGui.setVisible(false);
+            settingGui.setState(JFrame.NORMAL);
+        }
+        dialog.setVisible(true);
     }
 
     public boolean isStatus() {
@@ -123,7 +126,16 @@ public class RestGui{
         return messageLabel;
     }
 
+    public JDialog getDialog() {
+        return dialog;
+    }
+
+    public void setDialog(JDialog dialog) {
+        this.dialog = dialog;
+    }
+
     public void setMessageLabel(CountDownLabel messageLabel) {
+
         this.messageLabel = messageLabel;
     }
 }

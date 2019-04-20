@@ -6,6 +6,8 @@ import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.win32.StdCallLibrary;
 import com.wuxiangknow.rest.config.RestConfig;
 
+import java.awt.*;
+
 import static com.sun.jna.platform.win32.WinReg.HKEY_CURRENT_USER;
 
 /**
@@ -30,7 +32,10 @@ public class WindowsUtil {
         User32.INSTANCE.GetWindowRect(foregroundWindow, foregroundRectangle);
         WinDef.HWND desktopWindow = User32.INSTANCE.GetDesktopWindow();
         User32.INSTANCE.GetWindowRect(desktopWindow, desktopWindowRectangle);
-        return foregroundRectangle.toString().equals(desktopWindowRectangle.toString());
+        Rectangle foreRectangle = foregroundRectangle.toRectangle();
+        Rectangle windowRectangle = desktopWindowRectangle.toRectangle();
+        return foreRectangle.contains(windowRectangle);
+        //return foregroundRectangle.toString().equals(desktopWindowRectangle.toString());
     }
 
 

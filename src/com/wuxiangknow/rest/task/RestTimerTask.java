@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @Desciption 任务(负责提示用户休息)
@@ -90,16 +91,11 @@ public class RestTimerTask extends TimerTask {
                         && System.currentTimeMillis() - lastTimeMillis < RestConfig.TIMER_TASK_PERIOD*2
                         ){//没有全屏再提示 且 不是周末或者周末可提示 且 两次运行没有超过定时任务周期的2倍时间(防止休眠)
                     //创建休息
-                    restGui = new RestGui(settingGui);
                     try {
                         SwingUtilities.invokeAndWait(new Runnable() {
                             @Override
                             public void run() {
-                                if(settingGui!=null){
-                                    settingGui.setVisible(false);
-                                    settingGui.setState(JFrame.NORMAL);
-                                }
-                                restGui.setVisible(true);
+                                restGui = new RestGui(settingGui);
                             }
                         });
                     } catch (InterruptedException e) {
@@ -107,9 +103,29 @@ public class RestTimerTask extends TimerTask {
                     } catch (InvocationTargetException e) {
                         e.printStackTrace();
                     }
+                    CountDownTask countDownTask = new CountDownTask(restGui);
+                    countDownTask.execute();
+                    try {
+                        countDownTask.get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
                     //休息
                     if(restGui.isStatus()){
-                        sleepGui = new SleepGui(settingGui);
+                        try {
+                            SwingUtilities.invokeAndWait(new Runnable() {
+                                @Override
+                                public void run() {
+                                    sleepGui = new SleepGui(settingGui);
+                                }
+                            });
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
                         if(settingGui != null){
                             synchronized (settingGui){
                                 try {
@@ -119,7 +135,18 @@ public class RestTimerTask extends TimerTask {
                                 }
                             }
                         }
-                        sleepGui.dispose();
+                        try {
+                            SwingUtilities.invokeAndWait(new Runnable() {
+                                @Override
+                                public void run() {
+                                    sleepGui.dispose();
+                                }
+                            });
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 settingGui.updateTime();
