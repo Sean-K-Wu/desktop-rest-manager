@@ -7,26 +7,36 @@ import com.wuxiangknow.rest.util.ImageUtil;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * @Desciption 休息界面
  * @Author WuXiang
  * @Date 2019/1/11 21:42
  */
-public class SleepGui extends JFrame{
+public class SleepGui extends JFrame implements ActionListener {
 
     private JLabel imageLabel;//图片
 
     private SettingGui settingGui;
 
+    private static final int ANIMATION_FRAMES = 100;
+    private static final int ANIMATION_INTERVAL = 10;
 
-    public SleepGui(final SettingGui settingGui) throws HeadlessException {
+    private int frameIndex;
+    // 时钟
+    private Timer showTimer;
+    private Timer disposeTimer;
+
+    private boolean isDisposing =false;
+
+
+
+
+    public SleepGui(final SettingGui settingGui,BufferedImage bufferedImage) throws HeadlessException {
         this.settingGui = settingGui;
         this.setLayout(null);
         this.setResizable(false);//不可改变大小
@@ -41,31 +51,7 @@ public class SleepGui extends JFrame{
         }
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         imageLabel = new JLabel();
-        BufferedImage bufferedImage = null;
-        if (settingGui !=null && settingGui.getSleepImagePath() != null ) {
-            try {
-                //获取该路径
-                java.util.List<String> resource = getResource(settingGui.getSleepImagePath());
-                if(resource.size()>0){
-                    String path = getFileByRandom(resource);
-                    bufferedImage = ImageIO.read(new File(path));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if(bufferedImage == null){
-            if(settingGui !=null && settingGui.getSleepImagePath() != null ){
-                settingGui.setSleepImagePath(null);
-                settingGui.getSleepImagesPatheField().setText(SettingGui.SLEEP_IMAGE_PATH_DEFAULT_VALUE);
-            }
-            String path = getFileByRandom(RestConfig.SLEEP_IMAGE_FILES);
-            try {
-                bufferedImage = ImageIO.read(this.getClass().getResourceAsStream(path));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
         imageLabel.setIcon(new ImageIcon(ImageUtil.getScaledImage(bufferedImage,(int) screenSize.getWidth(), (int) screenSize.getHeight())));
         imageLabel.setBounds(0, 0, (int) screenSize.getWidth(), (int) screenSize.getHeight());
         /*this.addKeyListener(new KeyAdapter() {
@@ -93,43 +79,93 @@ public class SleepGui extends JFrame{
         }
     }
 
-    private String getFileByRandom(List<String> resource) {
-        Random random = new Random();
-        int i = random.nextInt(resource.size());
-        return resource.get(i);
-    }
-    private String getFileByRandom(String[] resource) {
-        Random random = new Random();
-        int i = random.nextInt(resource.length);
-        return resource[i];
-    }
-    public java.util.List<String> getResource(String path) {
-        return getResourceByFile(path);
-    }
 
-
-    public java.util.List<String> getResourceByFile(String path) {
-        ArrayList<String> fileNames = new ArrayList<>();
-        File file = new File(path);
-        if(file.exists()){
-            if( file.isDirectory()){
-                String name;
-                for (File childFile : file.listFiles()) {
-                    name = childFile.getName();
-                    if(childFile.isFile() && ImageUtil.isImage(name)){
-                        fileNames.add(childFile.getPath());
-                    }
-                }
-            }else if(ImageUtil.isImage(file.getName())){
-                fileNames.add(file.getPath());
-            }
-        }
-        return fileNames;
-    }
 
     public void wakeUp() {
         synchronized (settingGui){
             settingGui.notifyAll();
         }
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        if (isAnimating()) {
+            // 根据当前帧显示当前透明度的内容组件
+            float alpha = (float) frameIndex / (float) ANIMATION_FRAMES;
+            if(isDisposing){
+                alpha = 1 -alpha;
+            }
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setComposite(AlphaComposite.getInstance(
+                    AlphaComposite.SRC_OVER, alpha));
+            // Renderer渲染机制
+            super.paint(g2d);
+        } else {
+            // 如果是第一次，启动动画时钟
+            if(!isDisposing){
+                frameIndex = 0;
+                showTimer = new Timer(ANIMATION_INTERVAL, this);
+                showTimer.start();
+            }else {
+                disposeTimer = new Timer(ANIMATION_INTERVAL, this);
+                disposeTimer.start();
+            }
+        }
+    }
+
+    @Override
+    public void dispose() {
+        //逐渐消失
+        isDisposing = true;
+        closeTimer();
+        this.repaint();
+    }
+
+    // 判断当前是否正在进行动画
+    private boolean isAnimating() {
+        return isShowAnimating()|| isDisposeAnimating();
+    }
+    private boolean isShowAnimating() {
+        return showTimer != null && showTimer.isRunning();
+    }
+    // 判断当前是否正在进行动画
+    private boolean isDisposeAnimating() {
+        return disposeTimer != null && disposeTimer.isRunning();
+    }
+    // 关闭时钟，重新初始化
+    private void closeTimer() {
+        if (isShowAnimating()) {
+            showTimer.stop();
+            showTimer = null;
+        }
+        if(isDisposeAnimating()){
+            disposeTimer.stop();
+            disposeTimer = null;
+        }
+        if(frameIndex != 0 ){
+            frameIndex = ANIMATION_FRAMES -frameIndex;
+            if(frameIndex <0){
+                frameIndex = 0;
+            }
+        }
+    }
+
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // 前进一帧
+        frameIndex++;
+        if (frameIndex >= ANIMATION_FRAMES ){
+            // 最后一帧，关闭动画
+            frameIndex = 0;
+            closeTimer();
+            if(isDisposing){
+                super.dispose();
+            }
+        }
+        else
+            // 更新当前一帧
+            repaint();
     }
 }

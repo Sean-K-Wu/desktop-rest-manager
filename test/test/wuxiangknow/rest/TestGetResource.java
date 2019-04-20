@@ -1,6 +1,7 @@
 package test.wuxiangknow.rest;
 
 import com.wuxiangknow.rest.gui.SleepGui;
+import com.wuxiangknow.rest.gui.generate.SettingGui;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
@@ -13,7 +14,8 @@ import java.net.MalformedURLException;
 public class TestGetResource {
     @Test
     public void test() throws MalformedURLException {
-        SleepGui sleepGui = new SleepGui(null);
+        SettingGui settingGui = new SettingGui();
+        SleepGui sleepGui = new SleepGui(null,settingGui.getSleepRandomBufferedImage());
         //废弃 不再尝试从jar包获取图片
         try {
             Thread.sleep(Integer.MAX_VALUE);

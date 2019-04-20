@@ -12,6 +12,7 @@ import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.task.FileChooserTask;
 import com.wuxiangknow.rest.task.UpgradeTask;
 import com.wuxiangknow.rest.thread.ThreadPoolManager;
+import com.wuxiangknow.rest.util.FileUtil;
 import com.wuxiangknow.rest.util.ImageUtil;
 import com.wuxiangknow.rest.util.RegUtil;
 import com.wuxiangknow.rest.util.WindowsUtil;
@@ -21,6 +22,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
@@ -154,7 +156,39 @@ public class SettingGui extends JFrame {
         firePropertyChange("settingStatus",oldValue,status);
         CacheManager.save(this);
     }
-
+    public BufferedImage getSleepRandomBufferedImage(){
+        BufferedImage bufferedImage = null;
+        if ( this.getSleepImagePath() != null ) {
+            try {
+                //获取该路径
+                java.util.List<String> resource = FileUtil.getResourceByFile(this.getSleepImagePath());
+                if(resource.size()>0){
+                    String path = FileUtil.getFileByRandom(resource);
+                    bufferedImage = ImageIO.read(new File(path));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(bufferedImage == null){
+            if(this.getSleepImagePath() != null ){
+                this.setSleepImagePath(null);
+                this.getSleepImagesPatheField().setText(SettingGui.SLEEP_IMAGE_PATH_DEFAULT_VALUE);
+            }
+            java.util.List<String> resource = FileUtil.getResource(this.getClass().getResource(RestConfig.SLEEP_IMAGE_DIR).getPath());
+            String path = FileUtil.getFileByRandom(resource);
+            try {
+                if(path.startsWith(RestConfig.SLEEP_IMAGE_DIR)){
+                    bufferedImage = ImageIO.read(this.getClass().getResourceAsStream(path));
+                }else {
+                    bufferedImage = ImageIO.read(new File(path));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bufferedImage;
+    }
     public SettingGui() {
         initComponents();
     }

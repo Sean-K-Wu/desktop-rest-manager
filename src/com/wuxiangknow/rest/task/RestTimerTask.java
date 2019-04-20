@@ -11,6 +11,7 @@ import com.wuxiangknow.rest.util.WindowsUtil;
 import org.joda.time.DateTime;
 
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.TimerTask;
@@ -105,6 +106,7 @@ public class RestTimerTask extends TimerTask {
                     }
                     CountDownTask countDownTask = new CountDownTask(restGui);
                     countDownTask.execute();
+                    final BufferedImage sleepBufferedImage =  settingGui.getSleepRandomBufferedImage();
                     try {
                         countDownTask.get();
                     } catch (InterruptedException e) {
@@ -118,7 +120,7 @@ public class RestTimerTask extends TimerTask {
                             SwingUtilities.invokeAndWait(new Runnable() {
                                 @Override
                                 public void run() {
-                                    sleepGui = new SleepGui(settingGui);
+                                    sleepGui = new SleepGui(settingGui,sleepBufferedImage);
                                 }
                             });
                         } catch (InterruptedException e) {
