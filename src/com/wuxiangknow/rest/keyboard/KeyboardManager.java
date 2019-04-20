@@ -33,8 +33,9 @@ public class KeyboardManager {
                 if(RestTimerTask.sleepGui !=null && RestTimerTask.sleepGui.isVisible()
                         && (KeyEvent.VK_ALT == vkCode ||164 == vkCode || 165 ==vkCode
                             || KeyEvent.VK_WINDOWS == vkCode||91 == vkCode || 92 ==vkCode
+                            || KeyEvent.VK_ESCAPE == vkCode
                         )
-                        ){//屏蔽alt
+                        ){//屏蔽
                     if( KeyEvent.VK_ESCAPE == vkCode && pressState.equals(PressState.UP)) {//抬起
                         RestTimerTask.sleepGui.wakeUp();
                     }
