@@ -53,7 +53,9 @@ public class RestConfig {
 
     public static final long REST_TIME = 1 * 60 * 1000;//休息时间
 
-    public static final long TIMER_TASK_PERIOD = 10 * 1000;//任务检查周期
+    public static final long TIMER_REST_TASK_PERIOD = 10 * 1000;//任务检查周期
+
+    public static final long TIMER_UPGRADE_TASK_PERIOD = 60 * 60 * 1000;//任务检查周期
 
     public static final int COUNTDOWN = 3;//倒计时
 

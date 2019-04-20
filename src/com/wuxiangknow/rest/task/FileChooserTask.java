@@ -25,24 +25,24 @@ public class FileChooserTask extends SwingWorker<String,String>{
     @Override
     protected String doInBackground() throws Exception {
 
-        if(settingGui.getSleepImagesPatheChooser()==null){
-            settingGui.setSleepImagesPatheChooser( new JFileChooser());
+        if(settingGui.getSleepImagesPathChooser()==null){
+            settingGui.setSleepImagesPathChooser( new JFileChooser());
             File desktopDir = FileSystemView.getFileSystemView().getHomeDirectory();
-            settingGui.getSleepImagesPatheChooser().setCurrentDirectory(desktopDir);
+            settingGui.getSleepImagesPathChooser().setCurrentDirectory(desktopDir);
         }else{
-            settingGui.getSleepImagesPatheChooser().setVisible(true);
+            settingGui.getSleepImagesPathChooser().setVisible(true);
         }
         if(settingGui.getSleepImagePath() != null){
-            settingGui.getSleepImagesPatheChooser().setCurrentDirectory(new File(settingGui.getSleepImagePath()));
+            settingGui.getSleepImagesPathChooser().setCurrentDirectory(new File(settingGui.getSleepImagePath()));
         }
-        JFileChooser sleepImagesPatheChooser = settingGui.getSleepImagesPatheChooser();
+        JFileChooser sleepImagesPathChooser = settingGui.getSleepImagesPathChooser();
 
-        sleepImagesPatheChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        sleepImagesPatheChooser.setMultiSelectionEnabled(false);
-        int result = sleepImagesPatheChooser.showOpenDialog(settingGui);
-        sleepImagesPatheChooser.setVisible(false);
+        sleepImagesPathChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        sleepImagesPathChooser.setMultiSelectionEnabled(false);
+        int result = sleepImagesPathChooser.showOpenDialog(settingGui);
+        sleepImagesPathChooser.setVisible(false);
         if(JFileChooser.APPROVE_OPTION  == result){
-            File selectedFile = sleepImagesPatheChooser.getSelectedFile();
+            File selectedFile = sleepImagesPathChooser.getSelectedFile();
             if(selectedFile != null){
                 if(ImageUtil.hasImages(selectedFile) || ImageUtil.isImage(selectedFile.getName())){
                     String absolutePath = selectedFile.getAbsolutePath();

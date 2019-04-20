@@ -11,7 +11,6 @@ import com.wuxiangknow.rest.keyboard.KeyboardManager;
 import com.wuxiangknow.rest.task.RestTimerTask;
 import com.wuxiangknow.rest.task.ShutdownTask;
 import com.wuxiangknow.rest.task.UpgradeTask;
-import com.wuxiangknow.rest.thread.ThreadPoolManager;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
 import javax.swing.*;
@@ -68,11 +67,17 @@ public class MainGui {
             settingGui.requestFocus();
         }
         initSystemTray();
-        java.util.Timer timer = new Timer(false);
+        java.util.Timer timer1 = new Timer(false);
         RestTimerTask restTimerTask = new RestTimerTask(settingGui);
-        timer.schedule(restTimerTask,0,RestConfig.TIMER_TASK_PERIOD);
+        timer1.schedule(restTimerTask,0,RestConfig.TIMER_REST_TASK_PERIOD);
+
+
+        java.util.Timer timer2 = new Timer(false);
+        UpgradeTask upgradeTask = new UpgradeTask(settingGui, false);
+        timer2.schedule(upgradeTask,0,RestConfig.TIMER_UPGRADE_TASK_PERIOD);
+
         Runtime.getRuntime().addShutdownHook(new ShutdownTask(settingGui));
-        ThreadPoolManager.execute(new UpgradeTask(settingGui,false));
+
     }
     /**
      * 初始化look and feel

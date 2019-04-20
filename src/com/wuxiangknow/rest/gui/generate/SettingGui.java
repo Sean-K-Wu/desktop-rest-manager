@@ -40,7 +40,7 @@ public class SettingGui extends JFrame {
     private BetweenTime afternoonBetweenTime;
     public static final String SLEEP_IMAGE_PATH_DEFAULT_VALUE = "默认";
     private  String sleepImagePath ;
-    private JFileChooser sleepImagesPatheChooser;
+    private volatile JFileChooser sleepImagesPathChooser;
     private long restTime = RestConfig.REST_TIME;//休息时间
     private long maxWorkTime = RestConfig.MAX_WORK_TIME;//最长连续工作时间  多长工作时间后休息
     private long lastTime = System.currentTimeMillis();//活跃开始计算时间
@@ -52,7 +52,7 @@ public class SettingGui extends JFrame {
         return autoBoot;
     }
     public boolean isSetting(){
-        return this.isActive() || (sleepImagesPatheChooser!=null && sleepImagesPatheChooser.isVisible());
+        return this.isActive() || (sleepImagesPathChooser!=null && sleepImagesPathChooser.isVisible());
     }
     public void setAutoBoot(boolean autoBoot) {
         this.autoBoot = autoBoot;
@@ -66,12 +66,12 @@ public class SettingGui extends JFrame {
         this.sleepImagePath = sleepImagePath;
     }
 
-    public JFileChooser getSleepImagesPatheChooser() {
-        return sleepImagesPatheChooser;
+    public JFileChooser getSleepImagesPathChooser() {
+        return sleepImagesPathChooser;
     }
 
-    public void setSleepImagesPatheChooser(JFileChooser sleepImagesPatheChooser) {
-        this.sleepImagesPatheChooser = sleepImagesPatheChooser;
+    public void setSleepImagesPathChooser(JFileChooser sleepImagesPathChooser) {
+        this.sleepImagesPathChooser = sleepImagesPathChooser;
     }
 
     public JLabel getSleepImagesPathLabel() {

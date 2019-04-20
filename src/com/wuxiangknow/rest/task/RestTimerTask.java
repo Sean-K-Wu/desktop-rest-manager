@@ -88,7 +88,7 @@ public class RestTimerTask extends TimerTask {
                     ){
                 //超过最高时间 且 状态启用 且 没有正在调整设置
                 if(!WindowsUtil.isFullScreen() && ( !DateTimeUtil.isWeekend(new Date())|| !settingGui.isWeekendDisable())
-                        && System.currentTimeMillis() - lastTimeMillis < RestConfig.TIMER_TASK_PERIOD*2
+                        && System.currentTimeMillis() - lastTimeMillis < RestConfig.TIMER_REST_TASK_PERIOD*2
                         ){//没有全屏再提示 且 不是周末或者周末可提示 且 两次运行没有超过定时任务周期的2倍时间(防止休眠)
                     //创建休息
                     try {
@@ -168,7 +168,7 @@ public class RestTimerTask extends TimerTask {
         }
         long startMillis = startTime.getMillisOfDay();
         long nowMillis = now.getMillisOfDay();
-        if(Math.abs(startMillis - nowMillis)< RestConfig.TIMER_TASK_PERIOD){
+        if(Math.abs(startMillis - nowMillis)< RestConfig.TIMER_REST_TASK_PERIOD){
             settingGui.updateTime();
         }
     }
