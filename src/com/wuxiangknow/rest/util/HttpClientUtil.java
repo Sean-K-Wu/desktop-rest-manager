@@ -35,7 +35,7 @@ public class HttpClientUtil {
 
 
 
-    public static byte[] doget(String url,Component parentComponent) {
+    public static byte[] doGet(String url,Component parentComponent,boolean isPrompt) {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()){
             HttpGet httpGet = new HttpGet(url);
             CloseableHttpResponse response = httpclient.execute(httpGet);
@@ -47,7 +47,9 @@ public class HttpClientUtil {
             return EntityUtils.toByteArray(entity2);
         } catch (IOException e) {
             e.printStackTrace();
-            handleFailedRequest(parentComponent);
+            if(true){
+                handleFailedRequest(parentComponent);
+            }
         }
         return null;
     }
@@ -59,7 +61,7 @@ public class HttpClientUtil {
      * @return
      * @throws Exception
      */
-    public static JSONObject doPost(String url , Map<String,String> map,Component parentComponent) {
+    public static JSONObject doPost(String url , Map<String,String> map,Component parentComponent,boolean isPrompt) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);
         List<NameValuePair> nvps = new ArrayList<NameValuePair>(map.size());
@@ -85,7 +87,9 @@ public class HttpClientUtil {
             if((e instanceof ClientProtocolException &&  (status < 200 || status >= 300))
                     || e instanceof HttpHostConnectException
                     ){
-                handleFailedRequest(parentComponent);
+                if(isPrompt){
+                    handleFailedRequest(parentComponent);
+                }
             }
            e.printStackTrace();
         }

@@ -30,7 +30,7 @@ public class UpgradeTask implements Runnable{
 
     @Override
     public void run() {
-        byte[] download = HttpClientUtil.doget(RestConfig.CHECK_VERSION_URL,settingGui);
+        byte[] download = HttpClientUtil.doGet(RestConfig.CHECK_VERSION_URL,settingGui,isPrompt);
         if(download != null){
             try {
                 String content = new String(download, "UTF-8");
