@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "6.0.6.0.190" Java: "1.8.0_112-release" encoding: "UTF-8"
+JFDML JFormDesigner: "6.0.6.2.195" Java: "1.8.0_112-release" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -6,6 +6,7 @@ new FormModel {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.GridLayout ) ) {
 			name: "this"
 			"$locationPolicy": 1
+			addEvent( new FormEvent( "java.awt.event.WindowFocusListener", "windowLostFocus", "thisWindowLostFocus", true ) )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
 				name: "rootPanel"
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {

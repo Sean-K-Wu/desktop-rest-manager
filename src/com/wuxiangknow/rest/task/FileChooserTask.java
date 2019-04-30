@@ -35,10 +35,12 @@ public class FileChooserTask extends SwingWorker<String,String>{
         if(settingGui.getSleepImagePath() != null){
             settingGui.getSleepImagesPathChooser().setCurrentDirectory(new File(settingGui.getSleepImagePath()));
         }
+        settingGui.releaseMorningHourFocus();//这个事件处理过程有问题 JcomboBox 会被选中  所以需要调用下 除第一次外 后续显示不会有聚焦一闪而过
         JFileChooser sleepImagesPathChooser = settingGui.getSleepImagesPathChooser();
 
         sleepImagesPathChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         sleepImagesPathChooser.setMultiSelectionEnabled(false);
+
         int result = sleepImagesPathChooser.showOpenDialog(settingGui);
         sleepImagesPathChooser.setVisible(false);
         if(JFileChooser.APPROVE_OPTION  == result){

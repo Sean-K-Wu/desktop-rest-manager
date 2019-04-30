@@ -222,7 +222,9 @@ public class SettingGui extends JFrame {
     }
 
 
-
+    public void releaseMorningHourFocus() {
+        this.requestFocus();
+    }
     public void initClockTimes(BetweenTime morningBetweenTime, BetweenTime afternoonBetweenTime) {
         initClockTimeValue(morningBetweenTime,morningStartHourBox,morningStartMinuteBox,morningEndHourBox,morningEndMinuteBox);
         initClockTimeValue(afternoonBetweenTime,afternoonStartHourBox,afternoonStartMinuteBox,afternoonEndHourBox,afternoonEndMinuteBox);
@@ -294,7 +296,7 @@ public class SettingGui extends JFrame {
         component.setText(String.valueOf(restTime /1000 / 60));
     }
 
-    private void sleepImagesPathButtonMouseClicked(MouseEvent e) {
+    private synchronized void sleepImagesPathButtonMouseClicked(MouseEvent e) {
         sleepImagesPathButton.setEnabled(false);
         this.handleOpenFileChooser();
         sleepImagesPathButton.setEnabled(true);
@@ -541,6 +543,16 @@ public class SettingGui extends JFrame {
 
 
 
+    private void thisWindowLostFocus(WindowEvent e) {
+        handleWindowLostFocus(e);
+    }
+
+    private void handleWindowLostFocus(WindowEvent e) {
+        if(!(sleepImagesPathChooser!=null && sleepImagesPathChooser.isVisible())){
+            this.setState(JFrame.ICONIFIED);
+        }
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -586,6 +598,12 @@ public class SettingGui extends JFrame {
         aliLable = new JLabel();
 
         //======== this ========
+        addWindowFocusListener(new WindowAdapter() {
+            @Override
+            public void windowLostFocus(WindowEvent e) {
+                thisWindowLostFocus(e);
+            }
+        });
         Container contentPane = getContentPane();
         contentPane.setLayout(new GridLayout());
 
@@ -747,21 +765,11 @@ public class SettingGui extends JFrame {
                         settingPanel.add(morningWorkLabel, "cell 0 2");
 
                         //---- morningStartHourBox ----
-                        morningStartHourBox.addItemListener(new ItemListener() {
-                            @Override
-                            public void itemStateChanged(ItemEvent e) {
-                                morningStartHourBoxItemStateChanged(e);
-                            }
-                        });
+                        morningStartHourBox.addItemListener(e -> morningStartHourBoxItemStateChanged(e));
                         settingPanel.add(morningStartHourBox, "cell 1 2");
 
                         //---- morningStartMinuteBox ----
-                        morningStartMinuteBox.addItemListener(new ItemListener() {
-                            @Override
-                            public void itemStateChanged(ItemEvent e) {
-                                morningStartMinuteBoxItemStateChanged(e);
-                            }
-                        });
+                        morningStartMinuteBox.addItemListener(e -> morningStartMinuteBoxItemStateChanged(e));
                         settingPanel.add(morningStartMinuteBox, "cell 1 2");
 
                         //---- morningSepereteLabel ----
@@ -769,21 +777,11 @@ public class SettingGui extends JFrame {
                         settingPanel.add(morningSepereteLabel, "cell 1 2");
 
                         //---- morningEndHourBox ----
-                        morningEndHourBox.addItemListener(new ItemListener() {
-                            @Override
-                            public void itemStateChanged(ItemEvent e) {
-                                morningEndHourBoxItemStateChanged(e);
-                            }
-                        });
+                        morningEndHourBox.addItemListener(e -> morningEndHourBoxItemStateChanged(e));
                         settingPanel.add(morningEndHourBox, "cell 1 2");
 
                         //---- morningEndMinuteBox ----
-                        morningEndMinuteBox.addItemListener(new ItemListener() {
-                            @Override
-                            public void itemStateChanged(ItemEvent e) {
-                                morningEndMinuteBoxItemStateChanged(e);
-                            }
-                        });
+                        morningEndMinuteBox.addItemListener(e -> morningEndMinuteBoxItemStateChanged(e));
                         settingPanel.add(morningEndMinuteBox, "cell 1 2");
 
                         //---- afternoonWorkLabel ----
@@ -791,21 +789,11 @@ public class SettingGui extends JFrame {
                         settingPanel.add(afternoonWorkLabel, "cell 0 3");
 
                         //---- afternoonStartHourBox ----
-                        afternoonStartHourBox.addItemListener(new ItemListener() {
-                            @Override
-                            public void itemStateChanged(ItemEvent e) {
-                                afternoonStartHourBoxItemStateChanged(e);
-                            }
-                        });
+                        afternoonStartHourBox.addItemListener(e -> afternoonStartHourBoxItemStateChanged(e));
                         settingPanel.add(afternoonStartHourBox, "cell 1 3");
 
                         //---- afternoonStartMinuteBox ----
-                        afternoonStartMinuteBox.addItemListener(new ItemListener() {
-                            @Override
-                            public void itemStateChanged(ItemEvent e) {
-                                afternoonStartMinuteBoxItemStateChanged(e);
-                            }
-                        });
+                        afternoonStartMinuteBox.addItemListener(e -> afternoonStartMinuteBoxItemStateChanged(e));
                         settingPanel.add(afternoonStartMinuteBox, "cell 1 3");
 
                         //---- afternoonSepereteLabel ----
@@ -813,21 +801,11 @@ public class SettingGui extends JFrame {
                         settingPanel.add(afternoonSepereteLabel, "cell 1 3");
 
                         //---- afternoonEndHourBox ----
-                        afternoonEndHourBox.addItemListener(new ItemListener() {
-                            @Override
-                            public void itemStateChanged(ItemEvent e) {
-                                afternoonEndHourBoxItemStateChanged(e);
-                            }
-                        });
+                        afternoonEndHourBox.addItemListener(e -> afternoonEndHourBoxItemStateChanged(e));
                         settingPanel.add(afternoonEndHourBox, "cell 1 3");
 
                         //---- afternoonEndMinuteBox ----
-                        afternoonEndMinuteBox.addItemListener(new ItemListener() {
-                            @Override
-                            public void itemStateChanged(ItemEvent e) {
-                                afternoonEndMinuteBoxItemStateChanged(e);
-                            }
-                        });
+                        afternoonEndMinuteBox.addItemListener(e -> afternoonEndMinuteBoxItemStateChanged(e));
                         settingPanel.add(afternoonEndMinuteBox, "cell 1 3");
 
                         //---- weekendLabel ----
