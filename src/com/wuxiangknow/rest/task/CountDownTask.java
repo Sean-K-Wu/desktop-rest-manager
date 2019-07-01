@@ -24,7 +24,7 @@ public class CountDownTask extends SwingWorker<String,Double> {
     @Override
     protected String doInBackground() throws Exception {
         CountDownLabel messageLabel = restGui.getMessageLabel();
-        while (countDown >= 0){
+        while (countDown >= 0 ){
             Double[] inAngles = messageLabel.getInAngles();
             for (Double inAngle : inAngles) {
                 publish(inAngle);
