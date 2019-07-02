@@ -27,6 +27,7 @@ public class RestTimerTask extends TimerTask {
     private Double resetTimeMaxRadix = 0.125;//重置工作时间八分之一
 
     private Long fullScreenStartMillis;
+    private Long unFullScreenStartMillis;
 
     private SettingGui settingGui;
 
@@ -103,10 +104,19 @@ public class RestTimerTask extends TimerTask {
             }else{
                 if(windowsIsOff(fullScreenStartMillis)){
                     settingGui.updateTime();//更新活动时间
+                    //重新开始计算
+                    fullScreenStartMillis = System.currentTimeMillis();
+                    //非全屏时间置为null
+                    unFullScreenStartMillis = null;
                 }
             }
         }else {
-            fullScreenStartMillis = null;
+            if(unFullScreenStartMillis == null){
+                unFullScreenStartMillis = System.currentTimeMillis();
+            }
+            if(windowsIsOff(unFullScreenStartMillis)){
+                fullScreenStartMillis = null;
+            }
         }
     }
 
