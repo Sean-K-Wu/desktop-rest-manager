@@ -6,7 +6,6 @@ import me.coley.simplejna.hook.key.KeyHookManager;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * @Desciption
@@ -27,9 +26,18 @@ public class KeyboardManager {
             public boolean onKeyUpdate(SystemState sysState, PressState pressState, int time, int vkCode) {
                 if(restTimerTask.getRestGui() !=null && restTimerTask.getRestGui().isVisible() && KeyEvent.VK_ESCAPE == vkCode){
                     if(pressState.equals(PressState.UP)) {//抬起
-                        restTimerTask.getRestGui().cancel();
-                        // 关闭对话框
-                        restTimerTask.getRestGui().dispose();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                synchronized (restTimerTask.getRestGui()){
+                                    if(restTimerTask.getRestGui().isVisible()){
+                                        restTimerTask.getRestGui().cancel();
+                                        // 关闭对话框
+                                        restTimerTask.getRestGui().dispose();
+                                    }
+                                }
+                            }
+                        });
                     }
                     return true;
                 }
@@ -42,19 +50,17 @@ public class KeyboardManager {
                         )
                         ){//屏蔽
                     if( KeyEvent.VK_ESCAPE == vkCode && pressState.equals(PressState.UP)) {//抬起
-                        try {
-                            SwingUtilities.invokeAndWait(new Runnable() {
-                                @Override
-                                public void run() {
-                                    restTimerTask.getSleepGui().dispose();
-                                    restTimerTask.getSleepGui().wakeUp();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                synchronized (restTimerTask.getSleepGui()){
+                                    if(restTimerTask.getSleepGui().isVisible()){
+                                        restTimerTask.getSleepGui().dispose();
+                                        restTimerTask.getSleepGui().wakeUp();
+                                    }
                                 }
-                            });
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
+                            }
+                        });
                     }
                     return true;
                 }
