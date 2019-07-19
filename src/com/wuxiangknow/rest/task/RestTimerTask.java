@@ -170,7 +170,7 @@ public class RestTimerTask extends TimerTask {
                 });
                 if(settingGui != null){
                     long startTime = System.currentTimeMillis();
-                    while (System.currentTimeMillis() - startTime <  settingGui.getRestTime() && sleepGui.isVisible()){
+                    while (System.currentTimeMillis() - startTime <  settingGui.getRestTime() && !sleepGui.isDisposing()){
                         synchronized (settingGui){
                             try {
                                 settingGui.wait(settingGui.getRestTime()-(System.currentTimeMillis() - startTime));

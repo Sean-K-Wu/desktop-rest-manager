@@ -44,6 +44,7 @@ public class KeyboardManager {
                 //KeyEvent.VK_ALT == 18  左alt ==164  右alt==165
                 //KeyEvent.VK_WINDOWS==524 左win ==91 右win == 92
                 if(restTimerTask.getSleepGui() !=null && restTimerTask.getSleepGui().isVisible()
+                        &&! restTimerTask.getSleepGui().isDisposing()
                         && (KeyEvent.VK_ALT == vkCode ||164 == vkCode || 165 ==vkCode
                             || KeyEvent.VK_WINDOWS == vkCode||91 == vkCode || 92 ==vkCode
                             || KeyEvent.VK_ESCAPE == vkCode
@@ -54,7 +55,7 @@ public class KeyboardManager {
                             @Override
                             public void run() {
                                 synchronized (restTimerTask.getSleepGui()){
-                                    if(restTimerTask.getSleepGui().isVisible()){
+                                    if(restTimerTask.getSleepGui().isVisible() &&! restTimerTask.getSleepGui().isDisposing()){
                                         restTimerTask.getSleepGui().dispose();
                                         restTimerTask.getSleepGui().wakeUp();
                                     }

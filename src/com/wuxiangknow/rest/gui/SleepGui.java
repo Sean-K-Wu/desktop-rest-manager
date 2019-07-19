@@ -33,10 +33,11 @@ public class SleepGui extends JFrame implements ActionListener {
 
     private boolean isDisposing =false;
 
+    public boolean isDisposing() {
+        return isDisposing;
+    }
 
-
-
-    public SleepGui(final SettingGui settingGui,BufferedImage bufferedImage) throws HeadlessException {
+    public SleepGui(final SettingGui settingGui, BufferedImage bufferedImage) throws HeadlessException {
         this.settingGui = settingGui;
         this.setLayout(null);
         this.setResizable(false);//不可改变大小
