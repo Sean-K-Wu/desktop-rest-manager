@@ -16,10 +16,7 @@ public class BetweenTime implements Serializable{
     private DateTime startTime;//开始时间
     private DateTime endTime;//结束时间
 
-    public static void main(String[] args) {
-        BetweenTime betweenTime = new BetweenTime();
-        System.out.println();
-    }
+
 
 
     public BetweenTime() {

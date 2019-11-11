@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @Desciption 任务(负责提示用户休息)
@@ -23,27 +24,27 @@ import java.util.TimerTask;
  */
 public class RestTimerTask extends TimerTask {
 
+    private Double resetTimeMaxRadix = 0.125;//重置工作时间八分之一
+
+    private Long fullScreenStartMillis;
+    private Long unFullScreenStartMillis;
+
     private SettingGui settingGui;
 
-    public static RestGui restGui;
+    private RestGui restGui;
 
-    public static SleepGui sleepGui;
+    private SleepGui sleepGui;
 
     public RestGui getRestGui() {
         return restGui;
     }
 
-    public void setRestGui(RestGui restGui) {
-        this.restGui = restGui;
-    }
+
 
     public SleepGui getSleepGui() {
         return sleepGui;
     }
 
-    public void setSleepGui(SleepGui sleepGui) {
-        this.sleepGui = sleepGui;
-    }
 
     public RestTimerTask(final SettingGui settingGui) {
         this.settingGui = settingGui;
@@ -51,7 +52,7 @@ public class RestTimerTask extends TimerTask {
 
     //private Thread restThread;
 
-    private Long lastTimeMillis;
+    private Long lastTimeMillis;//程序上次运行时间
 
     @Override
     public void run() {
@@ -68,72 +69,152 @@ public class RestTimerTask extends TimerTask {
         if(!isWork && afternoonBetweenTime!=null){
             isWork = afternoonBetweenTime.isBetween(now);
         }
-        if(isWork){
+        if(isWork){//是否为工作中
             //如果刚好到了工作的开始时间 需要重置时间
-            DateTime morningStartTime = null;
-            DateTime afternoonStartTime = null;
-            if(morningBetweenTime !=null){
-                morningStartTime = morningBetweenTime.getStartTime();
-            }
-            if(afternoonBetweenTime !=null){
-                afternoonStartTime = afternoonBetweenTime.getStartTime();
-            }
-            updateLastTime(morningStartTime,afternoonStartTime,now);
-            if(lastTimeMillis == null){
+            resetTimeByWorkTime(now, morningBetweenTime, afternoonBetweenTime);
+            if(lastTimeMillis == null){ //为null 则初始化
                 lastTimeMillis = System.currentTimeMillis();
             }
-            if(System.currentTimeMillis() - settingGui.getLastTime() >= settingGui.getMaxWorkTime()
-                    && settingGui.isStatus()
-                    && !settingGui.isSetting()//调整设置 不考虑 重置lastTime
-                    ){
-                //超过最高时间 且 状态启用 且 没有正在调整设置
-                if(!WindowsUtil.isFullScreen() && ( !DateTimeUtil.isWeekend(new Date())|| !settingGui.isWeekendDisable())
-                        && System.currentTimeMillis() - lastTimeMillis < RestConfig.TIMER_REST_TASK_PERIOD*2
-                        ){//没有全屏再提示 且 不是周末或者周末可提示 且 两次运行没有超过定时任务周期的2倍时间(防止休眠)
+            //长时间全屏或者休息也需要重置时间
+            resetTimeByOff();
+            if(checkWhetherSleep()){//是否休息
+                if(allowSleep()){
                     //创建休息
-                    final BufferedImage sleepBufferedImage =  settingGui.getSleepRandomBufferedImage();
-                    //休息
-                    try {
-                        SwingUtilities.invokeAndWait(new Runnable() {
-                            @Override
-                            public void run() {
-                                sleepGui = new SleepGui(settingGui,sleepBufferedImage);
-                            }
-                        });
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                    if(settingGui != null){
-                        synchronized (settingGui){
-                            try {
-                                settingGui.wait(settingGui.getRestTime());
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    try {
-                        SwingUtilities.invokeAndWait(new Runnable() {
-                            @Override
-                            public void run() {
-                                sleepGui.close();
-                            }
-                        });
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-
+                    executeSleep();
                 }
-                settingGui.updateTime();
             }
             lastTimeMillis = System.currentTimeMillis();
         }else{
             lastTimeMillis = null;
         }
+    }
+
+    private void resetTimeByOff() {
+        if(settingGui.isWeekendDisable()){  //周末禁用
+            if(DateTimeUtil.isWeekend(new Date())){//周末
+                settingGui.updateTime();//更新活动时间
+            }
+        }
+        if(windowsIsOff(lastTimeMillis)){//休眠
+            settingGui.updateTime();//更新活动时间
+        }
+        if(WindowsUtil.isFullScreen()){//全屏
+            if(fullScreenStartMillis == null){
+                fullScreenStartMillis = System.currentTimeMillis();
+            }else{
+                if(windowsIsOff(fullScreenStartMillis)){
+                    settingGui.updateTime();//更新活动时间
+                    //重新开始计算
+                    fullScreenStartMillis = System.currentTimeMillis();
+                    //非全屏时间置为null
+                    unFullScreenStartMillis = null;
+                }
+            }
+        }else {
+            if(unFullScreenStartMillis == null){
+                unFullScreenStartMillis = System.currentTimeMillis();
+            }
+            if(windowsIsOff(unFullScreenStartMillis)){
+                fullScreenStartMillis = null;
+            }
+        }
+    }
+
+    private boolean allowSleep() {
+        if(settingGui.isWeekendDisable()){  //周末禁用
+            if(DateTimeUtil.isWeekend(new Date())){//周末
+                return false;
+            }
+        }
+        if(windowsIsOff(lastTimeMillis)){//休眠
+            return false;
+        }
+        if(WindowsUtil.isFullScreen()){//全屏
+            return false;
+        }
+        return true;
+    }
+
+    private boolean windowsIsOff(long timeMillis) {
+        return  System.currentTimeMillis() - timeMillis > RestConfig.TIMER_REST_TASK_PERIOD * 2 && System.currentTimeMillis() - timeMillis >= settingGui.getMaxWorkTime() * resetTimeMaxRadix;
+    }
+
+
+
+
+    public void executeSleep() {
+        try {
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                    restGui = new RestGui(settingGui);
+                }
+            });
+            CountDownTask countDownTask = new CountDownTask(restGui);
+            countDownTask.execute();
+            final BufferedImage sleepBufferedImage =  settingGui.getSleepRandomBufferedImage();
+            try {
+                countDownTask.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            //休息
+            if(restGui.isStatus() && !WindowsUtil.isFullScreen()){
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    @Override
+                    public void run() {
+                        sleepGui = new SleepGui(settingGui,sleepBufferedImage);
+                    }
+                });
+                if(settingGui != null){
+                    long startTime = System.currentTimeMillis();
+                    while (System.currentTimeMillis() - startTime <  settingGui.getRestTime() && !sleepGui.isDisposing()){
+                        synchronized (settingGui){
+                            try {
+                                settingGui.wait(settingGui.getRestTime()-(System.currentTimeMillis() - startTime));
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                if(sleepGui.isVisible()){
+                    SwingUtilities.invokeAndWait(new Runnable() {
+                        @Override
+                        public void run() {
+                            sleepGui.dispose();
+                        }
+                    });
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        //更新活动时间
+        settingGui.updateTime();
+    }
+
+    private boolean checkWhetherSleep() {
+        return System.currentTimeMillis() - settingGui.getLastTime() >= settingGui.getMaxWorkTime()
+                && settingGui.isStatus()
+                && !settingGui.isSetting()
+                ;
+    }
+
+    private void resetTimeByWorkTime(DateTime now, BetweenTime morningBetweenTime, BetweenTime afternoonBetweenTime) {
+        DateTime morningStartTime = null;
+        DateTime afternoonStartTime = null;
+        if(morningBetweenTime !=null){
+            morningStartTime = morningBetweenTime.getStartTime();
+        }
+        if(afternoonBetweenTime !=null){
+            afternoonStartTime = afternoonBetweenTime.getStartTime();
+        }
+        updateLastTime(morningStartTime,afternoonStartTime,now);
     }
 
     private void updateLastTime(DateTime startTime1, DateTime startTime2, DateTime now) {

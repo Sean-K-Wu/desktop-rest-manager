@@ -31,12 +31,13 @@ public class SleepGui extends JFrame implements ActionListener {
     private Timer showTimer;
     private Timer disposeTimer;
 
-    private volatile boolean isDisposing =false;
+    private boolean isDisposing =false;
 
+    public boolean isDisposing() {
+        return isDisposing;
+    }
 
-
-
-    public SleepGui(final SettingGui settingGui,BufferedImage bufferedImage) throws HeadlessException {
+    public SleepGui(final SettingGui settingGui, BufferedImage bufferedImage) throws HeadlessException {
         this.settingGui = settingGui;
         this.setLayout(null);
         this.setResizable(false);//不可改变大小
@@ -113,14 +114,17 @@ public class SleepGui extends JFrame implements ActionListener {
         }
     }
 
-    public  void close(){
-        isDisposing = true;
-        closeTimer();
-        this.repaint();
-        dispose();
+    @Override
+    public void dispose() {
+        synchronized (this){
+            if(!isDisposing){
+                //逐渐消失
+                isDisposing = true;
+                closeTimer();
+                this.repaint();
+            }
+        }
     }
-
-
 
     // 判断当前是否正在进行动画
     private boolean isAnimating() {

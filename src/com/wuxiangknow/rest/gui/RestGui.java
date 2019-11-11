@@ -1,6 +1,6 @@
 package com.wuxiangknow.rest.gui;
 
-import com.sun.awt.AWTUtilities;
+
 import com.wuxiangknow.rest.component.CountDownLabel;
 import com.wuxiangknow.rest.config.RestConfig;
 import com.wuxiangknow.rest.gui.generate.SettingGui;
@@ -30,7 +30,7 @@ public class RestGui{
 
 
 
-    private static final String PROMPT = "%d秒后进入休息";
+
 
     private Color fontColor  =new Color(52,152,219);
 
@@ -38,13 +38,13 @@ public class RestGui{
 
     private JDialog dialog;
 
-    private RestGui restGui;
+
 
     private CountDownLabel messageLabel;
 
     public RestGui(final SettingGui settingGui)  {
         this.settingGui = settingGui;
-        this.restGui = this;
+
         // 创建一个模态对话框
         Frame owner = null;
         dialog = new JDialog(owner, "休息提示", true);
@@ -57,7 +57,8 @@ public class RestGui{
         dialog.setResizable(false);
         // 设置对话框相对显示的位置
         dialog.setLocationRelativeTo(null);
-        AWTUtilities.setWindowOpaque(dialog, false);
+        //透明
+        dialog.setBackground(new Color(0,0,0,0));
         dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         // 创建一个标签显示消息内容
         messageLabel = new CountDownLabel();
@@ -78,9 +79,9 @@ public class RestGui{
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                restGui.cancel();
+                RestGui.this.cancel();
                 // 关闭对话框
-                restGui.dispose();
+                RestGui.this.dispose();
             }
         });
         // 添加组件到面板

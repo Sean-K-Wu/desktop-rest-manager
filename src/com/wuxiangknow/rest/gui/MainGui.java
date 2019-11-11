@@ -46,9 +46,11 @@ public class MainGui {
 
     private SettingStatusListener settingStatusListener;
 
+
+
+
     public MainGui() {
         initTheme();
-        KeyboardManager.init();
         parentPanel=this;
         CacheSettingBean cacheSettingBean = CacheManager.load();
         settingGui = new SettingGui();
@@ -78,6 +80,8 @@ public class MainGui {
 
         Runtime.getRuntime().addShutdownHook(new ShutdownTask(settingGui));
 
+
+        KeyboardManager.init(restTimerTask);
     }
     /**
      * 初始化look and feel
