@@ -56,7 +56,6 @@ public class KeyboardManager {
                             public void run() {
                                 synchronized (restTimerTask.getSleepGui()){
                                     if(restTimerTask.getSleepGui().isVisible() &&! restTimerTask.getSleepGui().isDisposing()){
-                                        restTimerTask.getSleepGui().dispose();
                                         restTimerTask.getSleepGui().wakeUp();
                                     }
                                 }

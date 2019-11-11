@@ -114,17 +114,16 @@ public class SleepGui extends JFrame implements ActionListener {
         }
     }
 
-    @Override
-    public void dispose() {
-        synchronized (this){
-            if(!isDisposing){
-                //逐渐消失
-                isDisposing = true;
-                closeTimer();
-                this.repaint();
-            }
+    public synchronized void close(){
+        if(!isDisposing){
+            //逐渐消失
+            isDisposing = true;
+            closeTimer();
+            this.repaint();
         }
     }
+
+
 
     // 判断当前是否正在进行动画
     private boolean isAnimating() {

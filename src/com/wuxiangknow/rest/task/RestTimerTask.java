@@ -15,7 +15,6 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @Desciption 任务(负责提示用户休息)
@@ -33,7 +32,7 @@ public class RestTimerTask extends TimerTask {
 
     private RestGui restGui;
 
-    private SleepGui sleepGui;
+    private volatile SleepGui sleepGui;
 
     public RestGui getRestGui() {
         return restGui;
@@ -144,24 +143,9 @@ public class RestTimerTask extends TimerTask {
 
     public void executeSleep() {
         try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                    restGui = new RestGui(settingGui);
-                }
-            });
-            CountDownTask countDownTask = new CountDownTask(restGui);
-            countDownTask.execute();
             final BufferedImage sleepBufferedImage =  settingGui.getSleepRandomBufferedImage();
-            try {
-                countDownTask.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
             //休息
-            if(restGui.isStatus() && !WindowsUtil.isFullScreen()){
+            if(!WindowsUtil.isFullScreen()){
                 SwingUtilities.invokeAndWait(new Runnable() {
                     @Override
                     public void run() {
@@ -184,7 +168,7 @@ public class RestTimerTask extends TimerTask {
                     SwingUtilities.invokeAndWait(new Runnable() {
                         @Override
                         public void run() {
-                            sleepGui.dispose();
+                            sleepGui.close();
                         }
                     });
                 }
