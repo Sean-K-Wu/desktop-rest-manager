@@ -5,7 +5,7 @@
 
 ### 环境
 
-1. JDK1.7 32bit及以上
+1. JDK1.8 32bit及以上
 2. UTF-8编码
 3. Windows(仅测试Windows10)
 4. 暂不支持JDK10(第三方工具beautyeye-inf),JDK9未测试
@@ -33,6 +33,10 @@
 
 ### 更新LOG
 
+
+v1.9
+
+> 1. 去除倒计时
 
 v1.8
 
