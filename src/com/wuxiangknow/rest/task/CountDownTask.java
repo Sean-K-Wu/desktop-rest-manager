@@ -12,6 +12,7 @@ import java.util.List;
  * @Author WuXiang
  * @Date 2019/3/18 21:43
  */
+@Deprecated
 public class CountDownTask extends SwingWorker<String,Double> {
 
     private RestGui restGui;

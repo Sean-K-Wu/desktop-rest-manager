@@ -19,6 +19,7 @@ import java.io.IOException;
  * @Author WuXiang
  * @Date 2019/1/9 23:03
  */
+@Deprecated
 public class RestGui{
 
     private SettingGui settingGui;
