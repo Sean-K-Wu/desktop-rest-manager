@@ -26,12 +26,12 @@ public class SleepGui extends JFrame implements ActionListener {
     private static final int ANIMATION_FRAMES = 100;
     private static final int ANIMATION_INTERVAL = 10;
 
-    private int frameIndex;
+    private volatile int frameIndex;
     // 时钟
-    private Timer showTimer;
-    private Timer disposeTimer;
+    private volatile Timer showTimer;
+    private volatile Timer disposeTimer;
 
-    private boolean isDisposing =false;
+    private volatile   boolean isDisposing =false;
 
     public boolean isDisposing() {
         return isDisposing;
@@ -165,7 +165,7 @@ public class SleepGui extends JFrame implements ActionListener {
             frameIndex = 0;
             closeTimer();
             if(isDisposing){
-                super.dispose();
+                dispose();
             }
         }
         else
