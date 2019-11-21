@@ -5,7 +5,11 @@
 
 ### 环境
 
-1. JDK1.8 32bit及以上
+1. JDK1.7 32bit及以上,且`注册表`配置JavaHome,如:
+
+> Path: 计算机\HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Development Kit\1.8  
+> key: JavaHome  value: D:\develop\jdk-1.8
+
 2. UTF-8编码
 3. Windows(仅测试Windows10)
 4. 暂不支持JDK10(第三方工具beautyeye-inf),JDK9未测试
