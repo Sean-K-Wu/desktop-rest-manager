@@ -51,7 +51,8 @@ public class KeyboardManager {
                         )
                         ){//屏蔽
                     if( KeyEvent.VK_ESCAPE == vkCode && pressState.equals(PressState.UP)) {//抬起
-                        SwingUtilities.invokeLater(new Runnable() {
+                        //ESC 无法退出
+                        /*SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
                                 synchronized (restTimerTask.getSleepGui()){
@@ -61,7 +62,7 @@ public class KeyboardManager {
                                     }
                                 }
                             }
-                        });
+                        });*/
                     }
                     return true;
                 }

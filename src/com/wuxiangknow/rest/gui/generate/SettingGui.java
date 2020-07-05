@@ -593,6 +593,8 @@ public class SettingGui extends JFrame {
         autoBootCheckBox = new JCheckBox();
         statusLabel = new JLabel();
         statusButton = new JButton();
+        countLabel = new JLabel();
+        countFileld = new JLabel();
         donatePanel = new JPanel();
         wxLable = new JLabel();
         aliLable = new JLabel();
@@ -702,6 +704,7 @@ public class SettingGui extends JFrame {
                             // rows
                             "[58]" +
                             "[26]" +
+                            "[]" +
                             "[]" +
                             "[]" +
                             "[]" +
@@ -887,6 +890,14 @@ public class SettingGui extends JFrame {
                             }
                         });
                         settingPanel.add(statusButton, "cell 1 5");
+
+                        //---- countLabel ----
+                        countLabel.setText("\u5012\u8ba1\u65f6\uff1a");
+                        settingPanel.add(countLabel, "cell 0 6");
+
+                        //---- countFileld ----
+                        countFileld.setText("text");
+                        settingPanel.add(countFileld, "cell 1 6,align center center,grow 0 0");
                     }
                     tabbedPane1.addTab("\u8bbe\u7f6e", settingPanel);
 
@@ -978,6 +989,8 @@ public class SettingGui extends JFrame {
     private JCheckBox autoBootCheckBox;
     private JLabel statusLabel;
     private JButton statusButton;
+    private JLabel countLabel;
+    private JLabel countFileld;
     private JPanel donatePanel;
     private JLabel wxLable;
     private JLabel aliLable;

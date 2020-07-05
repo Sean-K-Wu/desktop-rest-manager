@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "6.0.6.2.195" Java: "1.8.0_112-release" encoding: "UTF-8"
+JFDML JFormDesigner: "6.0.6.2.195" Java: "1.8.0_152-release" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -76,7 +76,7 @@ new FormModel {
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 							"$layoutConstraints": "hidemode 3"
 							"$columnConstraints": "[fill][fill]"
-							"$rowConstraints": "[58][26][][][][]"
+							"$rowConstraints": "[58][26][][][][][]"
 						} ) {
 							name: "settingPanel"
 							add( new FormComponent( "javax.swing.JLabel" ) {
@@ -232,6 +232,18 @@ new FormModel {
 							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 								"value": "cell 1 5"
 							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "countLabel"
+								"text": "倒计时："
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 0 6"
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "countFileld"
+								"text": "text"
+							}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+								"value": "cell 1 6,align center center,grow 0 0"
+							} )
 						}, new FormLayoutConstraints( null ) {
 							"title": "设置"
 						} )
@@ -263,7 +275,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 35, 15 )
-			"size": new java.awt.Dimension( 455, 361 )
+			"size": new java.awt.Dimension( 555, 385 )
 		} )
 	}
 }
